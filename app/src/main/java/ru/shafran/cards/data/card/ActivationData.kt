@@ -6,4 +6,4 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @Parcelize
-data class ActivationData(val type: CardType = CardType(), val note: String = ""): Parcelable
+data class ActivationData(val type: CardType = CardType(), val note: String = "", val useLimit: Int? = null): Parcelable

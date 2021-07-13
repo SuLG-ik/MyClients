@@ -9,20 +9,19 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 import ru.shafran.cards.utils.ZonedDateTimeSerializer
 
-@Serializable(ZonedDateTimeSerializer::class)
+@Serializable
 sealed class CardDescription: Parcelable {
 
     @Serializable
     @SerialName("activated")
     @Parcelize
-    data class Activated(val activation: CardAction.Activation = CardAction.Activation(), val lastUsage: CardAction.Usage? = null): CardDescription()
+    data class Activated(val activation: CardAction.Activation = CardAction.Activation()): CardDescription()
 
     @Serializable
     @Parcelize
     @SerialName("deactivated")
     data class Deactivated(
         val activation: CardAction.Activation,
-        val lastUsage: CardAction.Usage?,
         val deactivation: CardAction.Deactivation
     ): CardDescription()
 

@@ -5,7 +5,7 @@ import kotlinx.coroutines.delay
 class SplashComponent(private val onComplete: () -> Unit) : Splash {
 
     override suspend fun setup() {
-        delay(2500)
+        delay(250)
         onComplete()
     }
 }

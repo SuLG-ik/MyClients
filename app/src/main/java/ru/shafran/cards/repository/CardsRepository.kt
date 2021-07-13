@@ -1,9 +1,9 @@
-package ru.shafran.cards.network
+package ru.shafran.cards.repository
 
 import kotlinx.coroutines.flow.Flow
 import ru.shafran.cards.data.card.Card
 
-interface CardsNetworkDao {
+interface CardsRepository {
 
     suspend fun getCardByToken(token: String): Card
 
