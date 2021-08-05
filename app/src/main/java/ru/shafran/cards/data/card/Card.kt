@@ -1,7 +1,7 @@
 package ru.shafran.cards.data.card
 
-import com.arkivanov.decompose.statekeeper.Parcelable
-import com.arkivanov.decompose.statekeeper.Parcelize
+import com.arkivanov.essenty.parcelable.Parcelable
+import com.arkivanov.essenty.parcelable.Parcelize
 import kotlinx.serialization.Serializable
 
 
@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 @Parcelize
 data class Card(
     val rawToken: String,
-    val id: String,
+    val id: Int,
     val description: CardDescription,
     val history: CardHistory,
 ): Parcelable

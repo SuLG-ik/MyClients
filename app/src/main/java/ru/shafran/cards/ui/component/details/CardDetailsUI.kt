@@ -9,10 +9,10 @@ import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import ru.shafran.cards.ui.component.details.info.CardInfoUI
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -28,7 +28,7 @@ fun CardDetailsUI(
         }
         true
     }
-    val isShown by component.isShown.subscribeAsState()
+    val isShown by component.isShown.collectAsState()
 
     LaunchedEffect(key1 = isShown, block = {
         if (isShown)

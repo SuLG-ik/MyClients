@@ -1,11 +1,12 @@
 package ru.shafran.cards.ui.component.camera
 
-import com.arkivanov.decompose.value.Value
+import androidx.camera.core.ImageProxy
+import kotlinx.coroutines.flow.StateFlow
 import ru.shafran.cards.ui.component.details.CardDetails
 
 interface Camera {
 
-    val isEnabled: Value<Boolean>
+    val isEnabled: StateFlow<Boolean>
 
     val details: CardDetails
 
@@ -13,6 +14,6 @@ interface Camera {
 
     fun onEnable()
 
-    suspend fun onQrCodeDetected(rawToken: String)
+    fun processImage(proxy: ImageProxy)
 
 }

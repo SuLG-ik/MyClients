@@ -1,10 +1,11 @@
 package ru.shafran.cards.analysis
 
-import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
+import kotlinx.coroutines.flow.StateFlow
 
-class CardTokenAnalyser(): ImageAnalysis.Analyzer {
-    override fun analyze(image: ImageProxy) {
-
-    }
+interface CardTokenAnalyser {
+    val tokens: StateFlow<String>
+    fun pause()
+    fun resume()
+    fun process(proxy: ImageProxy, onDetected: (String) -> Unit)
 }

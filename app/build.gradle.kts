@@ -41,7 +41,7 @@ android {
             )
         }
         debug {
-            buildConfigField("String", "NETWORK_URL", "\"http://192.168.0.107:8080\"")
+            buildConfigField("String", "NETWORK_URL", "\"http://13.59.69.56:80\"")
         }
     }
     buildFeatures {
@@ -63,14 +63,17 @@ dependencies {
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
     implementation("androidx.core:core-ktx:1.6.0")
-    implementation("androidx.appcompat:appcompat:1.3.0")
+    implementation("androidx.appcompat:appcompat:1.3.1")
     implementation("com.google.android.material:material:1.4.0")
 
     implementation("com.arkivanov.decompose:decompose:$decompose_version")
     implementation("com.arkivanov.decompose:extensions-compose-jetpack:$decompose_version")
+    implementation("com.arkivanov.essenty:lifecycle:0.1.1")
+    implementation("com.arkivanov.essenty:parcelable:0.1.1")
+
     implementation("io.insert-koin:koin-android:3.1.2")
 
-    implementation("androidx.activity:activity-compose:1.3.0-beta01")
+    implementation("androidx.activity:activity-compose:1.3.0")
     implementation("androidx.compose.ui:ui:$compose_version")
     implementation("androidx.compose.material:material:$compose_version")
     implementation("androidx.compose.ui:ui-tooling:$compose_version")
@@ -84,7 +87,8 @@ dependencies {
     implementation("androidx.camera:camera-core:${camerax_version}")
     implementation("androidx.camera:camera-camera2:${camerax_version}")
     implementation("androidx.camera:camera-lifecycle:${camerax_version}")
-    implementation("androidx.camera:camera-view:1.0.0-alpha26")
+    implementation("androidx.camera:camera-view:1.0.0-alpha27")
+    implementation("com.google.mlkit:barcode-scanning:16.2.0")
 
     implementation(project(":common"))
 

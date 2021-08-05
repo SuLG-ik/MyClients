@@ -1,13 +1,9 @@
 package ru.shafran.cards.ui.component.details
 
-import com.arkivanov.decompose.*
-import com.arkivanov.decompose.value.MutableValue
-import com.arkivanov.decompose.value.Value
-import com.arkivanov.decompose.value.operator.map
-import ru.shafran.cards.data.card.Card
+import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.childContext
+import kotlinx.coroutines.flow.MutableStateFlow
 import ru.shafran.cards.data.card.DetectedCard
-import ru.shafran.cards.data.card.EmptyDetectedCard
-import ru.shafran.cards.data.card.isEmpty
 import ru.shafran.cards.ui.component.details.info.CardInfo
 import ru.shafran.cards.ui.component.details.info.CardInfoComponent
 
@@ -17,7 +13,7 @@ class CardDetailsComponent(componentContext: ComponentContext) :
 
     override val info: CardInfo = CardInfoComponent(childContext("card_info_component"))
 
-    override val isShown: MutableValue<Boolean> = MutableValue(false)
+    override val isShown: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
     override fun onShow(card: DetectedCard) {
         isShown.value = true

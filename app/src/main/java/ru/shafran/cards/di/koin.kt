@@ -9,6 +9,6 @@ fun Application.startDI() {
     startKoin {
         androidContext(this@startDI)
         androidLogger()
-        modules(cardsModule)
+        modules(cardsModule, recognizingModule)
     }
 }

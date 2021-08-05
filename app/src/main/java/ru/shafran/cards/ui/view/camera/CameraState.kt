@@ -4,8 +4,8 @@ import androidx.camera.core.CameraSelector
 import androidx.compose.runtime.*
 
 interface CameraState {
-    val isEnabled: State<Boolean>
-    val camera: State<CameraSelector>
+    val isEnabled: Boolean
+    val camera: CameraSelector
 
     fun setEnabled(state: Boolean)
     fun setCamera(camera: CameraSelector)
@@ -15,15 +15,18 @@ private class ProvidedCameraState(
     isEnabled: Boolean = true,
     camera: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA,
 ) : CameraState {
-    override val isEnabled: MutableState<Boolean> = mutableStateOf(isEnabled)
-    override val camera: MutableState<CameraSelector> = mutableStateOf(camera)
+    private val _isEnabled: MutableState<Boolean> = mutableStateOf(isEnabled)
+    private val _camera: MutableState<CameraSelector> = mutableStateOf(camera)
+
+    override val isEnabled: Boolean by _isEnabled
+    override val camera: CameraSelector by _camera
 
     override fun setEnabled(state: Boolean) {
-        isEnabled.value = state
+        _isEnabled.value = state
     }
 
     override fun setCamera(camera: CameraSelector) {
-        this.camera.value = camera
+        _camera.value = camera
     }
 
 }

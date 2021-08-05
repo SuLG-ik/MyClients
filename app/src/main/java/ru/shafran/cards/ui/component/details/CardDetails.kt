@@ -1,16 +1,14 @@
 package ru.shafran.cards.ui.component.details
 
-import com.arkivanov.decompose.RouterState
-import com.arkivanov.decompose.value.Value
-import ru.shafran.cards.data.card.Card
+import kotlinx.coroutines.flow.StateFlow
 import ru.shafran.cards.data.card.DetectedCard
 import ru.shafran.cards.ui.component.details.info.CardInfo
-import ru.shafran.cards.utils.Task
 
 interface CardDetails {
-    val isShown: Value<Boolean>
+
+    val isShown: StateFlow<Boolean>
     fun onShow(card: DetectedCard)
     fun onHide()
-
     val info: CardInfo
+
 }
