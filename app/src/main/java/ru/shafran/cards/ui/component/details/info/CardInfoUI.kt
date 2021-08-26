@@ -1,5 +1,6 @@
 package ru.shafran.cards.ui.component.details.info
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -7,13 +8,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -26,36 +27,32 @@ import java.time.ZonedDateTime
 
 @Composable
 fun CardInfoUI(component: CardInfo, modifier: Modifier) {
-    component.currentCard.collectAsState().value.let { result ->
-        result?.apply {
-            onSuccess { card ->
-                SuccessCard(
-                    card = card,
-                    onActivate = { component.activateCardById(card.id, ActivationData(capacity = 5)) },
-                    onDeactivate = { component.deactivateCardById(card.id, DeactivationData()) },
-                    onUse = { component.useCardById(card.id, UsageData()) },
-                    modifier = modifier,
-                )
-            }
-            onFailure { }
-        } ?: Loading(modifier)
-    }
+    val card by component.currentCard.collectAsState()
+
+    SuccessCard(
+        card = card,
+        onUse = { component.onUse() },
+        onActivate = { component.onActivate() },
+        onDeactivate = { component.onDeactivate() },
+        modifier = modifier,
+    )
 }
 
+
 @Composable
-fun Loading(modifier: Modifier = Modifier) {
-    Column(
-        modifier,
-        horizontalAlignment = CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        CircularProgressIndicator(
+fun MaterialDivider(modifier: Modifier = Modifier) {
+    Box(modifier = modifier) {
+        Spacer(
             modifier = Modifier
-                .size(50.dp)
-                .padding(25.dp)
+                .fillMaxWidth(0.20f)
+                .height(2.dp)
+                .align(Center)
+                .background(MaterialTheme.colors.onBackground.copy(alpha = 0.14f),
+                    shape = MaterialTheme.shapes.small)
         )
     }
 }
+
 
 @Composable
 fun SuccessCard(
@@ -67,15 +64,9 @@ fun SuccessCard(
 ) {
     Column(modifier) {
         Text(text = "Номер карты: ${card.id}", style = MaterialTheme.typography.h5)
-        Spacer(
-            modifier = Modifier
-                .padding(top = 10.dp, bottom = 10.dp)
-                .fillMaxWidth(0.10f)
-                .height(2.dp)
-                .align(CenterHorizontally)
-                .background(MaterialTheme.colors.onBackground.copy(alpha = 0.14f),
-                    shape = MaterialTheme.shapes.small)
-        )
+        MaterialDivider(Modifier
+            .fillMaxWidth()
+            .padding(top = 10.dp, bottom = 10.dp))
         OutlinedSurface {
             CardDescription(
                 description = card.description,
@@ -97,30 +88,54 @@ fun SuccessCard(
         Spacer(
             modifier = Modifier.height(10.dp)
         )
-        OutlinedSurface(modifier = Modifier.fillMaxWidth()) {
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Center) {
-                CardHistory(
-                    history = card.history,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(15.dp),
-                )
-            }
+        var isHistoryShown by remember(card.history.size) { mutableStateOf(card.history.size == 0) }
 
-        }
+//        if (isHistoryShown) {
+            CardHistory(
+                history = card.history,
+                modifier = Modifier
+                    .fillMaxWidth(),
+            )
+//        } else {
+//            OutlinedButton(onClick = { isHistoryShown = true }, modifier = Modifier
+//                .fillMaxWidth()) {
+//                Text("Показать историю", overflow = TextOverflow.Ellipsis, maxLines = 1)
+//            }
+//        }
     }
 }
 
 private val previewCard = Card(
     rawToken = "fsdfasfsdfsd",
     id = 87978,
-    CardDescription.Activated(CardAction.Activation()),
-    history = CardHistory(0,
+    history = CardHistory(9,
         listOf(
-            CardAction.Activation(),
-            CardAction.Usage(),
-            CardAction.Usage(),
-            CardAction.Usage(),
+            CardAction.Activation(data = ActivationData(capacity = 5, cost = 500), id = 1),
+            CardAction.Usage(data = UsageData(), id = 1, activationId = 1),
+            CardAction.Usage(data = UsageData(), id = 2, activationId = 1),
+            CardAction.Usage(data = UsageData(), id = 3, activationId = 1),
+            CardAction.Deactivation(data = DeactivationData(), id = 1, activationId = 1),
+            CardAction.Activation(data = ActivationData(capacity = 5, cost = 500), id = 2),
+            CardAction.Usage(data = UsageData(), id = 4, activationId = 2),
+            CardAction.Usage(data = UsageData(), id = 5, activationId = 2),
+            CardAction.Activation(data = ActivationData(capacity = 5, cost = 500), id = 4),
+            CardAction.Usage(data = UsageData(), id = 4, activationId = 4),
+            CardAction.Usage(data = UsageData(), id = 5, activationId = 4),
+            CardAction.Activation(data = ActivationData(capacity = 5, cost = 500), id = 5),
+            CardAction.Usage(data = UsageData(), id = 4, activationId = 5),
+            CardAction.Usage(data = UsageData(), id = 5, activationId = 5),
+            CardAction.Activation(data = ActivationData(capacity = 5, cost = 500), id = 6),
+            CardAction.Usage(data = UsageData(), id = 4, activationId = 6),
+            CardAction.Usage(data = UsageData(), id = 5, activationId = 6),
+            CardAction.Activation(data = ActivationData(capacity = 5, cost = 500), id = 7),
+            CardAction.Usage(data = UsageData(), id = 4, activationId = 7),
+            CardAction.Usage(data = UsageData(), id = 5, activationId = 8),
+            CardAction.Activation(data = ActivationData(capacity = 5, cost = 500), id = 3),
+            CardAction.Usage(data = UsageData(), id = 4, activationId = 3),
+            CardAction.Usage(data = UsageData(), id = 5, activationId = 3),
+            CardAction.Usage(data = UsageData(), id = 5, activationId = 3),
+            CardAction.Usage(data = UsageData(), id = 5, activationId = 3),
+            CardAction.Usage(data = UsageData(), id = 5, activationId = 3),
         )),
 )
 
@@ -141,15 +156,19 @@ fun CardDescription(description: CardDescription, modifier: Modifier = Modifier)
     when (description) {
         is CardDescription.NewerUsed -> CardDescriptionNewerUsed(
             description = description,
-            modifier = modifier
+            modifier = modifier,
         )
         is CardDescription.Activated -> CardDescriptionActivated(
             description = description,
-            modifier = modifier
+            modifier = modifier,
         )
         is CardDescription.Deactivated -> CardDescriptionDeactivated(
             description = description,
-            modifier = modifier
+            modifier = modifier,
+        )
+        is CardDescription.Overuse -> CardDescriptionOveruse(
+            description = description,
+            modifier = modifier,
         )
     }
 }
@@ -168,14 +187,28 @@ fun CardDescriptionActivated(
 }
 
 @Composable
+fun CardDescriptionOveruse(
+    description: CardDescription.Overuse,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier) {
+        Text("Состояние: достигнут лимит", style = MaterialTheme.typography.subtitle1)
+        Text("Оказанная услуга: ${description.activation.data.type.type}",
+            style = MaterialTheme.typography.subtitle1)
+    }
+}
+
+
+@Composable
 fun CardDescriptionDeactivated(
     description: CardDescription.Deactivated,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier) {
-        Text("Состояние: не активирована", style = MaterialTheme.typography.subtitle1)
-        Text("Причина: ${description.deactivation.data.reason}",
-            style = MaterialTheme.typography.subtitle1)
+        Text("Состояние: отключена вручную", style = MaterialTheme.typography.subtitle1)
+        if (description.deactivation.data.note.isNotEmpty())
+            Text("Заметка: ${description.deactivation.data.note}",
+                style = MaterialTheme.typography.subtitle1)
         Text("Оказанная услуга: ${description.activation.data.type.type}",
             style = MaterialTheme.typography.subtitle1)
     }
@@ -206,20 +239,38 @@ fun OutlinedSurface(modifier: Modifier = Modifier, content: @Composable () -> Un
 fun CardHistory(history: CardHistory, modifier: Modifier = Modifier) {
     val state = rememberLazyListState()
     if (history.size == 0) {
-        EmptyHistory(Modifier
-            .fillMaxWidth()
-            .padding(15.dp))
+        OutlinedSurface {
+            EmptyHistory(Modifier
+                .fillMaxWidth()
+                .padding(15.dp))
+        }
     } else {
         LazyColumn(state = state, modifier = modifier) {
-            itemsIndexed(history.actions.reversed()) { index, item ->
-                CardHistoryItem(action = item, modifier = Modifier.fillMaxWidth())
-                if (index < history.actions.size) {
-                    Spacer(modifier = Modifier.width(5.dp))
+            val mappedHistory = history.actions.toMappedHistory().reversed()
+            itemsIndexed(mappedHistory) { index, item ->
+                var isFull by remember(index) { mutableStateOf(index == 0) }
+                OutlinedSurface(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(MaterialTheme.shapes.medium)
+                        .toggleable(isFull, onValueChange = { isFull = it })
+                        .animateContentSize()
+                ) {
+                    CardHistorySection(isFull = isFull,
+                        history = item,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(15.dp)
+                            .animateContentSize())
+                }
+                if (index < mappedHistory.size) {
+                    Spacer(modifier = Modifier.height(5.dp))
                 }
             }
         }
     }
 }
+
 
 @Composable
 fun EmptyHistory(modifier: Modifier = Modifier) {
@@ -233,14 +284,45 @@ fun EmptyHistory(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun CardHistoryItem(action: CardAction, modifier: Modifier) {
-    when (action) {
-        is CardAction.Activation ->
-            CardHistoryActivationItem(action = action, modifier = modifier)
-        is CardAction.Deactivation ->
-            CardHistoryDeactivationItem(action = action, modifier = modifier)
-        is CardAction.Usage ->
-            CardHistoryUsageItem(action = action, modifier = modifier)
+fun CardHistorySection(isFull: Boolean, history: MappedHistory, modifier: Modifier) {
+    Column(modifier = modifier) {
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)) {
+                Text("Услуга: ${history.activation.data.type.type}",
+                    style = MaterialTheme.typography.h6)
+                if (isFull)
+                    Text(buildTimeInfo(history), style = MaterialTheme.typography.subtitle1)
+            }
+            Text("${history.usages.size}/${history.activation.data.capacity}",
+                style = MaterialTheme.typography.h6)
+        }
+        if (isFull && history.usages.isNotEmpty())
+            MaterialDivider(Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(top = 5.dp, bottom = 5.dp))
+
+        if (isFull) {
+            history.usages.forEachIndexed { index, item ->
+                CardHistoryUsageItem(action = item, modifier = Modifier.fillMaxWidth())
+                if (index < history.usages.size) {
+                    Spacer(modifier = Modifier.width(5.dp))
+                }
+            }
+        }
+    }
+
+}
+
+private fun buildTimeInfo(history: MappedHistory): String {
+    return buildString {
+        append(history.activation.time.format())
+        if (history.deactivation != null) {
+            append(" - ${history.deactivation.time.format()}")
+        } else if (history.usages.size >= history.activation.data.capacity) {
+            append(" - ${history.usages.lastOrNull()?.time?.format()}")
+        }
     }
 }
 
@@ -248,21 +330,21 @@ fun CardHistoryItem(action: CardAction, modifier: Modifier) {
 fun CardHistoryActivationItem(action: CardAction.Activation, modifier: Modifier) {
     CardHistoryItem(title = "Активация",
         icon = painterResource(id = R.drawable.turn_on_slider),
-        time = action.time)
+        time = action.time, modifier = modifier)
 }
 
 @Composable
 fun CardHistoryDeactivationItem(action: CardAction.Deactivation, modifier: Modifier) {
     CardHistoryItem(title = "Отключение",
         icon = painterResource(id = R.drawable.turn_off_slider),
-        time = action.time)
+        time = action.time, modifier = modifier)
 }
 
 @Composable
 fun CardHistoryUsageItem(action: CardAction.Usage, modifier: Modifier) {
     CardHistoryItem(title = "Использование",
         icon = painterResource(id = R.drawable.use_card),
-        time = action.time)
+        time = action.time, modifier = modifier)
 }
 
 @Composable

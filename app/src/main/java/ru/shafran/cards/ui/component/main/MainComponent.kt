@@ -2,18 +2,17 @@ package ru.shafran.cards.ui.component.main
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.RouterState
-import com.arkivanov.decompose.replaceCurrent
 import com.arkivanov.decompose.router
 import com.arkivanov.decompose.value.Value
-import ru.shafran.cards.ui.component.camera.CameraComponent
-import ru.shafran.cards.ui.component.splash.SplashComponent
+import ru.shafran.cards.ui.component.root.RootComponent
 
 class MainComponent(componentContext: ComponentContext) : Main,
     ComponentContext by componentContext {
 
     private val router = router<MainConfiguration, Main.Child>(
-        initialConfiguration = MainConfiguration.Splash,
-        childFactory = this::createChild
+        initialConfiguration = MainConfiguration.Root,
+        childFactory = this::createChild,
+        handleBackButton = true
     )
 
     private fun createChild(
@@ -21,13 +20,8 @@ class MainComponent(componentContext: ComponentContext) : Main,
         componentContext: ComponentContext
     ): Main.Child =
         when(configuration) {
-            is MainConfiguration.Splash -> Main.Child.Splash(SplashComponent(this::onSplashCompleted))
-            is MainConfiguration.Camera -> Main.Child.Camera(CameraComponent(componentContext))
+            is MainConfiguration.Root -> Main.Child.Root(RootComponent(componentContext))
         }
-
-    private fun onSplashCompleted() {
-        router.replaceCurrent(MainConfiguration.Camera)
-    }
 
 
     override val routerState: Value<RouterState<MainConfiguration, Main.Child>> = router.state

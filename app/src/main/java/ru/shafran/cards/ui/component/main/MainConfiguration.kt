@@ -5,8 +5,5 @@ import com.arkivanov.essenty.parcelable.Parcelize
 
 sealed class MainConfiguration : Parcelable {
     @Parcelize
-    object Splash : MainConfiguration()
-
-    @Parcelize
-    object Camera : MainConfiguration()
+    object Root: MainConfiguration()
 }

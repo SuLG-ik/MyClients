@@ -10,33 +10,40 @@ import kotlinx.serialization.UseSerializers
 import ru.shafran.cards.utils.ZonedDateTimeSerializer
 import java.time.ZonedDateTime
 
-@Serializable
-sealed class CardAction : Parcelable {
 
+@Serializable
+sealed class CardAction: Parcelable {
+
+    abstract val id: Long
     abstract val time: ZonedDateTime
 
     @Serializable
-    @SerialName("usage")
     @Parcelize
+    @SerialName("activation")
+    class Activation(
+        val data: ActivationData,
+        override val time: ZonedDateTime = ZonedDateTime.now(),
+        override val id: Long,
+    ) : CardAction()
+
+    @Serializable
+    @Parcelize
+    @SerialName("usage")
     class Usage(
         override val time: ZonedDateTime = ZonedDateTime.now(),
-        val data: UsageData = UsageData(),
+        val activationId: Long,
+        val data: UsageData,
+        override val id: Long,
     ) : CardAction()
 
     @Serializable
-    @SerialName("activation")
     @Parcelize
-    class Activation(
-        override val time: ZonedDateTime = ZonedDateTime.now(),
-        val data: ActivationData = ActivationData(capacity = 5),
-    ) : CardAction()
-
-    @Serializable
     @SerialName("deactivation")
-    @Parcelize
     class Deactivation(
         override val time: ZonedDateTime = ZonedDateTime.now(),
+        val activationId: Long,
         val data: DeactivationData = DeactivationData(),
+        override val id: Long,
     ) : CardAction()
 
 }

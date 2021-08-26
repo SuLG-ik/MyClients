@@ -3,23 +3,26 @@ package ru.shafran.cards.ui.component.camera
 import android.util.Log
 import androidx.camera.core.ImageProxy
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.childContext
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import ru.shafran.cards.analysis.CardTokenAnalyser
 import ru.shafran.cards.data.card.DetectedCard
-import ru.shafran.cards.ui.component.details.CardDetails
-import ru.shafran.cards.ui.component.details.CardDetailsComponent
 import ru.shafran.cards.utils.inject
 
-class CameraComponent(componentContext: ComponentContext) : Camera, ComponentContext by componentContext {
+class CameraComponent(
+    componentContext: ComponentContext,
+    private val onDetected: (DetectedCard) -> Unit,
+    override val isDetailShown: StateFlow<Boolean>,
+) :
+    Camera, ComponentContext by componentContext {
 
     override val isEnabled: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
-    override val details: CardDetails = CardDetailsComponent(childContext("details_component"))
 
     private val viewmodel = instanceKeeper.getOrCreate { ViewModel() }
+
 
     override fun onDisable() {
         isEnabled.value = false
@@ -35,10 +38,12 @@ class CameraComponent(componentContext: ComponentContext) : Camera, ComponentCon
         viewmodel.processImage(proxy) {
             Log.d("pisos", it)
             if (it.isNotEmpty())
-                details.onShow(DetectedCard(it))
-            else
-                details.onHide()
+                onDetected(DetectedCard(it))
         }
+    }
+
+    override fun onDetected(card: DetectedCard) {
+        onDetected.invoke(card)
     }
 
 

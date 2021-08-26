@@ -9,7 +9,6 @@ import kotlinx.serialization.Serializable
 @Parcelize
 data class Card(
     val rawToken: String,
-    val id: Int,
-    val description: CardDescription,
-    val history: CardHistory,
+    val id: Long,
+    val history: CardHistory = CardHistory(0, emptyList()),
 ): Parcelable

@@ -8,7 +8,6 @@ interface Main {
     val routerState: Value<RouterState<MainConfiguration, Child>>
 
     sealed class Child {
-        class Camera(val camera: ru.shafran.cards.ui.component.camera.Camera): Child()
-        class Splash(val splash: ru.shafran.cards.ui.component.splash.Splash): Child()
+        class Root(val root: ru.shafran.cards.ui.component.root.Root): Child()
     }
 }

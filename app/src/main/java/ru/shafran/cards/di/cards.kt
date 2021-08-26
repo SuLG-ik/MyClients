@@ -7,9 +7,9 @@ import io.ktor.client.features.json.serializer.*
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 import ru.shafran.cards.BuildConfig
-import ru.shafran.cards.network.CardsNetworkDao
-import ru.shafran.cards.network.KtorCardsNetworkDao
+import ru.shafran.cards.network.KtorShafranNetworkDao
 import ru.shafran.cards.network.NetworkConfig
+import ru.shafran.cards.network.ShafranNetworkDao
 import ru.shafran.cards.repository.CardsRepository
 import ru.shafran.cards.repository.CardsRepositoryImpl
 
@@ -31,6 +31,6 @@ val cardsModule = module {
             url = BuildConfig.NETWORK_URL,
         )
     }
-    factory<CardsNetworkDao> { KtorCardsNetworkDao(get(), get()) }
+    factory<ShafranNetworkDao> { KtorShafranNetworkDao(get(), get()) }
     single<CardsRepository> { CardsRepositoryImpl(get()) }
 }

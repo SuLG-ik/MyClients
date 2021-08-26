@@ -9,4 +9,4 @@ import kotlinx.serialization.Serializable
 data class CardHistory(
     val size: Int,
     val actions: List<CardAction>,
-) : Parcelable
+): Parcelable

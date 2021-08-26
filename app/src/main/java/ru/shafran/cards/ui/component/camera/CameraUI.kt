@@ -1,12 +1,10 @@
 package ru.shafran.cards.ui.component.camera
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import ru.shafran.cards.ui.component.details.CardDetailsUI
 import ru.shafran.cards.ui.view.camera.CameraPreview
 import ru.shafran.cards.ui.view.camera.rememberCameraState
 
@@ -14,7 +12,7 @@ import ru.shafran.cards.ui.view.camera.rememberCameraState
 fun CameraUI(component: Camera, modifier: Modifier = Modifier) {
     val state = rememberCameraState()
 
-    val isShown by component.details.isShown.collectAsState()
+    val isShown by component.isDetailShown.collectAsState()
 
     LaunchedEffect(key1 = isShown, block = {
         if (isShown) component.onDisable()
@@ -25,11 +23,8 @@ fun CameraUI(component: Camera, modifier: Modifier = Modifier) {
     LaunchedEffect(key1 = isEnabled, block = {
         state.setEnabled(isEnabled)
     })
-
-    CardDetailsUI(component = component.details, modifier = Modifier.fillMaxWidth()) {
-        CameraPreview(
-            state = state,
-            onRecognizeImage = component::processImage,
-            modifier = modifier)
-    }
+    CameraPreview(
+        state = state,
+        onRecognizeImage = component::processImage,
+        modifier = modifier)
 }

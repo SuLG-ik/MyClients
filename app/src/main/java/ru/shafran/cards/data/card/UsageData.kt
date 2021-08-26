@@ -7,4 +7,4 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @Parcelize
-data class UsageData(val note: String = "") : Parcelable
+data class UsageData(val note: String = ""): Parcelable

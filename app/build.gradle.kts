@@ -68,12 +68,13 @@ dependencies {
 
     implementation("com.arkivanov.decompose:decompose:$decompose_version")
     implementation("com.arkivanov.decompose:extensions-compose-jetpack:$decompose_version")
-    implementation("com.arkivanov.essenty:lifecycle:0.1.1")
-    implementation("com.arkivanov.essenty:parcelable:0.1.1")
+    implementation("com.arkivanov.essenty:lifecycle:0.1.2")
+    implementation("com.arkivanov.essenty:parcelable:0.1.2")
 
     implementation("io.insert-koin:koin-android:3.1.2")
 
-    implementation("androidx.activity:activity-compose:1.3.0")
+    implementation("com.google.accompanist:accompanist-placeholder-material:0.17.0")
+    implementation("androidx.activity:activity-compose:1.3.1")
     implementation("androidx.compose.ui:ui:$compose_version")
     implementation("androidx.compose.material:material:$compose_version")
     implementation("androidx.compose.ui:ui-tooling:$compose_version")

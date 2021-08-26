@@ -1,8 +1,11 @@
 package ru.sulgik.common
 
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
@@ -21,18 +24,20 @@ internal class ObservableUseCaseImpl<T, P>(
 
     override fun execute(parameter: P): Boolean {
         if (isEnabled) return false
+        emitLoading()
         executeCoroutine(parameter)
         return true
     }
 
+    private fun onException(context: CoroutineContext, throwable: Throwable) {
+        emitFailure(throwable)
+    }
+
     private fun executeCoroutine(parameter: P) {
-        job = coroutineScope.launch(coroutineContext) {
+        job = coroutineScope.launch(coroutineContext + CoroutineExceptionHandler(this::onException)) {
             emitSuccess(useCase.run(parameter = parameter))
         }.apply {
             invokeOnCompletion {
-                if (it != null) {
-                    emitFailure(it)
-                }
                 job = null
             }
         }

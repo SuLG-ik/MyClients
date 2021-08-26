@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 @Parcelize
 data class ActivationData(
+    val cost: Int,
     val capacity: Int,
     val type: CardType = CardType(),
     val note: String = "",

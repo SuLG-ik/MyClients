@@ -9,4 +9,4 @@ import kotlinx.serialization.Serializable
 data class CardType(
     val type: String = "Другое",
     val icon: String? = null,
-) : Parcelable
+): Parcelable

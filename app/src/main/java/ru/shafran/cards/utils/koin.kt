@@ -26,23 +26,3 @@ inline fun <reified T : Any> ComponentContext.get(
         scope.get(qualifier, parameters)
     } else getKoin().get(qualifier, parameters)
 }
-
-fun InstanceKeeper.Instance.getKoin() =
-    KoinPlatformTools.defaultContext().get()
-
-inline fun <reified T : Any> InstanceKeeper.Instance.inject(
-    qualifier: Qualifier? = null,
-    mode: LazyThreadSafetyMode = KoinPlatformTools.defaultLazyMode(),
-    noinline parameters: ParametersDefinition? = null,
-): Lazy<T> =
-    lazy(mode) { get<T>(qualifier, parameters) }
-
-
-inline fun <reified T : Any> InstanceKeeper.Instance.get(
-    qualifier: Qualifier? = null,
-    noinline parameters: ParametersDefinition? = null,
-): T {
-    return if (this is KoinScopeComponent) {
-        scope.get(qualifier, parameters)
-    } else getKoin().get(qualifier, parameters)
-}
