@@ -85,6 +85,7 @@ fun CardDetailsUI(
                             CardErrorUI(component = instance.error, modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(15.dp))
+                        CardDetails.Child.Hidden -> Text("")
                     }
                 }
             }

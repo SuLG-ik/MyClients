@@ -1,9 +1,8 @@
 package ru.shafran.cards.di
 
 import org.koin.dsl.module
-import ru.shafran.cards.repository.EmployeesRepository
-import ru.shafran.cards.repository.EmployeesRepositoryImpl
+import ru.shafran.network.employee.RemoteEmployeesRepository
 
-val employees = module {
-    single<EmployeesRepository> { EmployeesRepositoryImpl(get()) }
+val employeesModule = module {
+    factory { RemoteEmployeesRepository(get()) }
 }

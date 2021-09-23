@@ -7,4 +7,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "ShafranCards"
 include(":app")
-include(":common")
+include(":logger")
+include(":network")

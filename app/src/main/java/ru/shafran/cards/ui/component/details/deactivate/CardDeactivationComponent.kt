@@ -1,19 +1,19 @@
 package ru.shafran.cards.ui.component.details.deactivate
 
 import kotlinx.coroutines.flow.MutableStateFlow
-import ru.shafran.cards.data.card.Card
-import ru.shafran.cards.data.card.DeactivationData
+import ru.shafran.cards.data.card.CardModel
+import ru.shafran.cards.data.card.DeactivationDataModel
 
 class CardDeactivationComponent(
-    card: Card,
-    private val onDeactivate: (DeactivationData) -> Unit,
+    card: CardModel,
+    private val onDeactivate: (DeactivationDataModel) -> Unit,
     private val onCancel: () -> Unit,
 ) :
     CardDeactivation {
 
-    override val card: MutableStateFlow<Card> = MutableStateFlow(card)
+    override val card: MutableStateFlow<CardModel> = MutableStateFlow(card)
 
-    override fun onDeactivate(data: DeactivationData) {
+    override fun onDeactivate(data: DeactivationDataModel) {
         onDeactivate.invoke(data)
     }
 

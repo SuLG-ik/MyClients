@@ -8,12 +8,11 @@ import com.arkivanov.essenty.instancekeeper.getOrCreate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import ru.shafran.cards.analysis.CardTokenAnalyser
-import ru.shafran.cards.data.card.DetectedCard
-import ru.shafran.cards.utils.inject
+import ru.shafran.cards.utils.get
 
 class CameraComponent(
     componentContext: ComponentContext,
-    private val onDetected: (DetectedCard) -> Unit,
+    private val onDetected: (String) -> Unit,
     override val isDetailShown: StateFlow<Boolean>,
 ) :
     Camera, ComponentContext by componentContext {
@@ -21,7 +20,7 @@ class CameraComponent(
     override val isEnabled: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
 
-    private val viewmodel = instanceKeeper.getOrCreate { ViewModel() }
+    private val viewmodel = instanceKeeper.getOrCreate { ViewModel(get()) }
 
 
     override fun onDisable() {
@@ -38,18 +37,16 @@ class CameraComponent(
         viewmodel.processImage(proxy) {
             Log.d("pisos", it)
             if (it.isNotEmpty())
-                onDetected(DetectedCard(it))
+                onDetected(it)
         }
     }
 
-    override fun onDetected(card: DetectedCard) {
-        onDetected.invoke(card)
+    override fun onDetected(cardToken: String) {
+        onDetected.invoke(cardToken)
     }
 
 
-    class ViewModel : InstanceKeeper.Instance {
-
-        private val analyser by inject<CardTokenAnalyser>()
+    class ViewModel(private val analyser: CardTokenAnalyser) : InstanceKeeper.Instance {
 
         fun processImage(proxy: ImageProxy, onDetected: (String) -> Unit) {
             analyser.process(proxy, onDetected)

@@ -22,36 +22,36 @@ import ru.shafran.cards.ui.component.tickets.TicketsUI
 @Composable
 fun RootUI(component: Root, modifier: Modifier = Modifier) {
     Scaffold(
-        bottomBar = {
-            val routerState = component.routerState.subscribeAsState()
-            BottomNavigation(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp)
-                    .clip(MaterialTheme.shapes.medium)
-                    .border(1.dp,
-                        MaterialTheme.colors.onBackground.copy(0.12f),
-                        MaterialTheme.shapes.medium),
-                backgroundColor = MaterialTheme.colors.background,
-                elevation = 0.dp,
-                contentColor = MaterialTheme.colors.primary,
-
-                ) {
-                for ((key, value) in RootConfiguration.children) {
-                    BottomNavigationItem(
-                        selected = routerState.value.activeChild.configuration == key,
-                        onClick = { component.onNavigate(key) },
-                        icon = {
-                            Icon(painterResource(id = value.icon),
-                                null,
-                                modifier = Modifier.size(25.dp))
-                        },
-                        label = { Text(value.title) },
-                        alwaysShowLabel = false,
-                    )
-                }
-            }
-        },
+//        bottomBar = {
+//            val routerState = component.routerState.subscribeAsState()
+//            BottomNavigation(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(10.dp)
+//                    .clip(MaterialTheme.shapes.medium)
+//                    .border(1.dp,
+//                        MaterialTheme.colors.onBackground.copy(0.12f),
+//                        MaterialTheme.shapes.medium),
+//                backgroundColor = MaterialTheme.colors.background,
+//                elevation = 0.dp,
+//                contentColor = MaterialTheme.colors.primary,
+//
+//                ) {
+//                for ((key, value) in RootConfiguration.children) {
+//                    BottomNavigationItem(
+//                        selected = routerState.value.activeChild.configuration == key,
+//                        onClick = { component.onNavigate(key) },
+//                        icon = {
+//                            Icon(painterResource(id = value.icon),
+//                                null,
+//                                modifier = Modifier.size(25.dp))
+//                        },
+//                        label = { Text(value.title) },
+//                        alwaysShowLabel = false,
+//                    )
+//                }
+//            }
+//        },
         modifier = modifier,
     ) { paddingValues ->
         Children(routerState = component.routerState) { child ->

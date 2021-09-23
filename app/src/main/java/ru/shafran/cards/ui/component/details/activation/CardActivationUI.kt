@@ -17,9 +17,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import ru.shafran.cards.R
-import ru.shafran.cards.data.card.ActivationData
-import ru.shafran.cards.data.card.Card
-import ru.shafran.cards.data.card.CardDescription
+import ru.shafran.cards.data.card.ActivationDataModel
+import ru.shafran.cards.data.card.CardDescriptionModel
+import ru.shafran.cards.data.card.CardModel
 import ru.shafran.cards.data.card.description
 import ru.shafran.cards.ui.component.details.info.MaterialDivider
 import ru.shafran.cards.ui.component.details.info.OutlinedSurface
@@ -39,17 +39,17 @@ private val regex = '0'..'9'
 
 @Composable
 fun CardActivationRequest(
-    card: Card,
-    onActivate: (ActivationData) -> Unit,
+    card: CardModel,
+    onActivate: (ActivationDataModel) -> Unit,
     onCancel: () -> Unit,
     modifier: Modifier,
 ) {
     Column(modifier) {
         val previousActivationData = remember(card) {
             when (val description = card.description) {
-                is CardDescription.Activated -> description.activation
-                is CardDescription.Deactivated -> description.activation
-                is CardDescription.Overuse -> description.activation
+                is CardDescriptionModel.Activated -> description.activation
+                is CardDescriptionModel.Deactivated -> description.activation
+                is CardDescriptionModel.Overuse -> description.activation
                 else -> null
             }?.data
         }
@@ -149,7 +149,7 @@ fun CardActivationRequest(
                     }
                     if (!isCostError && !isCapacityError) {
                         onActivate(
-                            ActivationData(
+                            ActivationDataModel(
                                 cost = cost.toInt(),
                                 capacity = capacity.toInt(),
                                 note = note

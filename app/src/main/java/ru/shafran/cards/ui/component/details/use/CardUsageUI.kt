@@ -14,8 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import ru.shafran.cards.R
-import ru.shafran.cards.data.card.Card
-import ru.shafran.cards.data.card.UsageData
+import ru.shafran.cards.data.card.CardModel
+import ru.shafran.cards.data.card.UsageDataModel
 import ru.shafran.cards.ui.component.details.info.MaterialDivider
 import ru.shafran.cards.ui.component.details.info.OutlinedSurface
 
@@ -32,8 +32,8 @@ fun CardUsageUI(component: CardUsage, modifier: Modifier = Modifier) {
 
 @Composable
 fun CardDeactivationRequest(
-    card: Card,
-    onUse: (UsageData) -> Unit,
+    card: CardModel,
+    onUse: (UsageDataModel) -> Unit,
     onCancel: () -> Unit,
     modifier: Modifier,
 ) {
@@ -67,7 +67,7 @@ fun CardDeactivationRequest(
                 Spacer(modifier = Modifier.height(10.dp))
                 OutlinedButton(onClick = {
                     onUse(
-                        UsageData(
+                        UsageDataModel(
                             note = note,
                         )
                     )

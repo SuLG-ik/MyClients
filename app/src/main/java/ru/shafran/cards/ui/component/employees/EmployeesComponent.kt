@@ -2,29 +2,26 @@ package ru.shafran.cards.ui.component.employees
 
 import com.arkivanov.decompose.*
 import com.arkivanov.decompose.value.Value
-import com.arkivanov.essenty.instancekeeper.getOrCreate
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
+import com.arkivanov.mvikotlin.extensions.coroutines.states
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
-import ru.shafran.cards.data.employee.Employee
-import ru.shafran.cards.data.employee.EmployeeData
+import ru.shafran.cards.data.employee.EmployeeDataModel
+import ru.shafran.cards.data.employee.toData
+import ru.shafran.cards.data.employee.toModel
 import ru.shafran.cards.ui.component.createemployee.CreateEmployeeComponent
 import ru.shafran.cards.ui.component.employeeslist.EmployeesListComponent
-import ru.shafran.cards.usecase.UseCaseFactory
 import ru.shafran.cards.utils.get
-import ru.sulgik.common.asObservable
-import ru.sulgik.common.execute
+import ru.shafran.cards.utils.stores
+import ru.shafran.network.employee.EmployeesStore
 
 class EmployeesComponent(componentContext: ComponentContext) : Employees,
     ComponentContext by componentContext {
 
-    private val viewModel =
-        instanceKeeper.getOrCreate<Employees.EmployeesViewModel> { ViewModel(get()) }
+    private val employeesStore by instanceKeeper.stores { EmployeesStore(get(), get()) }
+
+    private val employees = employeesStore.states.map { it.employees.map { employee ->  employee.toModel() } }
+
+
+    private val isLoading = employeesStore.states.map { it.isLoading }
 
     override fun onShowAllEmployees() {
         router.push(EmployeesConfiguration.EmployeesList)
@@ -35,8 +32,10 @@ class EmployeesComponent(componentContext: ComponentContext) : Employees,
     }
 
     private val router =
-        router<EmployeesConfiguration, Employees.Child>(EmployeesConfiguration.EmployeesList,
-            childFactory = this::createChild)
+        router<EmployeesConfiguration, Employees.Child>(
+            EmployeesConfiguration.EmployeesList,
+            childFactory = this::createChild
+        )
 
 
     private fun createChild(
@@ -48,11 +47,10 @@ class EmployeesComponent(componentContext: ComponentContext) : Employees,
                 Employees.Child.EmployeesList(
                     EmployeesListComponent(
                         componentContext,
-                        viewModel.employees,
-                        viewModel::updateEmployees,
-                        onCreateEmployee = {
-                            onCreateEmployee()
-                        }
+                        employees = employees,
+                        isLoading = isLoading,
+                        onUpdate = this::onUpdateEmployees,
+                        onCreateEmployee = this::onCreateEmployee,
                     )
                 )
             }
@@ -60,7 +58,7 @@ class EmployeesComponent(componentContext: ComponentContext) : Employees,
                 Employees.Child.CreateEmployee(
                     CreateEmployeeComponent(
                         onCreateEmployee = {
-                            viewModel.createEmployee(it)
+                            onCreateEmployee(it)
                             router.pop()
                         }
                     )
@@ -69,52 +67,15 @@ class EmployeesComponent(componentContext: ComponentContext) : Employees,
         }
     }
 
+    private fun onCreateEmployee(data: EmployeeDataModel) {
+        employeesStore.accept(EmployeesStore.Intent.CreateEmployee(data.toData()))
+    }
+
+    private fun onUpdateEmployees() {
+        employeesStore.accept(EmployeesStore.Intent.LoadEmployees)
+    }
+
     override val routerState: Value<RouterState<EmployeesConfiguration, Employees.Child>> =
         router.state
-
-    class ViewModel(
-        useCasesFactory: UseCaseFactory,
-    ) : Employees.EmployeesViewModel {
-
-        val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
-
-        private val getEmployeeByIdUseCase =
-            useCasesFactory.getEmployeeById().asObservable(scope, Dispatchers.IO)
-
-        private val getAllEmployeesUseCase =
-            useCasesFactory.getAllEmployees().asObservable(scope, Dispatchers.IO)
-
-        private val createEmployeeUseCase =
-            useCasesFactory.createEmployee().asObservable(scope, Dispatchers.IO)
-
-        override fun updateEmployees() {
-            getAllEmployeesUseCase.execute()
-        }
-
-        override fun loadEmployee(id: Long) {
-            getEmployeeByIdUseCase.execute(id)
-        }
-
-        override fun createEmployee(data: EmployeeData) {
-            createEmployeeUseCase.execute(data)
-        }
-
-        override val employees: StateFlow<List<Employee>?> =
-            getAllEmployeesUseCase.results.map { result ->
-                result?.onSuccess {
-                    return@map it
-                }
-                result?.onFailure {
-
-                }
-                return@map null
-            }.stateIn(scope, SharingStarted.Lazily, null)
-
-        override fun onDestroy() {
-            scope.cancel()
-        }
-
-
-    }
 
 }

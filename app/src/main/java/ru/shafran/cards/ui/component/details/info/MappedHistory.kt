@@ -1,17 +1,18 @@
 package ru.shafran.cards.ui.component.details.info
 
-import ru.shafran.cards.data.card.CardAction
+import ru.shafran.cards.data.card.CardActionModel
+
 
 class MappedHistory(
-    val activation: CardAction.Activation,
-    val usages: List<CardAction.Usage>,
-    val deactivation: CardAction.Deactivation?
+    val activation: CardActionModel.Activation,
+    val usages: List<CardActionModel.Usage>,
+    val deactivation: CardActionModel.Deactivation?
 )
 
-fun List<CardAction>.toMappedHistory(): List<MappedHistory> {
-    val activations = filterIsInstance<CardAction.Activation>()
-    val usages = filterIsInstance<CardAction.Usage>()
-    val deactivations = filterIsInstance<CardAction.Deactivation>()
+fun List<CardActionModel>.toMappedHistory(): List<MappedHistory> {
+    val activations = filterIsInstance<CardActionModel.Activation>()
+    val usages = filterIsInstance<CardActionModel.Usage>()
+    val deactivations = filterIsInstance<CardActionModel.Deactivation>()
     return activations.map { activation ->
         MappedHistory(
             activation = activation,

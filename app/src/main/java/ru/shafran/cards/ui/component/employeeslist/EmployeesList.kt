@@ -1,7 +1,7 @@
 package ru.shafran.cards.ui.component.employeeslist
 
-import kotlinx.coroutines.flow.StateFlow
-import ru.shafran.cards.data.employee.Employee
+import kotlinx.coroutines.flow.Flow
+import ru.shafran.cards.data.employee.EmployeeModel
 
 interface EmployeesList {
 
@@ -9,6 +9,10 @@ interface EmployeesList {
 
     fun onUpdate()
 
-    val employees: StateFlow<List<Employee>?>
+    val employees: Flow<List<EmployeeModel>>
+
+
+    val isLoading: Flow<Boolean>
+
 
 }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,7 +27,12 @@ fun CardsUI(component: Cards, modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxSize(),
             floatingActionButton = {
                 if (currentState.activeChild.configuration !is CardsConfiguration.Camera)
-                    FloatingActionButton(onClick = component::onTakeCard) {
+                    FloatingActionButton(
+                        onClick = component::onTakeCard,
+                        backgroundColor = MaterialTheme.colors.background,
+                        contentColor = MaterialTheme.colors.primary
+
+                    ) {
                         Icon(
                             painterResource(id = R.drawable.logo_take_card),
                             contentDescription = null,

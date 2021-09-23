@@ -41,12 +41,21 @@ android {
             )
         }
         debug {
-            buildConfigField("String", "NETWORK_URL", "\"http://13.59.69.56:80\"")
+            buildConfigField("String", "NETWORK_URL", "\"13.59.69.56\"")
+            buildConfigField("String", "NETWORK_API_VERSION", "\"0.1\"")
+            buildConfigField("String", "NETWORK_API_PROTOCOL", "\"http\"")
+            buildConfigField("int", "NETWORK_API_PORT", "80")
         }
     }
     buildFeatures {
         compose = true
     }
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
     kotlinOptions {
         freeCompilerArgs = freeCompilerArgs + "-Xopt-in=org.mylibrary.OptInAnnotation"
     }
@@ -60,19 +69,19 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-guava:$coroutines_version")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
-
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
     implementation("androidx.core:core-ktx:1.6.0")
     implementation("androidx.appcompat:appcompat:1.3.1")
     implementation("com.google.android.material:material:1.4.0")
-
+    implementation("com.arkivanov.mvikotlin:mvikotlin:2.0.4")
+    implementation("com.arkivanov.mvikotlin:mvikotlin-main:2.0.4")
+    implementation("com.arkivanov.mvikotlin:mvikotlin-logging:2.0.4")
+    implementation("com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines:2.0.4")
     implementation("com.arkivanov.decompose:decompose:$decompose_version")
     implementation("com.arkivanov.decompose:extensions-compose-jetpack:$decompose_version")
     implementation("com.arkivanov.essenty:lifecycle:0.1.2")
     implementation("com.arkivanov.essenty:parcelable:0.1.2")
-
     implementation("io.insert-koin:koin-android:3.1.2")
-
     implementation("com.google.accompanist:accompanist-placeholder-material:0.17.0")
     implementation("androidx.activity:activity-compose:1.3.1")
     implementation("androidx.compose.ui:ui:$compose_version")
@@ -89,9 +98,10 @@ dependencies {
     implementation("androidx.camera:camera-camera2:${camerax_version}")
     implementation("androidx.camera:camera-lifecycle:${camerax_version}")
     implementation("androidx.camera:camera-view:1.0.0-alpha27")
-    implementation("com.google.mlkit:barcode-scanning:16.2.0")
+    implementation("com.google.mlkit:barcode-scanning:17.0.0")
 
-    implementation(project(":common"))
+    implementation(project(":logger"))
+    implementation(project(":network"))
 
 
     testImplementation("junit:junit:4.13.2")

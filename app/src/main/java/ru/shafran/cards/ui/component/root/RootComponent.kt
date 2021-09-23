@@ -13,7 +13,7 @@ import ru.shafran.cards.ui.component.tickets.TicketsComponent
 class RootComponent(componentContext: ComponentContext) : Root,
     ComponentContext by componentContext {
     private val router = router<RootConfiguration, Root.Child>(
-        initialConfiguration = RootConfiguration.Tickets,
+        initialConfiguration = RootConfiguration.Cards,
         handleBackButton = true,
         childFactory = this::createChild,
         key = "root_router",
@@ -25,7 +25,7 @@ class RootComponent(componentContext: ComponentContext) : Root,
     ): Root.Child {
         return when (configuration) {
             RootConfiguration.Cards -> Root.Child.Cards(CardsComponent(componentContext))
-            RootConfiguration.Employees -> Root.Child.Employees(EmployeesComponent())
+            RootConfiguration.Employees -> Root.Child.Employees(EmployeesComponent(componentContext))
             RootConfiguration.Services -> Root.Child.Services(ServicesComponent())
             RootConfiguration.Tickets -> Root.Child.Tickets(TicketsComponent())
         }

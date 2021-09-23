@@ -4,8 +4,8 @@ import com.arkivanov.decompose.RouterState
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import kotlinx.coroutines.flow.StateFlow
-import ru.shafran.cards.data.employee.Employee
-import ru.shafran.cards.data.employee.EmployeeData
+import ru.shafran.cards.data.employee.EmployeeModel
+import ru.shafran.cards.data.employee.EmployeeDataModel
 
 interface Employees {
 
@@ -22,9 +22,9 @@ interface Employees {
 
         fun loadEmployee(id: Long)
 
-        fun createEmployee(data: EmployeeData)
+        fun createEmployee(data: EmployeeDataModel)
 
-        val employees: StateFlow<List<Employee>?>
+        val employees: StateFlow<List<EmployeeModel>?>
 
     }
 

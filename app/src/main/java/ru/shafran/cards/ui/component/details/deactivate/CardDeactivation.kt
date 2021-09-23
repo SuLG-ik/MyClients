@@ -1,14 +1,14 @@
 package ru.shafran.cards.ui.component.details.deactivate
 
 import kotlinx.coroutines.flow.StateFlow
-import ru.shafran.cards.data.card.Card
-import ru.shafran.cards.data.card.DeactivationData
+import ru.shafran.cards.data.card.CardModel
+import ru.shafran.cards.data.card.DeactivationDataModel
 
 interface CardDeactivation {
 
-    val card: StateFlow<Card>
+    val card: StateFlow<CardModel>
 
-    fun onDeactivate(data: DeactivationData)
+    fun onDeactivate(data: DeactivationDataModel)
 
     fun onCancel()
 

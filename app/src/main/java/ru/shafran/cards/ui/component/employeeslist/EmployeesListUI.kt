@@ -10,15 +10,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.placeholder.material.placeholder
 import ru.shafran.cards.R
-import ru.shafran.cards.data.employee.Employee
-import ru.shafran.cards.data.employee.EmployeeData
+import ru.shafran.cards.data.employee.EmployeeDataModel
+import ru.shafran.cards.data.employee.EmployeeModel
 
 
 @Composable
 fun EmployeesListUI(component: EmployeesList, modifier: Modifier) {
-    val employees by component.employees.collectAsState()
+    val employees by component.employees.collectAsState(emptyList())
 
     Scaffold(
         modifier = modifier,
@@ -29,23 +28,12 @@ fun EmployeesListUI(component: EmployeesList, modifier: Modifier) {
         }
     ) {
         employees.let {
-            if (it == null) {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    items(5) {
-                        EmployeeItem(employee = fakeEmployee,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .placeholder(true))
-                    }
-                }
-            } else {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    itemsIndexed(it) { index, employee ->
-                        EmployeeItem(employee = employee, modifier = Modifier
-                            .fillMaxWidth())
-                        if (index <= it.size) {
-                            Spacer(modifier = Modifier.height(5.dp))
-                        }
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                itemsIndexed(it) { index, employee ->
+                    EmployeeItem(employee = employee, modifier = Modifier
+                        .fillMaxWidth())
+                    if (index <= it.size) {
+                        Spacer(modifier = Modifier.height(5.dp))
                     }
                 }
             }
@@ -55,17 +43,17 @@ fun EmployeesListUI(component: EmployeesList, modifier: Modifier) {
 
 }
 
-private val fakeEmployee: Employee =
-    Employee(
+private val fakeEmployee: EmployeeModel =
+    EmployeeModel(
         id = -1,
-        data = EmployeeData(
+        data = EmployeeDataModel(
             name = "Unknown Name"
         )
     )
 
 
 @Composable
-private fun EmployeeItem(employee: Employee, modifier: Modifier) {
+private fun EmployeeItem(employee: EmployeeModel, modifier: Modifier) {
     Row(modifier) {
         Icon(painterResource(id = R.drawable.logo_employees), contentDescription = null)
         Spacer(modifier = Modifier.width(15.dp))

@@ -1,11 +1,11 @@
 package ru.shafran.cards.ui.component.createemployee
 
-import ru.shafran.cards.data.employee.EmployeeData
+import ru.shafran.cards.data.employee.EmployeeDataModel
 
 class CreateEmployeeComponent(
-    private val onCreateEmployee: (EmployeeData) -> Unit
+    private val onCreateEmployee: (EmployeeDataModel) -> Unit
 ): CreateEmployee {
-    override fun onCreateEmployee(data: EmployeeData) {
+    override fun onCreateEmployee(data: EmployeeDataModel) {
         onCreateEmployee.invoke(data)
     }
 }

@@ -1,18 +1,18 @@
 package ru.shafran.cards.ui.component.details.activation
 
 import kotlinx.coroutines.flow.MutableStateFlow
-import ru.shafran.cards.data.card.ActivationData
-import ru.shafran.cards.data.card.Card
+import ru.shafran.cards.data.card.ActivationDataModel
+import ru.shafran.cards.data.card.CardModel
 
 class CardActivationComponent(
-    card: Card,
-    private val onActivate: (ActivationData) -> Unit,
+    card: CardModel,
+    private val onActivate: (ActivationDataModel) -> Unit,
     private val onCancel: () -> Unit,
 ) : CardActivation {
 
-    override val card: MutableStateFlow<Card> = MutableStateFlow(card)
+    override val card: MutableStateFlow<CardModel> = MutableStateFlow(card)
 
-    override fun onActivate(data: ActivationData) {
+    override fun onActivate(data: ActivationDataModel) {
         onActivate.invoke(data)
     }
 
