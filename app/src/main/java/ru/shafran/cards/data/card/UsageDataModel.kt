@@ -5,16 +5,18 @@ import com.arkivanov.essenty.parcelable.Parcelize
 import ru.shafran.network.data.card.UsageData
 
 @Parcelize
-data class UsageDataModel(val note: String = "") : Parcelable
+data class UsageDataModel(val employeeId: Long? = null, val note: String = "") : Parcelable
 
 fun UsageData.toModel(): UsageDataModel {
     return UsageDataModel(
         note = note,
+        employeeId = employeeId,
     )
 }
 
 fun UsageDataModel.toData(): UsageData {
     return UsageData(
         note = note,
+        employeeId = employeeId,
     )
 }

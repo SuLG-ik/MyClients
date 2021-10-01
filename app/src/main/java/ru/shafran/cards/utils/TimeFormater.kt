@@ -2,6 +2,14 @@ package ru.shafran.cards.utils
 
 import java.time.Month
 import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatterBuilder
+import java.time.temporal.ChronoField
+
+private val FORMATTER = DateTimeFormatterBuilder()
+    .appendValue(ChronoField.HOUR_OF_DAY, 2)
+    .appendLiteral(':')
+    .appendValue(ChronoField.MINUTE_OF_HOUR, 2)
+    .toFormatter()
 
 fun ZonedDateTime.format(): String {
     return formatByRelations(ZonedDateTime.now())
@@ -9,11 +17,15 @@ fun ZonedDateTime.format(): String {
 
 private fun ZonedDateTime.formatByRelations(other: ZonedDateTime): String {
     return when {
-        isToday(other) -> "Сегодня в ${hour}:${minute}"
-        isYesterday(other) -> "Вчера в ${hour}:${minute}"
-        isThisYear(other) -> "${this.dayOfMonth} ${this.month.format()}"
-        else -> "${this.dayOfMonth} ${this.month.format()} $year г."
+        isToday(other) -> "Сегодня в ${toDoubleTime()}"
+        isYesterday(other) -> "Вчера в ${toDoubleTime()}"
+        isThisYear(other) -> "${this.dayOfMonth} ${this.month.format()} в ${toDoubleTime()}"
+        else -> "${this.dayOfMonth} ${this.month.format()} $year г. в ${toDoubleTime()}"
     }
+}
+
+private fun ZonedDateTime.toDoubleTime(): String {
+    return this.format(FORMATTER)
 }
 
 private fun ZonedDateTime.isToday(other: ZonedDateTime): Boolean {

@@ -1,16 +1,27 @@
 package ru.shafran.cards.ui.component.employeeslist
 
+import android.util.Log
 import com.arkivanov.decompose.ComponentContext
-import kotlinx.coroutines.flow.Flow
-import ru.shafran.cards.data.employee.EmployeeModel
+import com.arkivanov.mvikotlin.extensions.coroutines.states
+import kotlinx.coroutines.flow.map
+import ru.shafran.cards.data.employee.toModel
+import ru.shafran.network.employee.EmployeesListStore
 
 class EmployeesListComponent(
     componentContext: ComponentContext,
-    override val employees: Flow<List<EmployeeModel>>,
-    override val isLoading: Flow<Boolean>,
+    private val employeesListStore: EmployeesListStore,
     private val onCreateEmployee: () -> Unit,
-    private val onUpdate: () -> Unit,
 ) : EmployeesList, ComponentContext by componentContext {
+
+    override val employees =
+        employeesListStore.states.map { state ->
+            Log.d("EmployeesDetailsCheck", state.toString())
+            if (state.isLoading)
+                null
+            else
+                state.employees.map { it.toModel() }
+        }
+
 
     init {
         onUpdate()
@@ -22,7 +33,7 @@ class EmployeesListComponent(
     }
 
     override fun onUpdate() {
-        onUpdate.invoke()
+        employeesListStore.accept(EmployeesListStore.Intent.LoadEmployees)
     }
 
 }

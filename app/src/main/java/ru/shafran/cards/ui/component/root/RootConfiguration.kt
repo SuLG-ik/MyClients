@@ -9,34 +9,27 @@ import ru.shafran.cards.utils.NavigationItem
 sealed class RootConfiguration: Parcelable {
 
     @Parcelize
-    object Tickets : RootConfiguration()
+    object Cards : RootConfiguration()
+
+    @Parcelize
+    object History : RootConfiguration()
 
     @Parcelize
     object Employees : RootConfiguration()
 
-    @Parcelize
-    object Services : RootConfiguration()
-
-    @Parcelize
-    object Cards : RootConfiguration()
-
     companion object{
         val children get() = mapOf(
-            Tickets to NavigationItem(
-                "Записи",
+            Cards to NavigationItem(
+                "Карты",
+                R.drawable.logo_cards,
+            ),
+            History to NavigationItem(
+                "История",
                 R.drawable.logo_tickets,
             ),
             Employees to NavigationItem(
                 "Работники",
                 R.drawable.logo_employees,
-            ),
-            Services to NavigationItem(
-                "Услуги",
-                R.drawable.logo_services,
-            ),
-            Cards to NavigationItem(
-                "Карты",
-                R.drawable.logo_cards,
             )
         )
     }

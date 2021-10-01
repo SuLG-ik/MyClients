@@ -14,6 +14,7 @@ sealed class CardActionModel: Parcelable {
     class Activation(
         val data: ActivationDataModel,
         override val time: ZonedDateTime = ZonedDateTime.now(),
+        val cardId: Long,
         override val id: Long,
     ) : CardActionModel()
 
@@ -41,6 +42,7 @@ fun CardActionModel.toData(): CardAction {
     return when (this) {
         is CardActionModel.Activation -> CardAction.Activation(
             data = data.toData(), time = time, id = id,
+            cardId = cardId,
         )
         is CardActionModel.Deactivation -> CardAction.Deactivation(
             data = data.toData(), time = time, id = id, activationId = activationId,
@@ -55,6 +57,7 @@ fun CardAction.toModel(): CardActionModel {
     return when (this) {
         is CardAction.Activation -> CardActionModel.Activation(
             data = data.toModel(), time = time, id = id,
+            cardId = cardId,
         )
         is CardAction.Deactivation -> CardActionModel.Deactivation(
             data = data.toModel(), time = time, id = id, activationId = activationId,

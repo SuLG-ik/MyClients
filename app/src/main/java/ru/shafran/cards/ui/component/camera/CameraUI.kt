@@ -1,5 +1,6 @@
 package ru.shafran.cards.ui.component.camera
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -12,15 +13,10 @@ import ru.shafran.cards.ui.view.camera.rememberCameraState
 fun CameraUI(component: Camera, modifier: Modifier = Modifier) {
     val state = rememberCameraState()
 
-    val isShown by component.isDetailShown.collectAsState()
-
-    LaunchedEffect(key1 = isShown, block = {
-        if (isShown) component.onDisable()
-        else component.onEnable()
-    })
-
     val isEnabled by component.isEnabled.collectAsState()
+
     LaunchedEffect(key1 = isEnabled, block = {
+        Log.d("CameraStateCheck", "state = $isEnabled")
         state.setEnabled(isEnabled)
     })
     CameraPreview(

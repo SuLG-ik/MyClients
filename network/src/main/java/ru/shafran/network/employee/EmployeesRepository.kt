@@ -13,4 +13,5 @@ interface EmployeesRepository {
 
     suspend fun createEmployee(data: EmployeeData): Employee
 
+    suspend fun addImageToEmployee(employeeId: Long, image: ByteArray): Employee
 }

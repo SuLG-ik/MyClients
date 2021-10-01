@@ -9,6 +9,7 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -20,6 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.guava.await
 import ru.shafran.cards.ui.component.camera.rememberPreviewViewController
+import ru.shafran.cards.utils.getOrNull
 
 
 @Composable
@@ -36,18 +38,31 @@ fun CameraPreview(
     val previewView = rememberPreviewView()
     val previewController = rememberPreviewViewController(previewView.surfaceProvider)
 
-    LaunchedEffect(key1 = state.isEnabled, block = {
-        if (state.isEnabled) {
-            previewController.onEnable()
-            Log.d("preview_controller", "onEnable")
-        } else {
-            previewController.onDisable()
-            Log.d("preview_controller", "onDisable")
+    DisposableEffect(key1 = Unit, effect = {
+        onDispose {
+            state.setEnabled(false)
+            val provider = cameraProvider.getOrNull()
+                previewController.onDisable()
+                provider?.unbindAll()
         }
     })
-    LaunchedEffect(state.camera) {
+
+    LaunchedEffect(state.camera, state.isEnabled) {
         val provider = cameraProvider.await()
-        provider.tryBind(lifecycleOwner, state.camera, previewController.preview, onRecognizeImage = onRecognizeImage)
+        if (state.isEnabled) {
+            Log.d("CameraStateCheck", "camera = isEnabled")
+            previewController.onEnable()
+            provider.tryBind(
+                lifecycleOwner,
+                state.camera,
+                previewController.preview,
+                onRecognizeImage = onRecognizeImage
+            )
+        } else {
+            Log.d("CameraStateCheck", "camera = dowsNotEnabled")
+            previewController.onDisable()
+            provider.unbindAll()
+        }
     }
     AndroidView(modifier = modifier, factory = { previewView })
 }

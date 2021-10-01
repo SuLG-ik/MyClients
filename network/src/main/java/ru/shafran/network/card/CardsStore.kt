@@ -11,7 +11,8 @@ interface CardsStore: Store<CardsStore.Intent, CardsStore.State, Nothing> {
 
     sealed class Intent {
         object Hide : Intent()
-        class LoadCard(val cardToken: String) : Intent()
+        class LoadCardByToken(val cardToken: String) : Intent()
+        class LoadCardByActivationId(val activationId: Long) : Intent()
         class ActivateCard(val cardId: Long, val data: ActivationData): Intent()
         class DeactivationCard(val cardId: Long, val data: DeactivationData): Intent()
         class UseCard(val cardId: Long, val data: UsageData): Intent()

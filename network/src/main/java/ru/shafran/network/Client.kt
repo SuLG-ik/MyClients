@@ -4,8 +4,7 @@ import io.ktor.client.*
 import io.ktor.client.engine.*
 import io.ktor.client.features.*
 import io.ktor.client.features.json.*
-import io.ktor.client.request.*
-import io.ktor.http.*
+import java.util.logging.Logger
 
 
 @Suppress("FunctionName")
@@ -14,14 +13,15 @@ fun ShafranHttpClient(
     config: NetworkConfig,
     serializer: JsonSerializer,
 ): HttpClient {
+    Logger.getLogger("SosiBibu").info(config.toString())
     return HttpClient(engine) {
         developmentMode = config.isDebugMode
         defaultRequest {
             url {
                 host = config.host
-                protocol = URLProtocol(config.protocol, config.port)
+                port = config.port
             }
-            header("api", config.apiVersion)
+//            header("api", config.apiVersion)
         }
         install(JsonFeature) { this.serializer = serializer }
     }

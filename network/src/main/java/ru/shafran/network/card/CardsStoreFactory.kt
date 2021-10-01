@@ -55,13 +55,10 @@ internal class CardsStoreFactory(
 
         override suspend fun executeIntent(
             intent: CardsStore.Intent,
-            getState: () -> CardsStore.State
+            getState: () -> CardsStore.State,
         ) {
             when (intent) {
-                is CardsStore.Intent.Hide -> {
-                    syncDispatch(Result.Hidden)
-                }
-                is CardsStore.Intent.LoadCard -> {
+                is CardsStore.Intent.LoadCardByToken -> {
                     syncDispatch(Result.Loading)
                     try {
                         val card = cardsRepository.getCardByToken(intent.cardToken)
@@ -73,6 +70,20 @@ internal class CardsStoreFactory(
                     } catch (e: Exception) {
                         syncDispatch(Result.Error(e))
                     }
+                }
+                is CardsStore.Intent.LoadCardByActivationId -> {
+                    try {
+                        val card = cardsRepository.getCardByActivationId(intent.activationId)
+                        if (card != null)
+                            syncDispatch(Result.CardLoaded(card))
+                        else
+                            throw IllegalStateException("Card cant be found")
+                    } catch (e: Exception) {
+                        syncDispatch(Result.Error(e))
+                    }
+                }
+                is CardsStore.Intent.Hide -> {
+                    syncDispatch(Result.Hidden)
                 }
                 is CardsStore.Intent.ActivateCard -> {
                     syncDispatch(Result.Loading)
@@ -101,6 +112,7 @@ internal class CardsStoreFactory(
                         syncDispatch(Result.Error(e))
                     }
                 }
+
             }
         }
     }

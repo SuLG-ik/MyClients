@@ -5,11 +5,9 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface Camera {
 
-    val isDetailShown: StateFlow<Boolean>
-
     val isEnabled: StateFlow<Boolean>
 
-    fun onDisable()
+    fun onPause()
 
     fun onEnable()
 

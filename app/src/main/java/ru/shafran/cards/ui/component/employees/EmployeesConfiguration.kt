@@ -9,6 +9,6 @@ sealed class EmployeesConfiguration : Parcelable{
     object EmployeesList : EmployeesConfiguration()
 
     @Parcelize
-    object CreateEmployee: EmployeesConfiguration()
+    data class Loading(val message: String): EmployeesConfiguration()
 
 }

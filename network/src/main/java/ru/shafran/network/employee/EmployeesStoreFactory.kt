@@ -12,7 +12,7 @@ import ru.shafran.network.data.employee.Employee
 fun EmployeesStore(
     storeFactory: StoreFactory,
     repository: EmployeesRepository,
-): EmployeesStore {
+): EmployeesListStore {
     return EmployeesStoreFactory(
         storeFactory = storeFactory,
         repository = repository,
@@ -24,11 +24,11 @@ internal class EmployeesStoreFactory(
     private val repository: EmployeesRepository
 ) {
 
-    fun create(): EmployeesStore =
-        object : EmployeesStore,
-            Store<EmployeesStore.Intent, EmployeesStore.State, Nothing> by storeFactory.create(
+    fun create(): EmployeesListStore =
+        object : EmployeesListStore,
+            Store<EmployeesListStore.Intent, EmployeesListStore.State, Nothing> by storeFactory.create(
                 name = "CounterStore",
-                initialState = EmployeesStore.State(),
+                initialState = EmployeesListStore.State(),
                 reducer = ReducerImpl,
                 executorFactory = {
                     ExecutorImpl(repository = repository)
@@ -37,34 +37,23 @@ internal class EmployeesStoreFactory(
 
     private class ExecutorImpl(
         private val repository: EmployeesRepository,
-    ) : SuspendExecutor<EmployeesStore.Intent, Nothing, EmployeesStore.State, Result, Nothing>(Dispatchers.IO) {
+    ) : SuspendExecutor<EmployeesListStore.Intent, Nothing, EmployeesListStore.State, Result, Nothing>(Dispatchers.IO) {
 
         private suspend fun syncDispatch(result: Result) {
             withContext(Dispatchers.Main) { dispatch(result) }
         }
 
         override suspend fun executeIntent(
-            intent: EmployeesStore.Intent,
-            getState: () -> EmployeesStore.State
+            intent: EmployeesListStore.Intent,
+            getState: () -> EmployeesListStore.State
         ) {
-            return when (intent) {
-                is EmployeesStore.Intent.LoadEmployees -> {
+            when (intent) {
+                is EmployeesListStore.Intent.LoadEmployees -> {
                     syncDispatch(Result.Value(true))
                     syncDispatch(
                         Result.Value(
                             isLoading = false,
                             employees = repository.getAllEmployees(),
-                        )
-                    )
-                }
-                is EmployeesStore.Intent.CreateEmployee -> {
-                    val state = getState()
-                    syncDispatch(Result.Value(true))
-                    val employee = repository.createEmployee(intent.employeeData)
-                    syncDispatch(
-                        Result.Value(
-                            isLoading = false,
-                            employees = state.employees + employee,
                         )
                     )
                 }
@@ -81,12 +70,12 @@ internal class EmployeesStoreFactory(
         ) : Result()
     }
 
-    private object ReducerImpl : Reducer<EmployeesStore.State, Result> {
-        override fun EmployeesStore.State.reduce(result: Result): EmployeesStore.State =
+    private object ReducerImpl : Reducer<EmployeesListStore.State, Result> {
+        override fun EmployeesListStore.State.reduce(result: Result): EmployeesListStore.State =
             when (result) {
                 is Result.Value -> copy(
-                    isLoading = isLoading,
-                    employees = employees.sortedBy { it.data.name })
+                    isLoading = result.isLoading,
+                    employees = result.employees.sortedBy { it.data.name })
             }
     }
 

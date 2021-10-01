@@ -3,6 +3,7 @@ package ru.shafran.network.employee
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.request.*
+import io.ktor.client.request.forms.*
 import io.ktor.http.*
 import ru.shafran.network.data.employee.Employee
 import ru.shafran.network.data.employee.EmployeeData
@@ -22,9 +23,11 @@ internal class KtorEmployeesRepository(
     private val client: HttpClient,
 ) : EmployeesRepository {
 
+
     override suspend fun getAllEmployees(): List<Employee> {
         return try {
-            client.get("/employees/")
+            val employees = client.get<List<Employee>>("/employees/")
+            employees
         } catch (responce: ResponseException) {
             throw ServerDoesNotResponseException(
                 responce.response.status.value
@@ -68,11 +71,26 @@ internal class KtorEmployeesRepository(
 
     override suspend fun createEmployee(data: EmployeeData): Employee {
         return try {
-            client.post("/employees")
+            client.post("/employees") {
+                contentType(ContentType.Application.Json)
+                body = data
+            }
         } catch (responce: ResponseException) {
             throw ServerDoesNotResponseException(
                 responce.response.status.value
             )
+        }
+    }
+
+    override suspend fun addImageToEmployee(employeeId: Long, image: ByteArray): Employee {
+        return try {
+            client.post("/employees/image"){
+                formData {
+                    append("image", image)
+                }
+            }
+        } catch(e : Exception) {
+            throw e
         }
     }
 }

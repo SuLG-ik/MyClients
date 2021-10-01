@@ -41,7 +41,7 @@ android {
             )
         }
         debug {
-            buildConfigField("String", "NETWORK_URL", "\"13.59.69.56\"")
+            buildConfigField("String", "NETWORK_URL", "\"${System.getenv("SHAFRAN_API_HOST")}\"")
             buildConfigField("String", "NETWORK_API_VERSION", "\"0.1\"")
             buildConfigField("String", "NETWORK_API_PROTOCOL", "\"http\"")
             buildConfigField("int", "NETWORK_API_PORT", "80")
@@ -87,6 +87,8 @@ dependencies {
     implementation("androidx.compose.ui:ui:$compose_version")
     implementation("androidx.compose.material:material:$compose_version")
     implementation("androidx.compose.ui:ui-tooling:$compose_version")
+
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.18.0")
 
     implementation("io.ktor:ktor-client-core:1.6.1")
     implementation("io.ktor:ktor-client-android:1.6.1")

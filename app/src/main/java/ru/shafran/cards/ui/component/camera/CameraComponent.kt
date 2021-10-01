@@ -6,24 +6,19 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import ru.shafran.cards.analysis.CardTokenAnalyser
 import ru.shafran.cards.utils.get
 
 class CameraComponent(
     componentContext: ComponentContext,
     private val onDetected: (String) -> Unit,
-    override val isDetailShown: StateFlow<Boolean>,
-) :
-    Camera, ComponentContext by componentContext {
+) : Camera, ComponentContext by componentContext {
 
     override val isEnabled: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
-
     private val viewmodel = instanceKeeper.getOrCreate { ViewModel(get()) }
 
-
-    override fun onDisable() {
+    override fun onPause() {
         isEnabled.value = false
         viewmodel.pause()
     }

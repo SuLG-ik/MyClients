@@ -12,13 +12,11 @@ interface Root {
 
     sealed class Child {
 
-        class Tickets(val tickets: ru.shafran.cards.ui.component.tickets.Tickets) : Child()
+        class History(val component: ru.shafran.cards.ui.component.history.History) : Child()
 
-        class Employees(val employees: ru.shafran.cards.ui.component.employees.Employees) : Child()
+        class Employees(val component: ru.shafran.cards.ui.component.employees.Employees) : Child()
 
-        class Services(val services: ru.shafran.cards.ui.component.services.Services) : Child()
-
-        class Cards(val cards: ru.shafran.cards.ui.component.cards.Cards) : Child()
+        class Cards(val component: ru.shafran.cards.ui.component.cards.Cards) : Child()
 
     }
 

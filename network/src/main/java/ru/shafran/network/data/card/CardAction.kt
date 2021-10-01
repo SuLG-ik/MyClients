@@ -19,6 +19,7 @@ sealed class CardAction {
     class Activation(
         val data: ActivationData,
         override val time: ZonedDateTime = ZonedDateTime.now(),
+        val cardId: Long,
         override val id: Long,
     ) : CardAction()
 

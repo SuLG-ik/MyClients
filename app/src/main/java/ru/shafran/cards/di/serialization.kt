@@ -8,6 +8,8 @@ val serializationModule = module {
         Json {
             ignoreUnknownKeys = true
             classDiscriminator = "\$type"
+            prettyPrint = true
+            encodeDefaults = true
         }
     }
 }

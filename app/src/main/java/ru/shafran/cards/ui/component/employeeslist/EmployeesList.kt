@@ -9,10 +9,6 @@ interface EmployeesList {
 
     fun onUpdate()
 
-    val employees: Flow<List<EmployeeModel>>
-
-
-    val isLoading: Flow<Boolean>
-
+    val employees: Flow<List<EmployeeModel>?>
 
 }
