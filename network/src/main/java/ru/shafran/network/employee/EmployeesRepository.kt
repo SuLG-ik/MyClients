@@ -10,6 +10,7 @@ interface EmployeesRepository {
     suspend fun getEmployeeById(id: Long): Employee
 
     suspend fun updateEmployeeById(id: Long, data: EmployeeData): Employee
+    suspend fun deleteEmployeeById(id: Long)
 
     suspend fun createEmployee(data: EmployeeData): Employee
 

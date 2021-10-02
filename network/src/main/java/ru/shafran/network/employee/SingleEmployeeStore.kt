@@ -12,7 +12,6 @@ interface SingleEmployeeStore :
         data class CreateEmployee(
             val employeeData: EmployeeData,
         ) : Intent()
-
         data class AddImageToEmployee(
             val employeeId: Long,
             val image: ByteArray,
@@ -28,13 +27,14 @@ interface SingleEmployeeStore :
 
                 return true
             }
-
             override fun hashCode(): Int {
                 var result = employeeId.hashCode()
                 result = 31 * result + image.contentHashCode()
                 return result
             }
         }
+        data class DeleteEmployee(val employeeId: Long): Intent()
+        data class EditEmployee(val employeeId: Long, val employeeData: EmployeeData): Intent()
     }
 
     sealed class State {
@@ -52,7 +52,9 @@ interface SingleEmployeeStore :
     }
 
     sealed class Label {
-        object OnUpdatedOrCreated : Label()
+        data class OnCreated(val employeeData: Employee) : Label()
+        object OnDeleted: Label()
+        object OnUpdated: Label()
     }
 
 }

@@ -1,4 +1,4 @@
-package ru.shafran.cards.ui.component.employeeslist
+package ru.shafran.cards.ui.component.employees.list
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.mvikotlin.extensions.coroutines.states
@@ -10,6 +10,7 @@ class EmployeesListComponent(
     componentContext: ComponentContext,
     private val employeesListStore: EmployeesListStore,
     private val onCreateEmployee: () -> Unit,
+    private val onSelected: (Long) -> Unit,
 ) : EmployeesList, ComponentContext by componentContext {
 
     override val employees =
@@ -28,6 +29,9 @@ class EmployeesListComponent(
         onUpdate()
     }
 
+    override fun onSelected(employeeId: Long) {
+        onSelected.invoke(employeeId)
+    }
 
     override fun onCreateEmployee() {
         onCreateEmployee.invoke()

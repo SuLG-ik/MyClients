@@ -1,5 +1,6 @@
-package ru.shafran.cards.ui.component.employeeslist
+package ru.shafran.cards.ui.component.employees.list
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -38,7 +39,10 @@ fun EmployeesListUI(
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             when {
                 employees == null -> {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
                         CircularProgressIndicator(modifier = Modifier.fillMaxSize(0.25f))
                         Text("Загрузка...", style = MaterialTheme.typography.h5)
                     }
@@ -48,11 +52,14 @@ fun EmployeesListUI(
                 }
                 else -> {
                     SwipeRefresh(state = refreshState, onRefresh = component::onUpdate) {
-                        LazyColumn(modifier = Modifier.fillMaxSize().padding(15.dp)) {
+                        LazyColumn(modifier = Modifier
+                            .fillMaxSize()
+                            .padding(15.dp)) {
                             itemsIndexed(employees) { index, employee ->
                                 EmployeeItem(
                                     employee = employee, modifier = Modifier
                                         .fillMaxWidth()
+                                        .clickable { component.onSelected(employee.id) }
                                 )
                                 if (index <= employees.size) {
                                     Spacer(modifier = Modifier.height(10.dp))

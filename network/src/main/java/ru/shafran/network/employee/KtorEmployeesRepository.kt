@@ -23,26 +23,31 @@ internal class KtorEmployeesRepository(
 
 
     override suspend fun getAllEmployees(): List<Employee> {
-        return client.get("/employees")
+        return client.get(path ="/employees")
     }
 
     override suspend fun getEmployeeById(id: Long): Employee {
-        return client.get("/employees/${id}")
+        return client.get(path ="/employees/${id}")
     }
 
     override suspend fun updateEmployeeById(id: Long, data: EmployeeData): Employee {
-        return client.put("/employees/${id}")
+        return client.put(path ="/employees/${id}", body = data) {
+            contentType(ContentType.Application.Json)
+        }
+    }
+
+    override suspend fun deleteEmployeeById(id: Long) {
+        return client.delete(path = "/employees/$id")
     }
 
     override suspend fun createEmployee(data: EmployeeData): Employee {
-        return client.post("/employees") {
+        return client.post(path = "/employees", body = data) {
             contentType(ContentType.Application.Json)
-            body = data
         }
     }
 
     override suspend fun addImageToEmployee(employeeId: Long, image: ByteArray): Employee {
-        return client.post("/employees/image") {
+        return client.post(path ="/employees/image") {
                 formData {
                     append("image", image)
                 }

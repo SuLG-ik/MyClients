@@ -1,7 +1,7 @@
 package ru.shafran.cards.ui.component.employees
 
-import ru.shafran.cards.ui.component.employeesdetails.EmployeesDetails
-import ru.shafran.cards.ui.component.employeeslist.EmployeesList
+import ru.shafran.cards.ui.component.employees.details.EmployeesDetails
+import ru.shafran.cards.ui.component.employees.list.EmployeesList
 
 interface Employees {
 

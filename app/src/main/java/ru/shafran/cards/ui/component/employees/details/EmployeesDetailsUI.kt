@@ -1,4 +1,4 @@
-package ru.shafran.cards.ui.component.employeesdetails
+package ru.shafran.cards.ui.component.employees.details
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Column
@@ -13,8 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetpack.Children
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
-import ru.shafran.cards.ui.component.createemployee.CreateEmployeeUI
-import ru.shafran.cards.ui.component.employeeinfo.EmployeeInfoUI
+import ru.shafran.cards.ui.component.employees.create.CreateEmployeeUI
+import ru.shafran.cards.ui.component.employees.delete.DeleteEmployeeUI
+import ru.shafran.cards.ui.component.employees.edit.EditEmployeeUI
+import ru.shafran.cards.ui.component.employees.info.EmployeeInfoUI
 import ru.shafran.cards.ui.component.loading.LoadingUI
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -86,5 +88,13 @@ private fun EmployeesDetailsRouter(instance: EmployeesDetails.Child, modifier: M
             modifier = modifier
         )
         EmployeesDetails.Child.Hidden -> Text("")
+        is EmployeesDetails.Child.DeleteEmployee -> DeleteEmployeeUI(
+            component = instance.component,
+            modifier = modifier
+        )
+        is EmployeesDetails.Child.EditEmployee -> EditEmployeeUI(
+            component = instance.component,
+            modifier = modifier
+        )
     }
 }

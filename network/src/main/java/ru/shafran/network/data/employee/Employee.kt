@@ -7,4 +7,5 @@ import kotlinx.serialization.Serializable
 data class Employee(
     val id: Long,
     val data: EmployeeData,
+    val image: ImageInfo?,
 )

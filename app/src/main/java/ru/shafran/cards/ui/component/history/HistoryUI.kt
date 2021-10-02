@@ -25,7 +25,7 @@ import ru.shafran.cards.ui.component.cardsdetails.info.OutlinedSurface
 fun HistoryUI(component: History, modifier: Modifier = Modifier) {
     CardDetailsUI(component = component.cardDetails, modifier = modifier) {
         Box(
-            modifier = modifier,
+            modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             val mappedHistory = component.history.collectAsState(initial = null).value
@@ -46,29 +46,33 @@ fun HistoryUI(component: History, modifier: Modifier = Modifier) {
                 else -> {
                     SwipeRefresh(state = refreshState, onRefresh = component::onUpdate) {
                         LazyColumn(modifier = Modifier
-                            .fillMaxSize()
-                            .padding(15.dp)) {
+                            .fillMaxSize()) {
                             itemsIndexed(history) { index, item ->
+                                if (index == 0) {
+                                    Spacer(modifier = Modifier.height(10.dp))
+                                }
                                 OutlinedSurface(
                                     modifier = Modifier
                                         .fillMaxWidth()
+                                        .padding(start = 10.dp, end = 10.dp)
                                         .clip(MaterialTheme.shapes.medium)
                                         .clickable {
                                             component.onChooseUsage(item.activationId)
                                         }
                                         .animateContentSize()
                                 ) {
+
                                     CardHistoryUsageItem(
                                         action = item,
                                         employee = null,
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .padding(15.dp)
+                                            .padding(10.dp)
                                             .animateContentSize()
                                     )
                                 }
                                 if (index < history.size) {
-                                    Spacer(modifier = Modifier.height(5.dp))
+                                    Spacer(modifier = Modifier.height(10.dp))
                                 }
                             }
                         }

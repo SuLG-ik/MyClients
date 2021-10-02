@@ -1,4 +1,4 @@
-package ru.shafran.cards.ui.component.createemployee
+package ru.shafran.cards.ui.component.employees.create
 
 import ru.shafran.cards.data.employee.EmployeeDataModel
 

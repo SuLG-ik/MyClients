@@ -1,21 +1,18 @@
 package ru.shafran.cards.ui.component.cardsdetails.use
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import ru.shafran.cards.R
 import ru.shafran.cards.data.card.CardModel
 import ru.shafran.cards.data.card.UsageDataModel
 import ru.shafran.cards.data.employee.EmployeeModel
 import ru.shafran.cards.ui.component.cardsdetails.info.MaterialDivider
 import ru.shafran.cards.ui.component.cardsdetails.info.OutlinedSurface
+import ru.shafran.cards.ui.component.employees.edit.CancelIcon
 
 @Composable
 fun CardUsageUI(component: CardUsage, modifier: Modifier = Modifier) {
@@ -38,12 +35,8 @@ fun CardDeactivationRequest(
 ) {
     Column(modifier) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Image(painterResource(id = R.drawable.cancel_button),
-                contentDescription = "cancel",
-                modifier = Modifier
-                    .size(25.dp)
-                    .clickable(remember { MutableInteractionSource() }, null, onClick = onCancel))
-            Spacer(modifier = Modifier.width(5.dp))
+            CancelIcon(onCancel)
+            Spacer(modifier = Modifier.width(10.dp))
             Text(text = "Использовать карту: ${card.id}",
                 style = MaterialTheme.typography.h5)
         }
@@ -61,14 +54,23 @@ fun CardDeactivationRequest(
                 var isExpanded by remember { mutableStateOf(false) }
                 var selectedEmployee by remember { mutableStateOf<EmployeeModel?>(null) }
                 OutlinedSurface(
-                    modifier = Modifier.fillMaxWidth().clickable(employees != null, onClick = {
-                        isExpanded = true
-                    })
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(employees != null, onClick = {
+                            isExpanded = true
+                        })
                 ) {
                     if (employees == null) {
-                        CircularProgressIndicator()
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(15.dp)
+                        ) {
+                            CircularProgressIndicator(modifier = Modifier.size(21.dp), strokeWidth = 2.dp)
+                        }
                     } else {
-                        Text(selectedEmployee?.data?.name ?: "Не указан", modifier = Modifier.padding(15.dp))
+                        Text(selectedEmployee?.data?.name ?: "Не указан",
+                            modifier = Modifier.padding(15.dp))
                         DropdownMenu(
                             expanded = isExpanded,
                             onDismissRequest = { isExpanded = false },

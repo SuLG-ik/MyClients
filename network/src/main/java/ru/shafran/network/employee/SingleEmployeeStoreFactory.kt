@@ -61,17 +61,33 @@ class SingleEmployeeStoreFactory(
                     is SingleEmployeeStore.Intent.CreateEmployee -> {
                         dispatch(Result.Loading)
                         val employee = repository.createEmployee(intent.employeeData)
-                        dispatch(Result.Loaded(employee))
-                        publish(SingleEmployeeStore.Label.OnUpdatedOrCreated)
+                        dispatch(Result.Hidden)
+                        publish(SingleEmployeeStore.Label.OnCreated(employee))
                     }
                     is SingleEmployeeStore.Intent.AddImageToEmployee -> {
                         dispatch(Result.Loading)
-                        val employee = repository.addImageToEmployee(intent.employeeId, intent.image)
+                        val employee =
+                            repository.addImageToEmployee(intent.employeeId, intent.image)
                         dispatch(Result.Loaded(employee))
-                        publish(SingleEmployeeStore.Label.OnUpdatedOrCreated)
+                        publish(SingleEmployeeStore.Label.OnUpdated)
+                    }
+                    is SingleEmployeeStore.Intent.DeleteEmployee -> {
+                        dispatch(Result.Loading)
+                        repository.deleteEmployeeById(intent.employeeId)
+                        dispatch(Result.Hidden)
+                        publish(SingleEmployeeStore.Label.OnDeleted)
+                    }
+                    is SingleEmployeeStore.Intent.EditEmployee -> {
+                        dispatch(Result.Loading)
+                        val employee =
+                            repository.updateEmployeeById(intent.employeeId, intent.employeeData)
+                        dispatch(Result.Loaded(employee))
+                        publish(SingleEmployeeStore.Label.OnUpdated)
                     }
                 }
-            }catch (e: Exception) {syncDispatch(Result.Error(e))}
+            } catch (e: Exception) {
+                syncDispatch(Result.Error(e))
+            }
         }
 
     }

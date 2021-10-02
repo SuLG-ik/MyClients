@@ -2,10 +2,10 @@ package ru.shafran.cards.ui.component.employees
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
-import ru.shafran.cards.ui.component.employeesdetails.EmployeesDetails
-import ru.shafran.cards.ui.component.employeesdetails.EmployeesDetailsComponent
-import ru.shafran.cards.ui.component.employeeslist.EmployeesList
-import ru.shafran.cards.ui.component.employeeslist.EmployeesListComponent
+import ru.shafran.cards.ui.component.employees.details.EmployeesDetails
+import ru.shafran.cards.ui.component.employees.details.EmployeesDetailsComponent
+import ru.shafran.cards.ui.component.employees.list.EmployeesList
+import ru.shafran.cards.ui.component.employees.list.EmployeesListComponent
 import ru.shafran.cards.utils.get
 import ru.shafran.cards.utils.stores
 import ru.shafran.network.employee.EmployeesStore
@@ -29,10 +29,15 @@ class EmployeesComponent(componentContext: ComponentContext) : Employees,
             childContext("employees_list"),
             employeesListStore = employeesListStore,
             onCreateEmployee = this::onCreateEmployee,
+            onSelected = this::onEmployeeSelected
         )
 
     override fun onCreateEmployee() {
         employeesDetails.onCreateEmployee()
+    }
+
+    private fun onEmployeeSelected(employeeId: Long) {
+        employeesDetails.onShowInfo(employeeId)
     }
 
 }

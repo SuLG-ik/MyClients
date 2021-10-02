@@ -1,4 +1,4 @@
-package ru.shafran.cards.ui.component.createemployee
+package ru.shafran.cards.ui.component.employees.create
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
@@ -52,7 +52,6 @@ fun CreateEmployee(
                     onCreate(
                         EmployeeDataModel(
                             name = name,
-                            null,
                         )
                     )
                 }, modifier = Modifier.fillMaxWidth()) {

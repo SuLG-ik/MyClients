@@ -1,4 +1,4 @@
-package ru.shafran.cards.ui.component.employeesdetails
+package ru.shafran.cards.ui.component.employees.details
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.RouterState
@@ -14,8 +14,10 @@ import ru.shafran.cards.data.employee.EmployeeDataModel
 import ru.shafran.cards.data.employee.EmployeeModel
 import ru.shafran.cards.data.employee.toData
 import ru.shafran.cards.data.employee.toModel
-import ru.shafran.cards.ui.component.createemployee.CreateEmployeeComponent
-import ru.shafran.cards.ui.component.employeeinfo.EmployeeInfoComponent
+import ru.shafran.cards.ui.component.employees.create.CreateEmployeeComponent
+import ru.shafran.cards.ui.component.employees.delete.DeleteEmployeeComponent
+import ru.shafran.cards.ui.component.employees.edit.EditEmployeeComponent
+import ru.shafran.cards.ui.component.employees.info.EmployeeInfoComponent
 import ru.shafran.cards.ui.component.loading.LoadingComponent
 import ru.shafran.cards.utils.createCoroutineScope
 import ru.shafran.network.employee.EmployeesListStore
@@ -41,8 +43,17 @@ class EmployeesDetailsComponent(
                 is SingleEmployeeStore.State.Loading -> {
                     onLoading()
                 }
+                SingleEmployeeStore.State.Error.ConnectionLost -> onUnknownError()
+                SingleEmployeeStore.State.Error.InternalServerError -> onUnknownError()
+                SingleEmployeeStore.State.Error.NotFoundException -> onUnknownError()
+                SingleEmployeeStore.State.Error.UnknownError -> onUnknownError()
+                SingleEmployeeStore.State.Hidden -> onHide()
             }
         }.launchIn(scope)
+    }
+
+    private fun onUnknownError() {
+        router.replaceCurrent(EmployeesDetailsConfiguration.Error("Неизвестная ошибка"))
     }
 
     override fun onCreateEmployee() {
@@ -76,6 +87,28 @@ class EmployeesDetailsComponent(
             childFactory = this::createChild,
         )
 
+    private fun onRequestEditEmployee(employee: EmployeeModel) {
+        router.replaceCurrent(EmployeesDetailsConfiguration.EditEmployee(employee))
+    }
+
+    private fun onEditEmployee(employeeId: Long, data: EmployeeDataModel) {
+        singleEmployeeStore.accept(
+            SingleEmployeeStore.Intent.EditEmployee(employeeId, data.toData())
+        )
+    }
+
+    private fun onRequestDeleteEmployee(employee: EmployeeModel) {
+        router.replaceCurrent(
+            EmployeesDetailsConfiguration.DeleteEmployee(employee)
+        )
+    }
+
+    private fun onDeleteEmployee(employeeId: Long) {
+        singleEmployeeStore.accept(
+            SingleEmployeeStore.Intent.DeleteEmployee(employeeId)
+        )
+    }
+
     private fun createChild(
         configuration: EmployeesDetailsConfiguration,
         componentContext: ComponentContext,
@@ -85,12 +118,36 @@ class EmployeesDetailsComponent(
                 CreateEmployeeComponent(onCreateEmployee = this::onCreateEmployee)
             )
             is EmployeesDetailsConfiguration.EmployeeInfo -> EmployeesDetails.Child.EmployeeInfo(
-                EmployeeInfoComponent(configuration.data)
+                EmployeeInfoComponent(
+                    configuration.employee,
+                    onDelete = { onRequestDeleteEmployee(configuration.employee) },
+                    onEdit = { onRequestEditEmployee(configuration.employee) }
+                )
             )
             EmployeesDetailsConfiguration.Hidden -> EmployeesDetails.Child.Hidden
             is EmployeesDetailsConfiguration.Loading -> EmployeesDetails.Child.Loading(
                 LoadingComponent(configuration.message)
             )
+            is EmployeesDetailsConfiguration.DeleteEmployee -> EmployeesDetails.Child.DeleteEmployee(
+                DeleteEmployeeComponent(
+                    configuration.employee,
+                    onAgree = {
+                        onDeleteEmployee(configuration.employee.id)
+                    },
+                    onCancel = {
+                        onShowInfo(configuration.employee)
+                    })
+            )
+            is EmployeesDetailsConfiguration.EditEmployee -> {
+                EmployeesDetails.Child.EditEmployee(
+                   EditEmployeeComponent(configuration.employee, onEditEmployee = {
+                       onEditEmployee(configuration.employee.id, it)
+                   }, onCancel = {
+                       onShowInfo(configuration.employee)
+                   })
+                )
+            }
+            is EmployeesDetailsConfiguration.Error -> TODO()
         }
     }
 

@@ -1,8 +1,5 @@
 package ru.shafran.cards.ui.component.cardsdetails.deactivate
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
@@ -11,13 +8,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import ru.shafran.cards.R
 import ru.shafran.cards.data.card.CardModel
 import ru.shafran.cards.data.card.DeactivationDataModel
 import ru.shafran.cards.ui.component.cardsdetails.info.MaterialDivider
 import ru.shafran.cards.ui.component.cardsdetails.info.OutlinedSurface
+import ru.shafran.cards.ui.component.employees.edit.CancelIcon
 
 @Composable
 fun CardDeactivationUI(component: CardDeactivation, modifier: Modifier = Modifier) {
@@ -38,12 +34,8 @@ fun CardDeactivationRequest(
 ) {
     Column(modifier) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Image(painterResource(id = R.drawable.cancel_button),
-                contentDescription = "cancel",
-                modifier = Modifier
-                    .size(25.dp)
-                    .clickable(remember { MutableInteractionSource() }, null, onClick = onCancel))
-            Spacer(modifier = Modifier.width(5.dp))
+            CancelIcon(onCancel = onCancel)
+            Spacer(modifier = Modifier.width(10.dp))
             Text(text = "Отключение карты: ${card.id}",
                 style = MaterialTheme.typography.h5,)
         }
