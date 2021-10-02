@@ -15,5 +15,6 @@ interface Camera {
 
     fun onDetected(cardToken: String)
 
+    fun onCameraPermissionRequest()
 
 }

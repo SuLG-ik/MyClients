@@ -20,10 +20,15 @@ interface CardsStore: Store<CardsStore.Intent, CardsStore.State, Nothing> {
 
     sealed class State {
         object Hidden : State()
-        object CardDoesNotExists : State()
-        class Loading() : State()
+        object Loading : State()
         class CardLoaded(val card: Card) : State()
-        class Error(val exception: Exception) : State()
+        sealed class Error : State(){
+            object CardDoesNotExists : Error()
+            object CardMustBeActivated : Error()
+            object ConnectionLost: Error()
+            object InternalServerError : Error()
+            object UnknownError : Error()
+        }
     }
 
 }

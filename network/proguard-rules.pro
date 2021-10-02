@@ -31,20 +31,11 @@
     kotlinx.serialization.KSerializer serializer(...);
 }
 
-# Change here com.yourcompany.yourpackage
--keep,includedescriptorclasses class ru.shafran.cards.**$$serializer { *; } # <-- change package name to your app's
--keepclassmembers class ru.shafran.cards.** { # <-- change package name to your app's
-    *** Companion;
-}
--keepclasseswithmembers class ru.shafran.cards.** { # <-- change package name to your app's
-    kotlinx.serialization.KSerializer serializer(...);
-}
-
-# Change here com.yourcompany.yourpackage
--keep,includedescriptorclasses class ru.shafran.network.**$$serializer { *; } # <-- change package name to your app's
--keepclassmembers class ru.shafran.network.** { # <-- change package name to your app's
-    *** Companion;
-}
--keepclasseswithmembers class ru.shafran.network.** { # <-- change package name to your app's
-    kotlinx.serialization.KSerializer serializer(...);
-}
+## Change here com.yourcompany.yourpackage
+#-keep,includedescriptorclasses class ru.shafran.network.**$$serializer { *; } # <-- change package name to your app's
+#-keepclassmembers class ru.shafran.network.** { # <-- change package name to your app's
+#    *** Companion;
+#}
+#-keepclasseswithmembers class ru.shafran.network.** { # <-- change package name to your app's
+#    kotlinx.serialization.KSerializer serializer(...);
+#}

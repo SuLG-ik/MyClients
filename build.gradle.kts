@@ -1,8 +1,8 @@
 buildscript {
-    val compose_version by extra("1.0.0")
-    val decompose_version by extra("0.3.1")
-    val camerax_version by extra("1.0.1")
-    val coroutines_version by extra("1.5.1")
+    val composeVersion by extra("1.0.3")
+    val decomposeVersion by extra("0.3.1")
+    val cameraxVersion by extra("1.0.1")
+    val coroutinesVersion by extra("1.5.1")
 
     repositories {
         google()
@@ -10,7 +10,7 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:7.0.2")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.10")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30")
     }
 }
 

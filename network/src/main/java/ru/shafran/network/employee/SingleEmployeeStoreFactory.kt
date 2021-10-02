@@ -4,6 +4,10 @@ import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.SuspendExecutor
+import io.ktor.client.features.*
+import io.ktor.http.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import ru.shafran.network.data.employee.Employee
 
 @Suppress("FunctionName")
@@ -38,36 +42,36 @@ class SingleEmployeeStoreFactory(
         val repository: EmployeesRepository,
     ) : SuspendExecutor<SingleEmployeeStore.Intent, Nothing, SingleEmployeeStore.State, Result, SingleEmployeeStore.Label>() {
 
+        private suspend fun syncDispatch(result: Result) {
+            withContext(Dispatchers.Main) { dispatch(result) }
+        }
+
+
         override suspend fun executeIntent(
             intent: SingleEmployeeStore.Intent,
             getState: () -> SingleEmployeeStore.State,
         ) {
-            when (intent) {
-                is SingleEmployeeStore.Intent.LoadEmployee -> {
-                    dispatch(Result.Loading)
-                    val employee = repository.getEmployeeById(intent.id)
-                    if (employee != null)
+            try {
+                when (intent) {
+                    is SingleEmployeeStore.Intent.LoadEmployee -> {
+                        dispatch(Result.Loading)
+                        val employee = repository.getEmployeeById(intent.id)
+                        syncDispatch(Result.Loaded(employee))
+                    }
+                    is SingleEmployeeStore.Intent.CreateEmployee -> {
+                        dispatch(Result.Loading)
+                        val employee = repository.createEmployee(intent.employeeData)
                         dispatch(Result.Loaded(employee))
-                    else
-                        dispatch(Result.Error("Ошибка"))
-                }
-                is SingleEmployeeStore.Intent.CreateEmployee -> {
-                    dispatch(Result.Loading)
-                    val employee = repository.createEmployee(intent.employeeData)
-                    dispatch(Result.Loaded(employee))
-                    publish(SingleEmployeeStore.Label.OnUpdatedOrCreated)
-                }
-                is SingleEmployeeStore.Intent.AddImageToEmployee -> {
-                    dispatch(Result.Loading)
-                    try {
-                        val employee =
-                            repository.addImageToEmployee(intent.employeeId, intent.image)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        dispatch(Result.Error("Ошибка выполнения"))
+                        publish(SingleEmployeeStore.Label.OnUpdatedOrCreated)
+                    }
+                    is SingleEmployeeStore.Intent.AddImageToEmployee -> {
+                        dispatch(Result.Loading)
+                        val employee = repository.addImageToEmployee(intent.employeeId, intent.image)
+                        dispatch(Result.Loaded(employee))
+                        publish(SingleEmployeeStore.Label.OnUpdatedOrCreated)
                     }
                 }
-            }
+            }catch (e: Exception) {syncDispatch(Result.Error(e))}
         }
 
     }
@@ -76,19 +80,40 @@ class SingleEmployeeStoreFactory(
     private object ReducerImpl : Reducer<SingleEmployeeStore.State, Result> {
         override fun SingleEmployeeStore.State.reduce(result: Result): SingleEmployeeStore.State =
             when (result) {
+                is Result.Loaded -> {
+                    SingleEmployeeStore.State.EmployeeLoaded(result.employee)
+                }
                 is Result.Loading -> SingleEmployeeStore.State.Loading
-                is Result.Loaded -> SingleEmployeeStore.State.Loaded(
-                    employee = result.employee,
-                )
-                is Result.Error -> SingleEmployeeStore.State.Error(result.message)
-                is Result.Hidden -> SingleEmployeeStore.State.Hidden
+                is Result.Error -> {
+                    when (val exception = result.exception) {
+                        is ResponseException -> {
+                            when (exception.response.status) {
+                                HttpStatusCode.InternalServerError -> {
+                                    SingleEmployeeStore.State.Error.InternalServerError
+                                }
+                                HttpStatusCode.NotFound -> {
+                                    SingleEmployeeStore.State.Error.NotFoundException
+                                }
+                                else -> {
+                                    exception.printStackTrace()
+                                    SingleEmployeeStore.State.Error.UnknownError
+                                }
+                            }
+                        }
+                        else -> {
+                            exception.printStackTrace()
+                            SingleEmployeeStore.State.Error.UnknownError
+                        }
+                    }
+                }
+                Result.Hidden -> SingleEmployeeStore.State.Hidden
             }
     }
 
     sealed class Result {
         object Loading : Result()
         data class Loaded(val employee: Employee) : Result()
-        data class Error(val message: String) : Result()
+        data class Error(val exception: Exception) : Result()
         object Hidden : Result()
     }
 }

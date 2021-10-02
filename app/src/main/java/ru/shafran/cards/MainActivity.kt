@@ -1,6 +1,9 @@
 package ru.shafran.cards
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,23 +16,24 @@ import ru.shafran.cards.ui.theme.ShafranCardsTheme
 
 class MainActivity : ComponentActivity() {
 
-    val xPlayer = 2
-    val yPlayer = 3
-
-    val xBox = 1
-    val yBox = 3
-
-    val hBox = 2
-    val wBox = 2
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val component: Main = MainComponent(defaultComponentContext())
+        val component: Main = MainComponent(
+            defaultComponentContext(),
+            onOpenSettings = this::onOpenSettings
+        )
         setContent {
             ShafranCardsTheme {
                 MainUI(component = component, modifier = Modifier.fillMaxSize())
             }
         }
     }
+
+    private fun onOpenSettings() {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        intent.data = Uri.fromParts("package", packageName, null)
+        startActivity(intent)
+    }
+
 }
 

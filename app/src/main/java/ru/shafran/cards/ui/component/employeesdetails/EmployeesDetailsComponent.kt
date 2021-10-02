@@ -35,7 +35,7 @@ class EmployeesDetailsComponent(
         }.launchIn(scope)
         singleEmployeeStore.states.onEach { state ->
             when (state) {
-                is SingleEmployeeStore.State.Loaded -> {
+                is SingleEmployeeStore.State.EmployeeLoaded -> {
                     onShowInfo(state.employee.toModel())
                 }
                 is SingleEmployeeStore.State.Loading -> {

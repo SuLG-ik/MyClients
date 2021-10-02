@@ -4,6 +4,8 @@ import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.SuspendExecutor
+import io.ktor.client.features.*
+import io.ktor.http.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.shafran.network.card.CardsRepository
@@ -37,12 +39,29 @@ internal class HistoryStoreFactory(
 
         override fun HistoryStore.State.reduce(result: Result): HistoryStore.State {
             return when (result) {
-                is Result.Loading -> HistoryStore.State.Loading
-                is Result.Error -> HistoryStore.State.Error(result.exception)
                 is Result.HistoryLoaded -> HistoryStore.State.HistoryLoaded(
-                    page = result.page,
                     history = result.history.sortedByDescending { it.time }
                 )
+                is Result.Loading -> HistoryStore.State.Loading
+                is Result.Error -> {
+                    when (val exception = result.exception) {
+                        is ResponseException -> {
+                            when (exception.response.status) {
+                                HttpStatusCode.InternalServerError -> {
+                                    HistoryStore.State.Error.InternalServerError
+                                }
+                                else -> {
+                                    exception.printStackTrace()
+                                    HistoryStore.State.Error.UnknownError
+                                }
+                            }
+                        }
+                        else -> {
+                            exception.printStackTrace()
+                            HistoryStore.State.Error.UnknownError
+                        }
+                    }
+                }
             }
         }
     }
@@ -60,19 +79,21 @@ internal class HistoryStoreFactory(
             intent: HistoryStore.Intent,
             getState: () -> HistoryStore.State,
         ) {
-            when (intent) {
-                is HistoryStore.Intent.LoadHistory -> {
-                    val history = cardsRepository.getUsagesHistory()
-                    syncDispatch(Result.HistoryLoaded(page = intent.page, history = history))
+            try {
+                when (intent) {
+                    is HistoryStore.Intent.LoadHistory -> {
+                        val history = cardsRepository.getUsagesHistory()
+                        syncDispatch(Result.HistoryLoaded(history = history))
+                    }
                 }
-            }
+            } catch (e: Exception) { syncDispatch(Result.Error(e)) }
         }
     }
 
 
     private sealed class Result {
         object Loading : Result()
-        class HistoryLoaded(val page: Int, val history: List<CardAction>) : Result()
+        class HistoryLoaded(val history: List<CardAction>) : Result()
         class Error(val exception: Exception) : Result()
     }
 

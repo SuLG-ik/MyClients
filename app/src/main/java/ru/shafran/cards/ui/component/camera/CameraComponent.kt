@@ -12,6 +12,7 @@ import ru.shafran.cards.utils.get
 class CameraComponent(
     componentContext: ComponentContext,
     private val onDetected: (String) -> Unit,
+    private val onOpenSettings: () -> Unit,
 ) : Camera, ComponentContext by componentContext {
 
     override val isEnabled: MutableStateFlow<Boolean> = MutableStateFlow(false)
@@ -38,6 +39,10 @@ class CameraComponent(
 
     override fun onDetected(cardToken: String) {
         onDetected.invoke(cardToken)
+    }
+
+    override fun onCameraPermissionRequest() {
+        onOpenSettings.invoke()
     }
 
 

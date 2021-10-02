@@ -6,7 +6,10 @@ import com.arkivanov.decompose.router
 import com.arkivanov.decompose.value.Value
 import ru.shafran.cards.ui.component.root.RootComponent
 
-class MainComponent(componentContext: ComponentContext) : Main,
+class MainComponent(
+    componentContext: ComponentContext,
+    private val onOpenSettings: () -> Unit,
+) : Main,
     ComponentContext by componentContext {
 
     private val router = router<MainConfiguration, Main.Child>(
@@ -20,7 +23,7 @@ class MainComponent(componentContext: ComponentContext) : Main,
         componentContext: ComponentContext
     ): Main.Child =
         when(configuration) {
-            is MainConfiguration.Root -> Main.Child.Root(RootComponent(componentContext))
+            is MainConfiguration.Root -> Main.Child.Root(RootComponent(componentContext, onOpenSettings = onOpenSettings))
         }
 
 

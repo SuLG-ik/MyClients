@@ -17,10 +17,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import ru.shafran.cards.R
-import ru.shafran.cards.data.card.ActivationDataModel
-import ru.shafran.cards.data.card.CardDescriptionModel
-import ru.shafran.cards.data.card.CardModel
-import ru.shafran.cards.data.card.description
+import ru.shafran.cards.data.card.*
 import ru.shafran.cards.ui.component.cardsdetails.info.MaterialDivider
 import ru.shafran.cards.ui.component.cardsdetails.info.OutlinedSurface
 
@@ -44,14 +41,7 @@ fun CardActivationRequest(
     modifier: Modifier,
 ) {
     Column(modifier) {
-        val previousActivationData = remember(card) {
-            when (val description = card.description) {
-                is CardDescriptionModel.Activated -> description.activation
-                is CardDescriptionModel.Deactivated -> description.activation
-                is CardDescriptionModel.Overuse -> description.activation
-                else -> null
-            }?.data
-        }
+        val previousActivationData = remember(card) { card.lastActivation?.data }
 
         var cost by remember(previousActivationData) {
             mutableStateOf(previousActivationData?.cost?.toString() ?: "")

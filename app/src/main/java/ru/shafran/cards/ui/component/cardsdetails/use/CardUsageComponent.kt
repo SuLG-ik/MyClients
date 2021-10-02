@@ -22,10 +22,14 @@ class CardUsageComponent(
     override val employees =
         employeesStore.states.map { state ->
             Log.d("EmployeesDetailsCheck", state.toString())
-            if (state.isLoading)
-                null
-            else
-                state.employees.map { it.toModel() }
+            when (state) {
+                is EmployeesListStore.State.EmployeesLoaded -> {
+                    state.employees.map { it.toModel() }
+                }
+                else -> {
+                    null
+                }
+            }
         }
 
     override fun onUse(data: UsageDataModel) {

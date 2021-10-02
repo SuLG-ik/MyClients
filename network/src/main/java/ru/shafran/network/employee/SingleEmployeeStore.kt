@@ -40,8 +40,15 @@ interface SingleEmployeeStore :
     sealed class State {
         object Loading : State()
         object Hidden : State()
-        data class Loaded(val employee: Employee) : State()
-        data class Error(val message: String) : State()
+        data class EmployeeLoaded(
+            val employee: Employee,
+        ) : State()
+        sealed class Error : State() {
+            object NotFoundException : Error()
+            object InternalServerError : Error()
+            object ConnectionLost: Error()
+            object UnknownError : Error()
+        }
     }
 
     sealed class Label {

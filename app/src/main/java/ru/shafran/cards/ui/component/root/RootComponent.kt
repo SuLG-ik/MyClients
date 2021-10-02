@@ -9,10 +9,16 @@ import ru.shafran.cards.ui.component.employees.EmployeesComponent
 import ru.shafran.cards.ui.component.history.History
 import ru.shafran.cards.ui.component.history.HistoryComponent
 
-class RootComponent(componentContext: ComponentContext) : Root,
+class RootComponent(
+    componentContext: ComponentContext,
+    onOpenSettings: () -> Unit,
+) : Root,
     ComponentContext by componentContext {
 
-    private val cards: Cards = CardsComponent(childContext("cards_component"))
+    private val cards: Cards = CardsComponent(
+        childContext("cards_component"),
+        onOpenSettings = onOpenSettings,
+    )
     private val employees: Employees = EmployeesComponent(childContext("employees_component"))
     private val history: History = HistoryComponent(childContext("history_component"))
 

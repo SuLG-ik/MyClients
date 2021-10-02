@@ -9,13 +9,17 @@ interface EmployeesListStore : Store<EmployeesListStore.Intent, EmployeesListSto
         object LoadEmployees : Intent()
     }
 
-    data class State(
-        val isLoading: Boolean = false,
-        val employees: List<Employee> = emptyList(),
-    )
+    sealed class State {
+        data class EmployeesLoaded(
+            val employees: List<Employee> = emptyList(),
+        ) : State()
 
-    sealed class Label {
-        data class ShowError(val message: String)
+        object Loading : State()
+        sealed class Error : State() {
+            object InternalServerError : Error()
+            object ConnectionLost: Error()
+            object UnknownError : Error()
+        }
     }
 
 

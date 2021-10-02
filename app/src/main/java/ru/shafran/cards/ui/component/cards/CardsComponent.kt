@@ -17,6 +17,7 @@ import ru.shafran.network.employee.EmployeesStore
 
 class CardsComponent(
     componentContext: ComponentContext,
+    onOpenSettings: () -> Unit,
 ) : Cards, ComponentContext by componentContext {
 
     private val scope = createCoroutineScope()
@@ -32,6 +33,7 @@ class CardsComponent(
         CameraComponent(
             childContext("camera_component"),
             onDetected = this::onShowCardInfo,
+            onOpenSettings = onOpenSettings,
         )
 
     init {

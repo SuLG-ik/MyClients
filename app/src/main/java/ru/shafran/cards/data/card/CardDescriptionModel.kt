@@ -25,20 +25,20 @@ sealed class CardDescriptionModel : Parcelable {
 
 }
 
-val CardModel.description: CardDescriptionModel
-    get() {
-        if (history.size == 0) return CardDescriptionModel.NewerUsed
-        val lastActivation =
-            history.actions.last { it is CardActionModel.Activation } as CardActionModel.Activation
-        val lastDeactivation =
-            history.actions.lastOrNull { it is CardActionModel.Deactivation && it.activationId == lastActivation.id } as CardActionModel.Deactivation?
-        if (lastDeactivation != null) return CardDescriptionModel.Deactivated(
-            activation = lastActivation,
-            deactivation = lastDeactivation
-        )
-        val pairedUsages =
-            history.actions.filter { it is CardActionModel.Usage && it.activationId == lastActivation.id }
-        if (pairedUsages.size >= lastActivation.data.capacity)
-            return CardDescriptionModel.Overuse(lastActivation)
-        return CardDescriptionModel.Activated(lastActivation)
-    }
+//val CardModel.description: CardDescriptionModel
+//    get() {
+//        if (history.size == 0) return CardDescriptionModel.NewerUsed
+//        val lastActivation =
+//            history.actions.last { it is CardActionModel.Activation } as CardActionModel.Activation
+//        val lastDeactivation =
+//            history.actions.lastOrNull { it is CardActionModel.Deactivation && it.activationId == lastActivation.id } as CardActionModel.Deactivation?
+//        if (lastDeactivation != null) return CardDescriptionModel.Deactivated(
+//            activation = lastActivation,
+//            deactivation = lastDeactivation
+//        )
+//        val pairedUsages =
+//            history.actions.filter { it is CardActionModel.Usage && it.activationId == lastActivation.id }
+//        if (pairedUsages.size >= lastActivation.data.capacity)
+//            return CardDescriptionModel.Overuse(lastActivation)
+//        return CardDescriptionModel.Activated(lastActivation)
+//    }

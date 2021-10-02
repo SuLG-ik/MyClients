@@ -10,8 +10,6 @@ fun Application.startDI() {
         androidContext(this@startDI)
         androidLogger()
         modules(
-            loggerModule,
-
             serializationModule,
             httpModule,
 

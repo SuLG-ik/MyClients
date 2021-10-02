@@ -26,3 +26,27 @@ fun CardModel.toData(): Card {
         history = history.toData()
     )
 }
+
+val CardModel.lastActivation: CardActionModel.Activation?
+    get() {
+        return history.actions.filterIsInstance<CardActionModel.Activation>()
+            .maxByOrNull { it.time }
+    }
+
+val CardModel.description: CardDescriptionModel
+    get() {
+        val lastActivation = lastActivation ?: return CardDescriptionModel.NewerUsed
+
+        val deactivation = history.actions.firstOrNull {
+            it is CardActionModel.Deactivation && it.activationId == lastActivation.id
+        } as CardActionModel.Deactivation?
+        if (deactivation != null)
+            return CardDescriptionModel.Deactivated(lastActivation, deactivation)
+
+        val usages =
+            history.actions.filter { it is CardActionModel.Usage && it.activationId == lastActivation.id }
+        if (usages.size >= lastActivation.data.capacity)
+            return CardDescriptionModel.Overuse(lastActivation)
+
+        return CardDescriptionModel.Activated(lastActivation)
+    }

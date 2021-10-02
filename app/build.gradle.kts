@@ -1,19 +1,17 @@
 import com.android.tools.build.bundletool.model.utils.Versions
 
 
-
 plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-parcelize")
-    kotlin("plugin.serialization") version "1.5.10"
+    kotlin("plugin.serialization") version "1.5.30"
 }
 
-val compose_version: String by rootProject.extra
-
-val decompose_version: String by rootProject.extra
-val camerax_version: String by rootProject.extra
-val coroutines_version: String by rootProject.extra
+val composeVersion: String by rootProject.extra
+val decomposeVersion: String by rootProject.extra
+val cameraxVersion: String by rootProject.extra
+val coroutinesVersion: String by rootProject.extra
 
 android {
     compileSdk = Versions.ANDROID_R_API_VERSION
@@ -34,17 +32,55 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            buildConfigField(
+                "String",
+                "NETWORK_URL",
+                "\"${System.getenv("SHAFRAN_API_HOST_RELEASE")}\""
+            )
+            buildConfigField(
+                "String",
+                "NETWORK_API_VERSION",
+                "\"${System.getenv("SHAFRAN_API_VERSION_RELEASE")}\""
+            )
+            buildConfigField(
+                "String",
+                "NETWORK_API_PROTOCOL",
+                "\"http\""
+            )
+            buildConfigField(
+                "int",
+                "NETWORK_API_PORT",
+                System.getenv("SHAFRAN_API_PORT_RELEASE"),
+            )
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
+                getDefaultProguardFile("proguard-android.txt"),
                 "proguard-rules.pro"
             )
         }
         debug {
-            buildConfigField("String", "NETWORK_URL", "\"${System.getenv("SHAFRAN_API_HOST")}\"")
-            buildConfigField("String", "NETWORK_API_VERSION", "\"0.1\"")
-            buildConfigField("String", "NETWORK_API_PROTOCOL", "\"http\"")
-            buildConfigField("int", "NETWORK_API_PORT", "80")
+            applicationIdSuffix = ".debug"
+            buildConfigField(
+                "String",
+                "NETWORK_URL",
+                "\"${System.getenv("SHAFRAN_API_HOST_DEBUG")}\""
+            )
+            buildConfigField(
+                "String",
+                "NETWORK_API_VERSION",
+                "\"${System.getenv("SHAFRAN_API_VERSION_DEBUG")}\""
+            )
+            buildConfigField(
+                "String",
+                "NETWORK_API_PROTOCOL",
+                "\"http\""
+            )
+            buildConfigField(
+                "int",
+                "NETWORK_API_PORT",
+                System.getenv("SHAFRAN_API_PORT_DEBUG"),
+            )
         }
     }
     buildFeatures {
@@ -60,54 +96,51 @@ android {
         freeCompilerArgs = freeCompilerArgs + "-Xopt-in=org.mylibrary.OptInAnnotation"
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = compose_version
+        kotlinCompilerExtensionVersion = composeVersion
     }
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-guava:$coroutines_version")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
-    implementation("androidx.core:core-ktx:1.6.0")
-    implementation("androidx.appcompat:appcompat:1.3.1")
     implementation("com.google.android.material:material:1.4.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-guava:$coroutinesVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
+
     implementation("com.arkivanov.mvikotlin:mvikotlin:2.0.4")
     implementation("com.arkivanov.mvikotlin:mvikotlin-main:2.0.4")
     implementation("com.arkivanov.mvikotlin:mvikotlin-logging:2.0.4")
     implementation("com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines:2.0.4")
-    implementation("com.arkivanov.decompose:decompose:$decompose_version")
-    implementation("com.arkivanov.decompose:extensions-compose-jetpack:$decompose_version")
+
+    implementation("com.arkivanov.decompose:decompose:$decomposeVersion")
+    implementation("com.arkivanov.decompose:extensions-compose-jetpack:$decomposeVersion")
     implementation("com.arkivanov.essenty:lifecycle:0.1.2")
     implementation("com.arkivanov.essenty:parcelable:0.1.2")
-    implementation("io.insert-koin:koin-android:3.1.2")
-    implementation("com.google.accompanist:accompanist-placeholder-material:0.17.0")
-    implementation("androidx.activity:activity-compose:1.3.1")
-    implementation("androidx.compose.ui:ui:$compose_version")
-    implementation("androidx.compose.material:material:$compose_version")
-    implementation("androidx.compose.ui:ui-tooling:$compose_version")
 
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.18.0")
+    implementation("io.insert-koin:koin-android:3.1.2")
+
+    implementation("androidx.activity:activity-compose:1.3.1")
+    implementation("androidx.compose.ui:ui:$composeVersion")
+    implementation("androidx.compose.material:material:$composeVersion")
+    implementation("androidx.compose.ui:ui-tooling:$composeVersion")
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.19.0")
+    implementation("com.google.accompanist:accompanist-permissions:0.19.0")
+
 
     implementation("io.ktor:ktor-client-core:1.6.1")
     implementation("io.ktor:ktor-client-android:1.6.1")
     implementation("io.ktor:ktor-client-serialization:1.6.1")
 
-    implementation("com.google.zxing:core:3.4.1")
-
-    implementation("androidx.camera:camera-core:${camerax_version}")
-    implementation("androidx.camera:camera-camera2:${camerax_version}")
-    implementation("androidx.camera:camera-lifecycle:${camerax_version}")
-    implementation("androidx.camera:camera-view:1.0.0-alpha27")
+    implementation("androidx.camera:camera-core:${cameraxVersion}")
+    implementation("androidx.camera:camera-camera2:${cameraxVersion}")
+    implementation("androidx.camera:camera-lifecycle:${cameraxVersion}")
+    implementation("androidx.camera:camera-view:1.0.0-alpha28")
     implementation("com.google.mlkit:barcode-scanning:17.0.0")
 
-    implementation(project(":logger"))
     implementation(project(":network"))
-
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$compose_version")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
 }

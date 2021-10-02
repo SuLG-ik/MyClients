@@ -3,10 +3,7 @@ package ru.shafran.cards.ui.component.root
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -30,13 +27,14 @@ fun RootUI(component: Root, modifier: Modifier = Modifier) {
             TopAppBar(
                 modifier = Modifier.fillMaxWidth()
             ) {
+                Spacer(modifier = Modifier.width(15.dp))
                 val currentConfiguration = routerState.value.activeChild.configuration
                 Crossfade(
                     targetState = RootConfiguration.children[currentConfiguration]?.title
                         ?: stringResource(id = R.string.app_name),
                     animationSpec = tween(250)
                 ) {
-                    Text(it)
+                    Text(it, style = MaterialTheme.typography.h6)
                 }
             }
         },

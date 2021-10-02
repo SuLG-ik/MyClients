@@ -1,6 +1,5 @@
 package ru.shafran.cards.ui.component.employeeslist
 
-import android.util.Log
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import kotlinx.coroutines.flow.map
@@ -15,13 +14,15 @@ class EmployeesListComponent(
 
     override val employees =
         employeesListStore.states.map { state ->
-            Log.d("EmployeesDetailsCheck", state.toString())
-            if (state.isLoading)
-                null
-            else
-                state.employees.map { it.toModel() }
+            when (state) {
+                is EmployeesListStore.State.EmployeesLoaded -> {
+                    state.employees.map { it.toModel() }
+                }
+                else -> {
+                    null
+                }
+            }
         }
-
 
     init {
         onUpdate()

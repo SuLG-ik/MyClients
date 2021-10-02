@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -18,7 +19,7 @@ fun EmployeeInfoUI(component: EmployeeInfo, modifier: Modifier) {
 
 @Composable
 private fun EmployeeInfo(employee: EmployeeModel, modifier: Modifier) {
-    Row {
+    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         Icon(
             painter = painterResource(id = R.drawable.logo_employees),
             contentDescription = null,

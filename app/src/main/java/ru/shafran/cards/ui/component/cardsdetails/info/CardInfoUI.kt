@@ -290,7 +290,9 @@ fun CardHistorySection(isFull: Boolean, history: MappedHistory, modifier: Modifi
 
         if (isFull) {
             history.usages.forEachIndexed { index, item ->
-                CardHistoryUsageItem(action = item, employee = null,modifier = Modifier.fillMaxWidth())
+                CardHistoryUsageItem(action = item,
+                    employee = null,
+                    modifier = Modifier.fillMaxWidth())
                 if (index < history.usages.size) {
                     Spacer(modifier = Modifier.width(5.dp))
                 }
@@ -332,7 +334,11 @@ fun CardHistoryDeactivationItem(action: CardActionModel.Deactivation, modifier: 
 }
 
 @Composable
-fun CardHistoryUsageItem(action: CardActionModel.Usage, employee: EmployeeModel?, modifier: Modifier) {
+fun CardHistoryUsageItem(
+    action: CardActionModel.Usage,
+    employee: EmployeeModel?,
+    modifier: Modifier,
+) {
     CardHistoryItem(
         title = "Использование",
         employee = employee,
