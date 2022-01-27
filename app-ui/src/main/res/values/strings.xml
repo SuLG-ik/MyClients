@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="navigation_topbar_title">Shafran</string>
+    <string name="scanner_camera_permanent_deny">Camera is necessary to scan cards</string>
+    <string name="error_continue_button">Continue</string>
+    <string name="navigation_services_title">Services</string>
+    <string name="navigation_scanner_title">Scanner</string>
+    <string name="customer_unknown_phone">Unknown</string>
+    <string name="customer_gender_male">Male</string>
+    <string name="customer_gender_female">Female</string>
+    <string name="customer_gender_unknown">Unknown</string>
+    <string name="customers_activate_button">Activate customer</string>
+    <string name="scanner_camera_accept">Accept</string>
+    <string name="customers_editing">Editing</string>
+    <string name="customers_activating">Activating</string>
+    <string name="customers_name">Name</string>
+    <string name="customers_remark">Remark</string>
+    <string name="customer_apply">Apply changes</string>
+    <string name="customer_empty_history">There are no active sessions</string>
+    <string name="customers_create_new_session">Add new session</string>
+    <string name="customer_session_activation_remark">Remark</string>
+    <string name="customer_session_activation_empty_continue">Select</string>
+    <string name="customer_session_activation_continue">Select: %1$s</string>
+    <string name="customer_session_activation_title">Session: %1$s</string>
+    <string name="customer_session_activation_empty_service">Choose service</string>
+    <string name="customer_session_activation_services_title">Services</string>
+    <string name="customer_session_activation_empty_employee">Choose employee</string>
+    <string name="customer_session_activation_employees_title">Employees</string>
+</resources>

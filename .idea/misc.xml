@@ -3,28 +3,41 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/vollllodya/AndroidStudioProjects/ShafranCards/app/src/main/res/drawable/placeholder.xml" value="0.13425925925925927" />
-        <entry key="..\:/Users/vollllodya/AndroidStudioProjects/ShafranCards/app/src/main/res/xml/network_security_config.xml" value="0.18177083333333333" />
-        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/cancel_button.xml" value="0.27037037037037037" />
-        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/card_history.xml" value="0.16944444444444445" />
-        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/card_loading.xml" value="0.16944444444444445" />
-        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/logo_cards.xml" value="0.16944444444444445" />
-        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/logo_employees.xml" value="0.16944444444444445" />
-        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/logo_services.xml" value="0.16944444444444445" />
-        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/logo_take_card.xml" value="0.16944444444444445" />
-        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/logo_tickets.xml" value="0.16944444444444445" />
-        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/placeholder.xml" value="0.16944444444444445" />
-        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/turn_off_slider.xml" value="0.16944444444444445" />
-        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/turn_on_slider.xml" value="0.16944444444444445" />
-        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/use_card.xml" value="0.209375" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-common/src/main/res/drawable/logo_cards.xml" value="0.1" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-common/src/main/res/drawable/logo_services.xml" value="0.1" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-ui/src/main/res/drawable/cancel_button.xml" value="0.29" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-ui/src/main/res/drawable/edit_button.xml" value="0.249" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-ui/src/main/res/drawable/logo_cards.xml" value="0.1635" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-ui/src/main/res/drawable/logo_employees.xml" value="0.2895" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-ui/src/main/res/drawable/logo_gender.xml" value="0.1635" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-ui/src/main/res/drawable/logo_phone.xml" value="0.1635" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-ui/src/main/res/drawable/logo_services.xml" value="0.1635" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-ui/src/main/res/drawable/phone_logo.xml" value="0.2495" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-ui/src/main/res/drawable/turn_on_slider.xml" value="0.29" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/cancel_button.xml" value="0.2895" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/card_history.xml" value="0.2895" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/card_loading.xml" value="0.2895" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/ic_baseline_camera_enhance_24.xml" value="0.2895" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/ic_shafran_icon.xml" value="0.1" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/icon.xml" value="0.1" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/icon_background.xml" value="0.1055" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/icon_foreground.xml" value="0.1" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/icon_splash.xml" value="0.1" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/logo_employees.xml" value="0.29" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/logo_take_card.xml" value="0.2895" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/logo_tickets.xml" value="0.29" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/placeholder.xml" value="0.2895" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/turn_off_slider.xml" value="0.2895" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/turn_on_slider.xml" value="0.2895" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/use_card.xml" value="0.2895" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
       </map>
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="11" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/build/classes" />
-  </component>
-  <component name="ProjectType">
-    <option name="id" value="Android" />
-  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="services_list_loading_message">Загрузка услуг</string>
+    <string name="customers_loading">Загрузка клиентов</string>
+</resources>
