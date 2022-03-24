@@ -5,15 +5,13 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.SuspendExecutor
 
-internal class SingleEmployeeStoreFactory(private val storeFactory: StoreFactory) {
-
-    fun build(): SingleEmployeeStore = object : SingleEmployeeStore,
+internal class SingleEmployeeStoreImpl(private val storeFactory: StoreFactory): SingleEmployeeStore,
         Store<SingleEmployeeStore.Intent, SingleEmployeeStore.State, SingleEmployeeStore.Label> by storeFactory.create(
             name = "SingleEmployeeStore",
             initialState = SingleEmployeeStore.State.Loading(emptyList()),
             reducer = ReducerImpl,
             executorFactory = { Executor() },
-        ) {}
+        ) {
 
     private object ReducerImpl :
         Reducer<SingleEmployeeStore.State, Message> {

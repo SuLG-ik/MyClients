@@ -3,24 +3,27 @@ package ru.shafran.network.services
 import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.CoroutineDispatcher
 import ru.shafran.network.services.data.GetAllServicesRequest
 import ru.shafran.network.services.data.Service
-import ru.shafran.network.utils.SyncCoroutineExecutor
+import ru.shafran.network.utils.CancelableSyncCoroutineExecutor
 
-internal class ServicesListStoreFactory(
+internal class ServicesListStoreImpl(
     private val storeFactory: StoreFactory,
     private val servicesRepository: ServicesRepository,
-) {
-
-    fun build(): ServicesListStore = object : ServicesListStore,
-        Store<ServicesListStore.Intent, ServicesListStore.State, ServicesListStore.Label> by storeFactory.create(
-            name = "ServicesListStore",
-            initialState = ServicesListStore.State.Loading(emptyList()),
-            reducer = ReducerImpl,
-            executorFactory = { Executor(servicesRepository = servicesRepository) },
-        ) {}
+    private val coroutineDispatcher: CoroutineDispatcher,
+) : ServicesListStore,
+    Store<ServicesListStore.Intent, ServicesListStore.State, ServicesListStore.Label> by storeFactory.create(
+        name = "ServicesListStore",
+        initialState = ServicesListStore.State.Loading(emptyList()),
+        reducer = ReducerImpl,
+        executorFactory = {
+            Executor(
+                servicesRepository = servicesRepository,
+                coroutineDispatcher = coroutineDispatcher
+            )
+        },
+    ) {
 
     private object ReducerImpl :
         Reducer<ServicesListStore.State, Message> {
@@ -51,19 +54,17 @@ internal class ServicesListStoreFactory(
 
     private class Executor(
         private val servicesRepository: ServicesRepository,
-    ) :
-        SyncCoroutineExecutor<ServicesListStore.Intent, Nothing, ServicesListStore.State, Message, ServicesListStore.Label>() {
+        coroutineDispatcher: CoroutineDispatcher,
+    ) : CancelableSyncCoroutineExecutor<ServicesListStore.Intent, Nothing, ServicesListStore.State, Message, ServicesListStore.Label>(coroutineDispatcher) {
 
 
-        override fun executeIntent(
+        override suspend fun execute(
             intent: ServicesListStore.Intent,
             getState: () -> ServicesListStore.State,
         ) {
-            scope.launch(Dispatchers.IO) {
-                when (intent) {
-                    is ServicesListStore.Intent.LoadServices ->
-                        intent.execute()
-                }
+            when (intent) {
+                is ServicesListStore.Intent.LoadServices ->
+                    intent.execute()
             }
         }
 
@@ -91,6 +92,4 @@ internal class ServicesListStoreFactory(
         data class Error(val exception: Exception) : Message()
     }
 
-
 }
-

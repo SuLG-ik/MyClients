@@ -2,12 +2,19 @@ package ru.shafran.ui.view
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -21,11 +28,12 @@ internal fun TitledDialog(
     modifier: Modifier = Modifier,
     onBackPressed: (() -> Unit)? = null,
     contentPadding: PaddingValues = PaddingValues(10.dp),
+    verticalArrangement: Arrangement.HorizontalOrVertical = Arrangement.spacedBy(10.dp),
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+        verticalArrangement = verticalArrangement,
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -40,15 +48,11 @@ internal fun TitledDialog(
             }
             Text(
                 text = title,
-                style = MaterialTheme.typography.h5,
+                style = MaterialTheme.typography.headlineSmall,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
         }
-        MaterialDivider(
-            modifier = Modifier
-                .fillMaxWidth(),
-        )
         OutlinedSurface(modifier = Modifier.fillMaxWidth()) {
             Column(
                 modifier = Modifier

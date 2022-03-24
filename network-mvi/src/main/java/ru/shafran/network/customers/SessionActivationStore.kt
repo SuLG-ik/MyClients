@@ -13,8 +13,8 @@ interface SessionActivationStore :
 
     sealed class Intent {
 
-        data class LoadDetailsWithId(
-            val employeeId: String,
+        data class LoadDetailsWithCustomer(
+            val customer: Customer.ActivatedCustomer,
         ) : Intent()
 
         data class Activate(
@@ -25,6 +25,8 @@ interface SessionActivationStore :
 
 
     sealed class State {
+
+        object Empty : State()
 
         data class ActivationLoading(
             val configuration: ConfiguredService,

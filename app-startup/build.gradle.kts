@@ -19,12 +19,12 @@ android {
             buildConfigField(
                 "String",
                 "NETWORK_API_URL",
-                "\"${System.getenv("SHAFRAN_API_HOST")}\""
+                "\"${System.getenv("SHAFRAN_API_HOST_RELEASE")}\"",
             )
             buildConfigField(
                 "String",
                 "NETWORK_API_VERSION",
-                "\"${System.getenv("SHAFRAN_API_VERSION")}\""
+                "\"${System.getenv("SHAFRAN_API_VERSION_DEBUG")}\""
             )
             isMinifyEnabled = true
             proguardFiles(
@@ -36,7 +36,7 @@ android {
             buildConfigField(
                 "String",
                 "NETWORK_API_URL",
-                "\"${System.getenv("SHAFRAN_API_HOST_DEBUG")}\""
+                "\"${System.getenv("SHAFRAN_API_HOST_DEBUG")}\"",
             )
             buildConfigField(
                 "String",
@@ -90,10 +90,13 @@ dependencies {
     implementation(Dependencies.Activity.compose)
     implementation(Dependencies.Compose.ui)
 
-    implementation(project(":app-common"))
-    implementation(project(":app-components"))
-    implementation(project(":app-ui"))
-    implementation(project(":network-data"))
-    implementation(project(":network-mvi"))
-    implementation(project(":decompose"))
+    implementation(platform(Dependencies.Firebase.BoM))
+    implementation(Dependencies.Firebase.crashlytics)
+    implementation(Dependencies.Firebase.analytics)
+
+    implementation(projects.appCommon)
+    implementation(projects.appComponents)
+    implementation(projects.appUi)
+    implementation(projects.networkData)
+    implementation(projects.networkMvi)
 }

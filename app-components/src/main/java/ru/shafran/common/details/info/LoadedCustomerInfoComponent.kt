@@ -9,6 +9,7 @@ internal class LoadedCustomerInfoComponent(
     private val onBack: () -> Unit,
     private val onEdit: () -> Unit,
     private val onActivateSession: () -> Unit,
+    private val onUseSession: (Session) -> Unit,
 ) : LoadedCustomerInfo {
 
     override fun onBack() {
@@ -21,5 +22,9 @@ internal class LoadedCustomerInfoComponent(
 
     override fun onActivateSession() {
         onActivateSession.invoke()
+    }
+
+    override fun onUseSession(session: Session) {
+        onUseSession.invoke(session)
     }
 }

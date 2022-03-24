@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.library")  version Dependencies.Android.agpVersion
+    id("com.android.library") version Dependencies.Android.agpVersion
     kotlin("plugin.parcelize") version Dependencies.Kotlin.version
     kotlin("android") version Dependencies.Kotlin.version
 }
@@ -17,7 +17,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isShrinkResources = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro")
         }
@@ -28,7 +28,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-    kotlin{
+    kotlin {
         explicitApi()
     }
 
@@ -47,5 +47,5 @@ dependencies {
     implementation(Dependencies.Android.core)
     implementation(Dependencies.Coroutines.core)
     implementation(Dependencies.Decompose.core)
-    implementation(project(":network-data"))
+    implementation(projects.networkData)
 }

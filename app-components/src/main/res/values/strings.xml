@@ -2,8 +2,13 @@
 <resources>
     <string name="services_list_loading_message">Loading services</string>
     <string name="customers_loading">Loading customers</string>
+    <string name="services_loading">Loading services</string>
     <string name="customers_session_activation_details_loading_message">Loading activation</string>
     <string name="customers_session_activation_loading_message">Activating</string>
     <string name="customers_info_loading_message">Loading customer</string>
     <string name="customers_editing_loading_message">Loading details</string>
+    <string name="customers_info_error_unknown_message">Unknown error</string>
+    <string name="customers_info_error_card_not_found_message">Card not found</string>
+    <string name="customers_info_error_illegal_card_message">It is not the card</string>
+    <string name="customers_info_error_customer_not_found_message">Customer not found</string>
 </resources>

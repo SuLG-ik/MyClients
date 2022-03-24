@@ -4,7 +4,6 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.RouterState
 import com.arkivanov.decompose.router.router
 import com.arkivanov.decompose.value.Value
-import com.arkivanov.essenty.lifecycle.subscribe
 import ru.shafran.common.components.R
 import ru.shafran.common.loading.LoadingComponent
 import ru.shafran.common.utils.stores
@@ -12,12 +11,14 @@ import ru.shafran.network.customers.CustomerEditingStore
 import ru.shafran.network.customers.data.Customer
 import ru.shafran.network.customers.data.CustomerData
 import ru.shafran.network.customers.data.EditCustomerRequest
+import ru.shafran.network.utils.reduceLabels
 import ru.shafran.network.utils.reduceStates
 
 class CustomerEditingHostComponent(
     componentContext: ComponentContext,
     private val customerId: String,
     private val onBack: () -> Unit,
+    private val onBackAndUpdate: () -> Unit,
 ) : CustomerEditingHost, ComponentContext by componentContext {
 
     private val store by stores<CustomerEditingStore>()
@@ -55,7 +56,7 @@ class CustomerEditingHostComponent(
         return CustomerEditingHost.Child.Editing(
             CustomerEditingComponent(
                 customer = customer,
-                 onEdit = this@CustomerEditingHostComponent::onEdit,
+                onEdit = this@CustomerEditingHostComponent::onEdit,
                 onBack = onBack,
             )
         )
@@ -82,17 +83,20 @@ class CustomerEditingHostComponent(
     override val routerState: Value<RouterState<CustomerEditingHost.Configuration, CustomerEditingHost.Child>>
         get() = router.state
 
-    init {
-        store.reduceStates(this, this::reduceStates)
-        lifecycle.subscribe(onCreate = {
-            store.accept(CustomerEditingStore.Intent.LoadDetails(customerId))
-        })
-    }
+
 
     private fun reduceStates(state: CustomerEditingStore.State) {
         when (state) {
             is CustomerEditingStore.State.DetailsLoaded -> state.reduce()
             is CustomerEditingStore.State.Loading -> state.reduce()
+            is CustomerEditingStore.State.Empty ->
+                store.accept(CustomerEditingStore.Intent.LoadDetails(customerId))
+        }
+    }
+
+    private fun reduceLabels(label: CustomerEditingStore.Label) {
+        when (label) {
+            CustomerEditingStore.Label.EditCompleted -> onBackAndUpdate()
         }
     }
 
@@ -119,5 +123,9 @@ class CustomerEditingHostComponent(
         router.navigate { listOf(CustomerEditingHost.Configuration.Loading) }
     }
 
+    init {
+        store.reduceStates(this, this::reduceStates)
+        store.reduceLabels(this, this::reduceLabels)
+    }
 
 }

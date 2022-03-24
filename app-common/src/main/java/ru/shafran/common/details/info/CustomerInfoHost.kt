@@ -14,24 +14,39 @@ interface CustomerInfoHost {
     sealed class Configuration : Parcelable {
 
         @Parcelize
-        object Loading: Configuration()
+        object Empty : Configuration()
+
+        @Parcelize
+        object Loading : Configuration()
+
+        @Parcelize
+        object CardNotFound : Configuration()
+
+        @Parcelize
+        object IllegalCard : Configuration()
+
+        @Parcelize
+        object CustomerNotFound : Configuration()
+
+        @Parcelize
+        object Unknown : Configuration()
 
 
         @Parcelize
         data class InactivatedLoaded(
-            val customer: Customer.InactivatedCustomer
-        ): Configuration()
+            val customer: Customer.InactivatedCustomer,
+        ) : Configuration()
 
         @Parcelize
         data class ActivatedPreloaded(
-            val customer: Customer.ActivatedCustomer
-        ): Configuration()
+            val customer: Customer.ActivatedCustomer,
+        ) : Configuration()
 
         @Parcelize
         data class ActivatedLoaded(
             val customer: Customer.ActivatedCustomer,
-            val history: List<Session>
-        ): Configuration()
+            val history: List<Session>,
+        ) : Configuration()
 
     }
 
@@ -44,7 +59,7 @@ interface CustomerInfoHost {
 
         class Inactivated(
             val component: InactivatedCustomerInfo,
-        ): Child()
+        ) : Child()
 
         class Preloaded(
             val component: PreloadedCustomerInfo,
@@ -53,6 +68,12 @@ interface CustomerInfoHost {
         class Loaded(
             val component: LoadedCustomerInfo,
         ) : Child()
+
+
+        class Error(
+            val component: ru.shafran.common.error.Error,
+        ) : Child()
+
     }
 
 }

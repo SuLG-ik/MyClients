@@ -20,11 +20,17 @@ interface CustomerEditingStore :
 
     sealed class State {
 
+        object Empty: State()
+
         data class DetailsLoaded(
             val customer: Customer,
         ) : State()
 
         class Loading() : State()
+        
+        sealed class Error: State() {
+            object Unknown: Error()
+        }
 
     }
 

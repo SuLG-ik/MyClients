@@ -13,6 +13,8 @@ interface LoadedCustomerInfo {
 
     fun onActivateSession()
 
+    fun onUseSession(session: Session)
+
     fun onEdit()
 
 }

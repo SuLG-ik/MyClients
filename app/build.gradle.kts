@@ -3,10 +3,20 @@ plugins {
     kotlin("android") version Dependencies.Kotlin.version
     kotlin("plugin.parcelize") version Dependencies.Kotlin.version
     kotlin("plugin.serialization") version Dependencies.Kotlin.version
+    id("com.google.firebase.crashlytics") version Dependencies.Firebase.crashlyticsVersion
+    id("com.google.gms.google-services") version Dependencies.Firebase.playServicesVersion
 }
 
 
 android {
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file("D:\\shafran\\apk-key\\shafran.jks")
+            storePassword = "snpn!8@%Jx&TY))g"
+            keyAlias = "Shafran"
+            keyPassword = "snpn!8@%Jx&TY))g"
+        }
+    }
     compileSdk = Config.compileSdk
     buildToolsVersion = "30.0.3"
 
@@ -25,15 +35,11 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = true
-            isShrinkResources = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-        }
-        debug {
-            applicationIdSuffix = ".debug"
         }
     }
 
@@ -54,8 +60,11 @@ android {
 }
 
 dependencies {
+    implementation(platform(Dependencies.Firebase.BoM))
+    implementation(Dependencies.Firebase.crashlytics)
+    implementation(Dependencies.Firebase.analytics)
     implementation(Dependencies.Compose.ui)
     implementation(Dependencies.Material.design)
     implementation(Dependencies.Android.splash)
-    implementation(project(":app-startup"))
+    implementation(projects.appStartup)
 }

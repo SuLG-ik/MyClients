@@ -17,7 +17,8 @@
     <string name="customers_remark">Пометка</string>
     <string name="customer_apply">Применить изменения</string>
     <string name="customer_empty_history">Ещё нет активный записей</string>
-    <string name="customers_create_new_session">Добавить запись на приём</string>
+    <string name="customer_empty_history_items">Запись ещё ни разу не использовалась</string>
+    <string name="customers_create_new_session">Добавить запись на приём</string>ч
     <string name="customer_session_activation_remark">Пометка</string>
     <string name="customer_session_activation_empty_continue">Подключить</string>
     <string name="customer_session_activation_continue">Подключить: %1$s</string>
@@ -26,4 +27,5 @@
     <string name="customer_session_activation_services_title">Услуги</string>
     <string name="customer_session_activation_empty_employee">Выберите работника</string>
     <string name="customer_session_activation_employees_title">Работники</string>
+    <string name="gender_selector_title">Пол</string>
 </resources>

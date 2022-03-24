@@ -41,5 +41,5 @@ android {
 
 dependencies{
     implementation(Dependencies.Serialization.core)
-    implementation(project(":network-data"))
+    implementation(projects.networkData)
 }

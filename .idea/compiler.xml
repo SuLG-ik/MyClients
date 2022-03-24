@@ -2,6 +2,7 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.8">
+      <module name="ShafranCards.decompose" target="11" />
       <module name="ShafranCards.logger" target="11" />
       <module name="ShafranCards.mylibrary" target="11" />
       <module name="ShafranCards.network" target="11" />

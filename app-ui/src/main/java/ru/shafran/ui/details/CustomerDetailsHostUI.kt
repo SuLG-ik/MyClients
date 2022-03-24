@@ -1,20 +1,26 @@
 package ru.shafran.ui.details
 
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.material.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetpack.Children
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
+import io.github.aakira.napier.Napier
 import ru.shafran.common.details.host.CustomerDetailsHost
 import ru.shafran.ui.details.edit.CustomerEditingHostUI
 import ru.shafran.ui.details.info.CustomerInfoHostUI
-import ru.shafran.ui.details.sessions.SessionActivationHostUI
+import ru.shafran.ui.details.session.activation.SessionActivationHostUI
+import ru.shafran.ui.details.session.use.SessionUseHostUI
+import ru.shafran.ui.view.ExtendedModalBottomSheet
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -31,14 +37,19 @@ internal fun CustomerDetailsHostUI(
         return@rememberModalBottomSheetState true
     }
     LaunchedEffect(key1 = routerState.value, block = {
-        if (routerState.value.activeChild.instance is CustomerDetailsHost.Child.Hidden) {
-            state.hide()
-        } else {
-            state.show()
+        try {
+            if (routerState.value.activeChild.instance is CustomerDetailsHost.Child.Hidden) {
+                state.animateTo(ModalBottomSheetValue.Hidden, tween(50))
+            } else {
+                state.animateTo(ModalBottomSheetValue.Expanded)
+            }
+        } catch (e: Exception) {
+            Napier.e({ "SheetStateError" }, e)
         }
-    })
+    }
+    )
     Box(modifier = modifier) {
-        ModalBottomSheetLayout(
+        ExtendedModalBottomSheet(
             sheetState = state,
             sheetContent = {
                 Box(modifier = Modifier.fillMaxWidth()) {
@@ -53,8 +64,6 @@ internal fun CustomerDetailsHostUI(
                 }
             },
             sheetElevation = 0.dp,
-            sheetShape = MaterialTheme.shapes.large
-                .copy(bottomEnd = CornerSize(0.dp), bottomStart = CornerSize(0.dp)),
             modifier = Modifier.fillMaxWidth(),
             content = content,
         )
@@ -64,7 +73,7 @@ internal fun CustomerDetailsHostUI(
 
 @Composable
 private fun CustomerDetailsNavHost(
-    child: CustomerDetailsHost.Child,
+    child: CustomerDetailsHost.Child<Any?>,
     modifier: Modifier,
 ) {
     when (child) {
@@ -76,5 +85,8 @@ private fun CustomerDetailsNavHost(
             CustomerEditingHostUI(component = child.component, modifier = modifier)
         is CustomerDetailsHost.Child.SessionActivation ->
             SessionActivationHostUI(component = child.component, modifier = modifier)
+        is CustomerDetailsHost.Child.SessionUse ->
+            SessionUseHostUI(component = child.component, modifier = modifier)
     }
 }
+

@@ -57,6 +57,7 @@ dependencies {
 
     implementation(Dependencies.Compose.ui)
     implementation(Dependencies.Compose.foundation)
+    implementation(Dependencies.Compose.material3)
     implementation(Dependencies.Compose.material)
     compileOnly(Dependencies.Compose.tooling)
 
@@ -74,6 +75,6 @@ dependencies {
     implementation(Dependencies.Camera.extensions)
 
     implementation(Dependencies.MLKit.scanner)
-    implementation(project(":app-common"))
-    implementation(project(":network-data"))
+    implementation(projects.appCommon)
+    implementation(projects.networkData)
 }

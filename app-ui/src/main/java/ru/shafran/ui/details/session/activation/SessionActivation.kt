@@ -1,29 +1,30 @@
-package ru.shafran.ui.details.sessions
+package ru.shafran.ui.details.session.activation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import ru.shafran.common.details.sessions.SessionActivation
+import ru.shafran.common.details.sessions.activation.SessionActivation
+import ru.shafran.common.employees.picker.EmployeePicker
+import ru.shafran.common.services.picker.ConfiguredServicePicker
 import ru.shafran.network.customers.data.Customer
 import ru.shafran.network.employees.data.Employee
 import ru.shafran.network.services.data.ConfiguredService
-import ru.shafran.network.services.data.Service
 import ru.shafran.network.session.data.CreateServiceSessionForCustomerRequestData
 import ru.shafran.network.session.data.CreateSessionForCustomerRequest
 import ru.shafran.network.session.data.ServiceConfigurationReference
 import ru.shafran.ui.R
-import ru.shafran.ui.details.edit.EmployeesSelector
-import ru.shafran.ui.details.edit.ServiceSelector
+import ru.shafran.ui.employees.picker.FloatingEmployeePickerUI
+import ru.shafran.ui.services.picker.FloatingServicePickerUI
+import ru.shafran.ui.view.OutlinedTextField
 import ru.shafran.ui.view.TitledDialog
 
 @Composable
@@ -39,10 +40,10 @@ fun SessionActivationUI(
         onBackPressed = component::onBack,
         modifier = modifier,
     ) {
-        SessionActivation(
+        SessionActivationUI(
             customer = component.customer,
-            employees = component.employees,
-            services = component.services,
+            servicePicker = component.servicePicker,
+            employeePicker = component.employeePicker,
             onActivate = component::onActivate,
             modifier = Modifier.fillMaxWidth(),
         )
@@ -50,30 +51,24 @@ fun SessionActivationUI(
 }
 
 @Composable
-private fun SessionActivation(
+private fun SessionActivationUI(
     customer: Customer.ActivatedCustomer,
-    employees: List<Employee>,
-    services: List<Service>,
+    servicePicker: ConfiguredServicePicker,
+    employeePicker: EmployeePicker,
     onActivate: (CreateSessionForCustomerRequest) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val selectedConfiguration = remember { mutableStateOf<ConfiguredService?>(null) }
-    val selectedEmployee = remember { mutableStateOf<Employee?>(null) }
     val remark = rememberSaveable { mutableStateOf("") }
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        ServiceSelector(
-            selectedConfiguration = selectedConfiguration.value,
-            onSelect = { selectedConfiguration.value = it },
-            services = services,
+        FloatingServicePickerUI(
+            component = servicePicker,
             modifier = Modifier.fillMaxWidth(),
         )
-        EmployeesSelector(
-            selectedEmployee = selectedEmployee.value,
-            onSelect = { selectedEmployee.value = it },
-            employees = employees,
+        FloatingEmployeePickerUI(
+            component = employeePicker,
             modifier = Modifier.fillMaxWidth(),
         )
         OutlinedTextField(
@@ -85,8 +80,8 @@ private fun SessionActivation(
         )
         SessionActivationButton(
             customer = customer,
-            configuration = selectedConfiguration.value,
-            employee = selectedEmployee.value,
+            configuration = servicePicker.selectedConfiguration.collectAsState().value,
+            employee = employeePicker.selectedEmployee.collectAsState().value,
             remark = remark.value,
             onActivate = onActivate,
             modifier = Modifier.fillMaxWidth(),

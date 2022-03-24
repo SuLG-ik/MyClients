@@ -39,7 +39,7 @@ interface Dependencies {
     }
 
     object MVI : Dependencies {
-        const val version = "3.0.0-alpha03"
+        const val version = "3.0.0-beta01"
         const val core = "com.arkivanov.mvikotlin:mvikotlin:$version"
         const val main = "com.arkivanov.mvikotlin:mvikotlin-main:$version"
         const val logging = "com.arkivanov.mvikotlin:mvikotlin-logging:$version"
@@ -53,65 +53,66 @@ interface Dependencies {
     }
 
     object Decompose : Dependencies {
-        const val version = "0.5.0"
+        const val version = "0.5.2"
         const val core = "com.arkivanov.decompose:decompose:$version"
         const val compose = "com.arkivanov.decompose:extensions-compose-jetpack:$version"
     }
 
     object Activity: Dependencies {
-        const val version = "1.4.0"
+        const val version = "1.5.0-alpha03"
         const val core = "androidx.activity:activity-ktx:$version"
         const val compose = "androidx.activity:activity-compose:$version"
     }
 
     object Appcompat: Dependencies {
-        const val version = "1.4.0"
+        const val version = "1.4.1"
         const val core = "androidx.appcompat:appcompat:$version"
     }
 
     object Android: Dependencies {
         const val agpVersion = "7.1.0-rc01"
-        const val version = "1.7.0"
+        const val version = "1.8.0-alpha05"
         const val core = "androidx.core:core-ktx:$version"
         const val splash = "androidx.core:core-splashscreen:1.0.0-beta01"
     }
 
     object Lifecycle: Dependencies {
-        const val version = "2.4.0"
+        const val version = "2.5.0-alpha03"
         const val core = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
         const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel:$version"
     }
 
     object Compose : Dependencies {
-        const val compilerVersion = "1.1.0-rc02"
-        const val version = "1.0.5"
+        const val compilerVersion = "1.1.1"
+        const val version = "1.1.1"
         const val ui = "androidx.compose.ui:ui:$version"
         const val material = "androidx.compose.material:material:$version"
-        const val material3 = "androidx.compose.material3:material3:1.0.0-alpha03"
+        const val material3 = "androidx.compose.material3:material3:1.0.0-alpha06"
         const val animation = "androidx.compose.animation:animation:$version"
         const val foundation = "androidx.compose.foundation:foundation:$version"
         const val tooling = "androidx.compose.ui:ui-tooling:$version"
     }
 
     object Koin : Dependencies {
-        const val version = "3.1.4"
+        const val version =  "3.2.0-beta-1"
         const val android = "io.insert-koin:koin-android:$version"
         const val core = "io.insert-koin:koin-core:$version"
     }
 
     object Accompanist : Dependencies {
-        const val version = "0.21.5-rc"
+        const val version = "0.23.1"
         const val swiperefresh = "com.google.accompanist:accompanist-swiperefresh:$version"
         const val permissions = "com.google.accompanist:accompanist-permissions:$version"
-        const val placeholder = "com.google.accompanist:accompanist-placeholder:$version"
+        const val placeholder = "com.google.accompanist:accompanist-placeholder-material:$version"
     }
 
     object Ktor : Dependencies {
-        const val version = "1.6.7"
+        const val version = "2.0.0-beta-1"
         const val core = "io.ktor:ktor-client-core:$version"
         const val android = "io.ktor:ktor-client-android:$version"
         const val cio = "io.ktor:ktor-client-cio:$version"
-        const val serialization = "io.ktor:ktor-client-serialization:$version"
+        const val contentNegotiation = "io.ktor:ktor-client-content-negotiation:$version"
+        const val serialization = "io.ktor:ktor-serialization-kotlinx-json:$version"
         const val logging = "io.ktor:ktor-client-logging:$version"
     }
 
@@ -125,13 +126,24 @@ interface Dependencies {
         const val extensions = "androidx.camera:camera-extensions:1.0.0-alpha28"
     }
 
+    object Firebase: Dependencies {
+        const val BoM = "com.google.firebase:firebase-bom:29.2.1"
+
+        const val crashlytics = "com.google.firebase:firebase-crashlytics-ktx"
+        const val analytics = "com.google.firebase:firebase-analytics-ktx"
+
+        const val playServicesVersion = "4.3.10"
+        const val crashlyticsVersion = "2.8.1"
+
+    }
+
     object MLKit : Dependencies {
-        const val version = "17.0.1"
+        const val version = "17.0.2"
         const val scanner = "com.google.mlkit:barcode-scanning:$version"
     }
 
     object Coil : Dependencies {
-        const val version = "1.4.0"
+        const val version = "2.0.0-rc01"
         const val core = "io.coil-kt:coil:$version"
         const val compose = "io.coil-kt:coil-compose:$version"
     }

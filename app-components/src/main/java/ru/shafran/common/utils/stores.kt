@@ -8,8 +8,13 @@ import com.arkivanov.mvikotlin.core.store.Store
 internal inline fun <reified T : Store<*, *, *>> ComponentContext.stores() =
     lazy { instanceKeeper.getOrCreate(key = T::class) { StoreHolder(get<T>()) }.store }
 
+
+internal inline fun <reified T : Store<*, *, *>> ComponentContext.getStore() =
+    instanceKeeper.getOrCreate(key = T::class) { StoreHolder(get<T>()) }.store
+
+
 internal class StoreHolder<T : Store<*, *, *>>(
-    val store: T
+    val store: T,
 ) : InstanceKeeper.Instance {
     override fun onDestroy() {
         store.dispose()

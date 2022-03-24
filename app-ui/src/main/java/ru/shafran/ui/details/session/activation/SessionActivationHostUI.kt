@@ -1,9 +1,9 @@
-package ru.shafran.ui.details.sessions
+package ru.shafran.ui.details.session.activation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetpack.Children
-import ru.shafran.common.details.sessions.SessionActivationHost
+import ru.shafran.common.details.sessions.activation.SessionActivationHost
 import ru.shafran.ui.loading.LoadingUI
 
 @Composable

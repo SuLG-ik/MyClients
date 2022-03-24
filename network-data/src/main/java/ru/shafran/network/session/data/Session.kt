@@ -18,7 +18,12 @@ data class Session(
     val activation: SessionActivation,
     val usages: List<SessionUsage>,
     val manualDeactivation: SessionManualDeactivation?,
-) : Parcelable
+) : Parcelable {
+    val isDeactivated: Boolean
+        get() {
+            return usages.size >= activation.service.configuration.amount || manualDeactivation != null
+        }
+}
 
 @Serializable
 @Parcelize

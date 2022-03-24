@@ -1,4 +1,4 @@
-package ru.shafran.common.details.sessions
+package ru.shafran.common.details.sessions.activation
 
 import com.arkivanov.decompose.router.RouterState
 import com.arkivanov.decompose.value.Value
@@ -13,6 +13,9 @@ interface SessionActivationHost {
     val routerState: Value<RouterState<Configuration, Child>>
 
     sealed class Configuration : Parcelable {
+
+        @Parcelize
+        object Empty : Configuration()
 
         @Parcelize
         object DetailsLoading : Configuration()

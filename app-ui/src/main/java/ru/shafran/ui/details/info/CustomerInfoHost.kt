@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetpack.Children
 import ru.shafran.common.details.info.CustomerInfoHost
+import ru.shafran.ui.error.ErrorUI
 import ru.shafran.ui.loading.LoadingUI
 
 @Composable
@@ -15,7 +16,7 @@ fun CustomerInfoHostUI(component: CustomerInfoHost, modifier: Modifier) {
 
 @Composable
 fun CustomerInfoNavHost(child: CustomerInfoHost.Child, modifier: Modifier) {
-    when(child) {
+    when (child) {
         is CustomerInfoHost.Child.Loading ->
             LoadingUI(component = child.component, modifier = modifier)
         is CustomerInfoHost.Child.Inactivated ->
@@ -24,5 +25,7 @@ fun CustomerInfoNavHost(child: CustomerInfoHost.Child, modifier: Modifier) {
             PreloadedCustomerDetailsUI(component = child.component, modifier = modifier)
         is CustomerInfoHost.Child.Loaded ->
             LoadedCustomerDetailsUI(component = child.component, modifier = modifier)
+        is CustomerInfoHost.Child.Error ->
+            ErrorUI(component = child.component, modifier = modifier)
     }
 }

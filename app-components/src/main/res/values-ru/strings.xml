@@ -2,4 +2,13 @@
 <resources>
     <string name="services_list_loading_message">Загрузка услуг</string>
     <string name="customers_loading">Загрузка клиентов</string>
+    <string name="services_loading">Загрузка услуг</string>
+    <string name="customers_session_activation_details_loading_message">Загрузка</string>
+    <string name="customers_session_activation_loading_message">Активация</string>
+    <string name="customers_info_loading_message">Закгрузка клиентов</string>
+    <string name="customers_editing_loading_message">Загрзка данных</string>
+    <string name="customers_info_error_unknown_message">Неизвестная ошибка</string>
+    <string name="customers_info_error_card_not_found_message">Карта не найдена</string>
+    <string name="customers_info_error_illegal_card_message">Это не карта</string>
+    <string name="customers_info_error_customer_not_found_message">Клиент не найден</string>
 </resources>

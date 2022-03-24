@@ -15,10 +15,12 @@ fun CustomerEditingHostUI(component: CustomerEditingHost, modifier: Modifier) {
 
 @Composable
 fun CustomerEditingNavHost(child: CustomerEditingHost.Child, modifier: Modifier) {
-    when(child) {
+    when (child) {
         is CustomerEditingHost.Child.Activating ->
             CustomerActivationUI(component = child.component, modifier = modifier)
         is CustomerEditingHost.Child.Loading ->
             LoadingUI(component = child.component, modifier = modifier)
+        is CustomerEditingHost.Child.Editing ->
+            CustomerEditingUI(component = child.component, modifier = modifier)
     }
 }

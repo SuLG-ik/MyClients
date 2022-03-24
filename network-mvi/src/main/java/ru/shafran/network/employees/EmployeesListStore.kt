@@ -7,7 +7,7 @@ interface EmployeesListStore :
     Store<EmployeesListStore.Intent, EmployeesListStore.State, EmployeesListStore.Label> {
 
     sealed class Intent {
-        data class LoadEmployees(val page: Int = 0): Intent()
+        data class LoadEmployees(val page: Int = 0) : Intent()
     }
 
     sealed class State {
@@ -16,8 +16,9 @@ interface EmployeesListStore :
         ) : State()
 
         data class Loading(
-            val previousEmployees: List<Employee>,
+            val previousEmployees: List<Employee>? = null,
         ) : State()
+
         sealed class Error : State() {
             object ConnectionLost : Error()
             object Internal : Error()

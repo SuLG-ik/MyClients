@@ -3,7 +3,11 @@ package ru.shafran.ui.view.camera
 import android.annotation.SuppressLint
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
@@ -51,16 +55,18 @@ internal class MLKitImageRecognizer(
     val analysis = ImageAnalysis.Builder()
         .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
         .build()
+        .apply { setAnalyzer(Dispatchers.IO.asExecutor(), ::analyze) }
 
     @SuppressLint("UnsafeOptInUsageError")
     private fun analyze(proxy: ImageProxy) {
         runBlocking {
-            proxy.image?.let { it ->
-                val image =
-                    InputImage.fromMediaImage(it, proxy.imageInfo.rotationDegrees)
-                val barcodes = mlKit.process(image).await()
-                produceBarcodes(barcodes)
-            }
+            if (isEnabled)
+                proxy.image?.let { it ->
+                    val image =
+                        InputImage.fromMediaImage(it, proxy.imageInfo.rotationDegrees)
+                    val barcodes = mlKit.process(image).await()
+                    produceBarcodes(barcodes)
+                }
             proxy.close()
         }
     }
@@ -83,12 +89,10 @@ internal class MLKitImageRecognizer(
 
     fun disable() {
         _isEnabled.value = false
-        analysis.clearAnalyzer()
     }
 
     fun enable() {
         _isEnabled.value = true
-        analysis.setAnalyzer(Dispatchers.IO.asExecutor(), this::analyze)
     }
 
 

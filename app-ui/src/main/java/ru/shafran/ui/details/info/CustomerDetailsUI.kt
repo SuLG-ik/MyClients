@@ -5,26 +5,38 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.List
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.material.fade
+import com.google.accompanist.placeholder.material.placeholder
 import ru.shafran.common.details.info.InactivatedCustomerInfo
 import ru.shafran.common.details.info.LoadedCustomerInfo
 import ru.shafran.common.details.info.PreloadedCustomerInfo
@@ -59,18 +71,20 @@ internal fun LoadedCustomerDetailsUI(
 ) {
     Column(
         modifier = modifier.verticalScroll(state = rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         CustomerInfo(
             customer = component.customer.data,
             onEdit = component::onEdit,
             modifier = Modifier.fillMaxWidth(),
         )
-        Spacer(modifier = Modifier.height(10.dp))
         SessionHistory(
             component.history,
-            modifier = Modifier.fillMaxWidth()
+            onUse = component::onUseSession,
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(unbounded = true)
         )
-        Spacer(modifier = Modifier.height(10.dp))
         OutlinedButton(
             onClick = component::onActivateSession,
             modifier = Modifier.fillMaxWidth()
@@ -90,9 +104,15 @@ internal fun PreloadedCustomerDetailsUI(
 ) {
     Column(
         modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         CustomerInfo(
             customer = component.customer.data,
+        )
+        PlaceholderSessionHistory(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(unbounded = true)
         )
     }
 }
@@ -105,7 +125,7 @@ private fun InactivatedCustomerInfo(
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.Center,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
@@ -114,18 +134,13 @@ private fun InactivatedCustomerInfo(
             modifier = Modifier
                 .size(60.dp),
         )
-        Spacer(
-            modifier = Modifier.width(10.dp),
-        )
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Text(id)
-            Spacer(
-                modifier = Modifier.width(10.dp),
-            )
             OutlinedButton(
                 onClick = onActivate,
                 modifier = Modifier
@@ -139,14 +154,14 @@ private fun InactivatedCustomerInfo(
 
 
 @Composable
-private fun CustomerInfo(
+fun CustomerInfo(
     customer: CustomerData,
     modifier: Modifier = Modifier,
     onEdit: (() -> Unit)? = null,
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.Center,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
@@ -155,8 +170,8 @@ private fun CustomerInfo(
             modifier = Modifier
                 .size(80.dp)
         )
-        Spacer(modifier = Modifier.width(10.dp))
         Column(
+            verticalArrangement = Arrangement.spacedBy(5.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f, false),
@@ -164,7 +179,7 @@ private fun CustomerInfo(
             Text(
                 customer.name,
                 maxLines = 1,
-                style = MaterialTheme.typography.h6,
+                style = MaterialTheme.typography.titleLarge,
                 overflow = TextOverflow.Ellipsis,
             )
             Phone(customer.phone)
@@ -195,18 +210,25 @@ private fun CustomerInfo(
 @Composable
 private fun SessionHistory(
     history: List<Session>,
+    onUse: (Session) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     if (history.isEmpty()) {
         OutlinedSurface(
             modifier = modifier,
         ) {
-            EmptySessionHistory(modifier = Modifier
-                .fillMaxWidth()
-                .padding(15.dp))
+            EmptySessionHistory(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp),
+            )
         }
     } else {
-        NotEmptySessionHistory(history = history, modifier = modifier)
+        NotEmptySessionHistory(
+            history = history,
+            onUse = onUse,
+            modifier = modifier
+        )
     }
 }
 
@@ -225,30 +247,119 @@ private fun EmptySessionHistory(modifier: Modifier) {
 @Composable
 private fun NotEmptySessionHistory(
     history: List<Session>,
+    onUse: (Session) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn(modifier = modifier) {
-        itemsIndexed(history) { index, session ->
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        history.forEach { session ->
             SessionHistoryItem(
                 session = session,
+                onUse = { onUse(session) },
                 modifier = Modifier.fillMaxWidth()
             )
-            if (index < history.size - 1) {
-                Spacer(modifier = Modifier.height(10.dp))
-            }
         }
     }
 }
 
 @Composable
-private fun SessionHistoryItem(session: Session, modifier: Modifier = Modifier) {
-    val isExpanded = remember { mutableStateOf(false) }
+private fun PlaceholderSessionHistory(
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        repeat(3) {
+            PlaceholderHistoryItem(
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+    }
+}
+
+
+@Composable
+private fun PlaceholderHistoryItem(modifier: Modifier = Modifier) {
+    OutlinedSurface(
+        modifier = modifier
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+                .animateContentSize(),
+        ) {
+            PlaceholderItemHeader(
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+    }
+}
+
+@Composable
+private fun PlaceholderItemHeader(modifier: Modifier = Modifier) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = modifier,
+    ) {
+        Icon(
+            painterResource(id = R.drawable.turn_on_slider),
+            contentDescription = null,
+            modifier = Modifier
+                .size(25.dp)
+                .placeholder(
+                    true, highlight = PlaceholderHighlight.fade(),
+                )
+        )
+        Column(
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f, false),
+        ) {
+            Text(
+                text = "Название тут",
+                style = MaterialTheme.typography.labelMedium,
+                modifier = Modifier
+                    .placeholder(true, highlight = PlaceholderHighlight.fade())
+            )
+            Text(
+                text = "Исполнитель: да он тут",
+                style = MaterialTheme.typography.labelSmall,
+                modifier = Modifier
+                    .placeholder(true, highlight = PlaceholderHighlight.fade())
+            )
+        }
+        Text(
+            text = "2/2",
+            modifier = Modifier
+                .placeholder(true, highlight = PlaceholderHighlight.fade())
+        )
+    }
+}
+
+
+@Composable
+private fun SessionHistoryItem(
+    session: Session,
+    onUse: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val isExpanded = rememberSaveable { mutableStateOf(false) }
+    val isHistoryShown = rememberSaveable { mutableStateOf(false) }
     OutlinedSurface(
         modifier = modifier
             .clickable { isExpanded.value = !isExpanded.value }
             .animateContentSize()
     ) {
         Column(
+            verticalArrangement = Arrangement.spacedBy(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
@@ -260,20 +371,71 @@ private fun SessionHistoryItem(session: Session, modifier: Modifier = Modifier) 
                 modifier = Modifier.fillMaxWidth()
             )
             AnimatedVisibility(isExpanded.value) {
-                Spacer(modifier = modifier.height(10.dp))
-                MaterialDivider(modifier = Modifier.fillMaxWidth())
-                Spacer(modifier = modifier.height(10.dp))
-                SessionHistoryUsages(usages = session.usages, modifier = Modifier.fillMaxWidth())
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
+                    MaterialDivider(modifier = Modifier.fillMaxWidth())
+                    SessionActions(
+                        isUsable = !session.isDeactivated,
+                        onShowHistory = { isHistoryShown.value = !isHistoryShown.value },
+                        onUse = onUse,
+                        modifier = Modifier
+                            .align(Alignment.End)
+                    )
+                }
+            }
+            AnimatedVisibility(visible = isHistoryShown.value && isExpanded.value) {
+                SessionHistoryUsages(usages = session.usages,
+                    modifier = Modifier.fillMaxWidth())
             }
         }
     }
 }
 
 @Composable
+private fun SessionActions(
+    isUsable: Boolean,
+    onUse: () -> Unit,
+    onShowHistory: () -> Unit,
+    modifier: Modifier,
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = modifier,
+    ) {
+        IconButton(onClick = onShowHistory) {
+            Icon(Icons.Outlined.List, contentDescription = null)
+        }
+        if (isUsable)
+            IconButton(onClick = onUse) {
+                Icon(Icons.Outlined.Check, contentDescription = null)
+            }
+    }
+}
+
+
+@Composable
+private fun EmptySessionItems(modifier: Modifier) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(Icons.Outlined.Info, contentDescription = null)
+        Text(stringResource(R.string.customer_empty_history))
+    }
+}
+
+@Composable
 private fun SessionHistoryUsages(usages: List<SessionUsage>, modifier: Modifier) {
-    Column(modifier) {
-        usages.forEach { usage ->
-            SessionHistoryUsageItem(usage, modifier = Modifier.fillMaxWidth())
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        if (usages.isEmpty()) {
+            EmptySessionItems(modifier = Modifier.align(Alignment.CenterHorizontally))
+        } else {
+            usages.forEach { usage ->
+                SessionHistoryUsageItem(usage, modifier = Modifier.fillMaxWidth())
+            }
         }
     }
 }
@@ -283,7 +445,7 @@ private fun SessionHistoryUsageItem(usage: SessionUsage, modifier: Modifier) {
     val timeFormatter = LocalTimeFormatter.current
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
         modifier = modifier,
     ) {
         Icon(
@@ -291,7 +453,6 @@ private fun SessionHistoryUsageItem(usage: SessionUsage, modifier: Modifier) {
             contentDescription = null,
             modifier = Modifier.size(25.dp),
         )
-        Spacer(modifier = Modifier.width(10.dp))
         Column(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
@@ -300,11 +461,11 @@ private fun SessionHistoryUsageItem(usage: SessionUsage, modifier: Modifier) {
         ) {
             Text(
                 text = timeFormatter.format(usage.data.date),
-                style = MaterialTheme.typography.h6,
+                style = MaterialTheme.typography.labelLarge,
             )
             Text(
                 text = "Исполнитель: ${usage.data.employee.id}",
-                style = MaterialTheme.typography.subtitle1,
+                style = MaterialTheme.typography.labelSmall,
             )
         }
     }
@@ -316,7 +477,7 @@ private fun SessionHistoryUsageItem(usage: SessionUsage, modifier: Modifier) {
 private fun SessionItemHeader(session: Session, modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
         modifier = modifier,
     ) {
         Icon(
@@ -324,7 +485,6 @@ private fun SessionItemHeader(session: Session, modifier: Modifier = Modifier) {
             contentDescription = null,
             modifier = Modifier.size(25.dp),
         )
-        Spacer(modifier = Modifier.width(10.dp))
         Column(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
@@ -332,11 +492,10 @@ private fun SessionItemHeader(session: Session, modifier: Modifier = Modifier) {
                 .weight(1f, false),
         ) {
             Text(session.activation.service.info.title,
-                style = MaterialTheme.typography.h6)
+                style = MaterialTheme.typography.labelMedium)
             Text("Исполнитель: ${session.activation.employee.id}",
-                style = MaterialTheme.typography.subtitle1)
+                style = MaterialTheme.typography.labelSmall)
         }
-        Spacer(modifier = Modifier.width(10.dp))
         Text("${session.usages.size}/${session.activation.service.configuration.amount}")
     }
 }

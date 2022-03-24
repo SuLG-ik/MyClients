@@ -17,6 +17,8 @@ interface CustomerInfoStore :
 
     sealed class State {
 
+        object Empty: State()
+
         class Loading : State()
 
         data class CustomerInactivatedLoaded(
@@ -31,6 +33,13 @@ interface CustomerInfoStore :
             val customer: Customer.ActivatedCustomer,
             val history: List<Session>,
         ) : State()
+
+        sealed class Error: State() {
+            object IllegalCard: Error()
+            object CardNotFound: Error()
+            object CustomerNotFound: Error()
+            object Unknown: Error()
+        }
 
     }
 

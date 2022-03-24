@@ -1,8 +1,13 @@
 package ru.shafran.ui.view
 
-import androidx.compose.animation.core.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.MutableState
@@ -10,8 +15,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntRect
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupPositionProvider
+import ru.shafran.ui.theme.shapes
 import kotlin.math.max
 import kotlin.math.min
 
@@ -23,7 +35,6 @@ internal fun StaticDropdownMenuContent(
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    // Menu open/close animation.
     val transition = updateTransition(expandedStates, "DropDownMenu")
 
     val scale by transition.animateFloat(
@@ -31,14 +42,14 @@ internal fun StaticDropdownMenuContent(
             if (false isTransitioningTo true) {
                 // Dismissed to expanded
                 tween(
-                    durationMillis = InTransitionDuration,
+                    durationMillis = 120,
                     easing = LinearOutSlowInEasing
                 )
             } else {
                 // Expanded to dismissed.
                 tween(
                     durationMillis = 1,
-                    delayMillis = OutTransitionDuration - 1
+                    delayMillis = 75 - 1
                 )
             }
         }, label = ""
@@ -59,10 +70,9 @@ internal fun StaticDropdownMenuContent(
                 tween(durationMillis = 30)
             } else {
                 // Expanded to dismissed.
-                tween(durationMillis = OutTransitionDuration)
+                tween(durationMillis = 75)
             }
-        },
-        label = ""
+        }, label = ""
     ) {
         if (it) {
             // Menu is expanded.
@@ -72,30 +82,28 @@ internal fun StaticDropdownMenuContent(
             0f
         }
     }
-    Card(
+    Surface(
         modifier = Modifier.graphicsLayer {
             scaleX = scale
             scaleY = scale
             this.alpha = alpha
             transformOrigin = transformOriginState.value
         },
-        elevation = MenuElevation
+        tonalElevation = 3.dp,
+        shadowElevation = 3.dp,
+        shape = shapes.medium
     ) {
         Column(
-            modifier = modifier
-                .padding(vertical = DropdownMenuVerticalPadding)
-                .width(IntrinsicSize.Max),
+            modifier = modifier,
             content = content
         )
     }
 }
 
 
-
 private val MenuElevation = 8.dp
 internal val MenuVerticalMargin = 48.dp
-private val DropdownMenuItemHorizontalPadding = 16.dp
-internal val DropdownMenuVerticalPadding = 8.dp
+
 // Menu open/close animation.
 internal const val InTransitionDuration = 120
 internal const val OutTransitionDuration = 75
@@ -133,12 +141,6 @@ internal fun calculateTransformOrigin(
     return TransformOrigin(pivotX, pivotY)
 }
 
-// Menu positioning.
-
-/**
- * Calculates the position of a Material [DropdownMenu].
- */
-// TODO(popam): Investigate if this can/should consider the app window size rather than screen size
 @Immutable
 internal data class DropdownMenuPositionProvider(
     val contentOffset: DpOffset,

@@ -2,14 +2,24 @@ package ru.shafran.ui.services
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,14 +52,17 @@ private fun ServicesListNavHost(child: ServicesListHost.Child, modifier: Modifie
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ServicesListUI(component: ServicesList, modifier: Modifier) {
     Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(onClick = { component.onCreateService() }) {
-                Icon(Icons.Outlined.Add, contentDescription = null)
-            }
-        },
+//        floatingActionButton = {
+//            FloatingActionButton(
+//                onClick = { component.onCreateService() },
+//            ) {
+//                Icon(Icons.Outlined.Add, contentDescription = null)
+//            }
+//        },
         modifier = modifier,
     ) {
         ServicesList(
@@ -59,7 +72,6 @@ private fun ServicesListUI(component: ServicesList, modifier: Modifier) {
             modifier = Modifier.fillMaxSize(),
         )
     }
-
 }
 
 @Composable
@@ -76,7 +88,7 @@ fun ServicesList(
         modifier = modifier,
     ) {
         LazyColumn(
-            contentPadding = PaddingValues(10.dp),
+            contentPadding = PaddingValues(start = 10.dp, top = 10.dp, end = 10.dp, bottom = 96.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
             modifier = Modifier.fillMaxSize(),
         ) {
@@ -99,22 +111,26 @@ fun Service(service: Service, modifier: Modifier = Modifier) {
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp),
         ) {
             Icon(Icons.Outlined.Info, contentDescription = null, modifier = Modifier.size(50.dp))
-            Spacer(modifier = Modifier.width(10.dp))
-            Column {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
                 Text(
                     service.data.info.title,
-                    style = MaterialTheme.typography.h5,
+                    style = MaterialTheme.typography.titleLarge,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                Spacer(modifier = Modifier.height(5.dp))
-                val scroll = rememberScrollState()
-                Row(modifier = Modifier.horizontalScroll(scroll), horizontalArrangement = Arrangement.spacedBy(5.dp)) {
+                Row(
+                    modifier = Modifier.horizontalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.spacedBy(5.dp)
+                ) {
                     service.data.configurations.forEach {
                         Configuration(configuration = it)
                     }
@@ -129,7 +145,7 @@ private fun Configuration(configuration: ServiceConfiguration, modifier: Modifie
     OutlinedSurface(modifier) {
         Text(
             text = configuration.title,
-            style = MaterialTheme.typography.subtitle2,
+            style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(5.dp),
         )
     }

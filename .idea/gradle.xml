@@ -17,7 +17,6 @@
             <option value="$PROJECT_DIR$/app-startup" />
             <option value="$PROJECT_DIR$/app-ui" />
             <option value="$PROJECT_DIR$/buildSrc" />
-            <option value="$PROJECT_DIR$/decompose" />
             <option value="$PROJECT_DIR$/network-core" />
             <option value="$PROJECT_DIR$/network-data" />
             <option value="$PROJECT_DIR$/network-ktor" />

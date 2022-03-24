@@ -5,6 +5,7 @@ import com.arkivanov.decompose.router.RouterState
 import com.arkivanov.decompose.router.bringToFront
 import com.arkivanov.decompose.router.router
 import com.arkivanov.decompose.value.Value
+import com.arkivanov.essenty.lifecycle.doOnCreate
 import ru.shafran.common.components.R
 import ru.shafran.common.loading.LoadingComponent
 import ru.shafran.common.utils.createCoroutineScope
@@ -105,9 +106,11 @@ internal class ServicesListHostComponent(
     }
 
     init {
-        servicesListStore.accept(ServicesListStore.Intent.LoadServices())
-        servicesListStore.reduceStates(this, this::reduceState)
-        servicesListStore.reduceLabels(this, this::reduceLabel)
+        lifecycle.doOnCreate {
+            servicesListStore.accept(ServicesListStore.Intent.LoadServices())
+            servicesListStore.reduceStates(this, this::reduceState)
+            servicesListStore.reduceLabels(this, this::reduceLabel)
+        }
     }
 
 }

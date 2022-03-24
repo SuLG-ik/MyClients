@@ -6,7 +6,10 @@ import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import ru.shafran.common.details.edit.CustomerEditingHost
 import ru.shafran.common.details.info.CustomerInfoHost
-import ru.shafran.common.details.sessions.SessionActivationHost
+import ru.shafran.common.details.sessions.activation.SessionActivationHost
+import ru.shafran.common.details.sessions.use.SessionUseHost
+import ru.shafran.network.customers.data.Customer
+import ru.shafran.network.session.data.Session
 
 interface CustomerDetailsHost {
 
@@ -16,7 +19,7 @@ interface CustomerDetailsHost {
 
     fun onHide()
 
-    val routerState: Value<RouterState<Configuration, Child>>
+    val routerState: Value<RouterState<Configuration, Child<Any?>>>
 
     sealed class Configuration : Parcelable {
 
@@ -25,8 +28,8 @@ interface CustomerDetailsHost {
 
         @Parcelize
         data class CustomerInfo(
-            val customerToken: String
-        ): Configuration()
+            val customerToken: String,
+        ) : Configuration()
 
         @Parcelize
         data class EditCustomer(
@@ -35,26 +38,42 @@ interface CustomerDetailsHost {
 
         @Parcelize
         data class SessionActivation(
-            val customerId: String,
+            val customer: Customer.ActivatedCustomer,
+        ) : Configuration()
+
+        @Parcelize
+        data class SessionUse(
+            val session: Session,
         ) : Configuration()
 
     }
 
-    sealed class Child {
+    sealed class Child<out T> {
 
-        object Hidden : Child()
+        abstract val component: T
+
+        object Hidden : Child<Nothing?>() {
+            override val component: Nothing?
+                get() = null
+        }
 
         class CustomerInfo(
-            val component: CustomerInfoHost,
-        ): Child()
+            override val component: CustomerInfoHost,
+        ) : Child<CustomerInfoHost>()
 
         class EditCustomer(
-            val component: CustomerEditingHost,
-        ) :Child()
+            override val component: CustomerEditingHost,
+        ) : Child<CustomerEditingHost>()
 
         data class SessionActivation(
-            val component: SessionActivationHost
-        ) : Child()
+            override val component: SessionActivationHost,
+        ) : Child<SessionActivationHost>()
+
+
+        data class SessionUse(
+            override val component: SessionUseHost,
+        ) : Child<SessionUseHost>()
+
 
     }
 

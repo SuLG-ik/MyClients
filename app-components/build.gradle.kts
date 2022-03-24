@@ -43,8 +43,8 @@ dependencies {
     implementation(Dependencies.MVI.coroutines)
     implementation(Dependencies.MVI.core)
     implementation(Dependencies.Koin.core)
-    implementation(project(":app-common"))
-    implementation(project(":network-data"))
-    implementation(project(":network-core"))
-    implementation(project(":network-mvi"))
+    implementation(projects.appCommon)
+    implementation(projects.networkData)
+    implementation(projects.networkCore)
+    implementation(projects.networkMvi)
 }

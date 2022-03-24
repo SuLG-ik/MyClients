@@ -41,10 +41,11 @@ android {
 dependencies{
     implementation(Dependencies.Ktor.core)
     implementation(Dependencies.Ktor.serialization)
+    implementation(Dependencies.Ktor.contentNegotiation)
     implementation(Dependencies.Ktor.logging)
     implementation(Dependencies.Serialization.core)
     implementation(Dependencies.Koin.core)
     implementation(Dependencies.Napier.core)
-    implementation(project(":network-data"))
-    implementation(project(":network-core"))
+    implementation(projects.networkData)
+    implementation(projects.networkCore)
 }

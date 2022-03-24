@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-common/src/main/res/drawable/logo_cards.xml" value="0.1" />
         <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-common/src/main/res/drawable/logo_services.xml" value="0.1" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-components/src/main/res/drawable/icon.xml" value="0.101" />
         <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-ui/src/main/res/drawable/cancel_button.xml" value="0.29" />
         <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-ui/src/main/res/drawable/edit_button.xml" value="0.249" />
         <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-ui/src/main/res/drawable/logo_cards.xml" value="0.1635" />
@@ -30,6 +31,7 @@
         <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/logo_take_card.xml" value="0.2895" />
         <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/logo_tickets.xml" value="0.29" />
         <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/placeholder.xml" value="0.2895" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/splash.xml" value="0.1" />
         <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/turn_off_slider.xml" value="0.2895" />
         <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/turn_on_slider.xml" value="0.2895" />
         <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable/use_card.xml" value="0.2895" />

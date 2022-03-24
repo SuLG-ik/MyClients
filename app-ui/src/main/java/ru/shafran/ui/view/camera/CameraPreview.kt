@@ -6,6 +6,7 @@ import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -18,6 +19,7 @@ import androidx.lifecycle.LifecycleOwner
 import kotlinx.coroutines.guava.await
 
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 internal fun CameraPreview(
     cameraState: CameraState,
@@ -105,7 +107,7 @@ private fun ProcessCameraProvider.tryBind(
 ) {
     try {
         unbindAll()
-        if(analysis != null) {
+        if (analysis != null) {
             bindToLifecycle(
                 lifecycleOwner,
                 selector,

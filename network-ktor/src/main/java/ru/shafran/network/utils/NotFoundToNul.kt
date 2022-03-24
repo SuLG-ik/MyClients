@@ -1,6 +1,6 @@
 package ru.shafran.network.utils
 
-import io.ktor.client.features.*
+import io.ktor.client.plugins.*
 import io.ktor.http.*
 
 internal inline fun <T> tryRequest(request: () -> T): T? {

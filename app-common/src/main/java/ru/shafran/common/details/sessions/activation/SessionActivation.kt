@@ -1,17 +1,17 @@
-package ru.shafran.common.details.sessions
+package ru.shafran.common.details.sessions.activation
 
+import ru.shafran.common.employees.picker.EmployeePicker
+import ru.shafran.common.services.picker.ConfiguredServicePicker
 import ru.shafran.network.customers.data.Customer
-import ru.shafran.network.employees.data.Employee
-import ru.shafran.network.services.data.Service
 import ru.shafran.network.session.data.CreateSessionForCustomerRequest
 
 interface SessionActivation {
 
     val customer: Customer.ActivatedCustomer
 
-    val services: List<Service>
+    val servicePicker: ConfiguredServicePicker
 
-    val employees: List<Employee>
+    val employeePicker: EmployeePicker
 
     fun onActivate(request: CreateSessionForCustomerRequest)
 

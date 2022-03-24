@@ -3,18 +3,19 @@ package ru.shafran.network
 import io.github.aakira.napier.Napier
 import io.ktor.client.*
 import io.ktor.client.engine.*
-import io.ktor.client.features.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.logging.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.*
+import kotlinx.serialization.json.Json
 
 
 @Suppress("FunctionName")
 internal fun ShafranHttpClient(
     engine: HttpClientEngineFactory<HttpClientEngineConfig>,
     config: NetworkConfig,
-    serializer: JsonSerializer,
+    serializer: Json,
     logger: Logger = NapierLogger,
 ): HttpClient {
     Napier.d({ config.toString() }, tag = "ShafranHttpClient")
@@ -36,13 +37,20 @@ internal fun ShafranHttpClient(
             header("api", config.apiVersion)
             contentType(ContentType.Application.Json)
         }
-        install(JsonFeature) { this.serializer = serializer }
+        install(ContentNegotiation) {
+            json(serializer)
+        }
+        HttpResponseValidator {
+            handleResponseException { exception ->
+
+            }
+        }
     }
 }
 
 object NapierLogger : Logger {
     override fun log(message: String) {
-        Napier.d({message}, tag = "ShafranHttpClient")
+        Napier.d({ message }, tag = "ShafranHttpClient")
     }
 
 }

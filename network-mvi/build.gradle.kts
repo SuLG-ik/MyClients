@@ -47,7 +47,7 @@ dependencies{
     implementation(Dependencies.Coroutines.core)
     implementation(Dependencies.Koin.core)
     implementation(Dependencies.Napier.core)
-    implementation(project(":network-data"))
-    implementation(project(":network-core"))
-    implementation(project(":network-ktor"))
+    implementation(projects.networkData)
+    implementation(projects.networkCore)
+    implementation(projects.networkKtor)
 }
