@@ -3,11 +3,12 @@ package ru.shafran.common.details.host
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.RouterState
 import com.arkivanov.decompose.router.activeChild
+import com.arkivanov.decompose.router.bringToFront
 import com.arkivanov.decompose.router.pop
-import com.arkivanov.decompose.router.push
 import com.arkivanov.decompose.router.router
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.operator.map
+import ru.shafran.common.utils.Share
 import ru.shafran.common.utils.Updatable
 import ru.shafran.common.utils.replaceAll
 import ru.shafran.network.customers.data.Customer
@@ -15,6 +16,7 @@ import ru.shafran.network.session.data.Session
 
 internal class CustomerDetailsHostComponent(
     componentContext: ComponentContext,
+    share: Share,
 ) : CustomerDetailsHost, ComponentContext by componentContext {
 
 
@@ -25,6 +27,9 @@ internal class CustomerDetailsHostComponent(
             onUseSession = this::onUseSession,
             onActivateSession = this::onActivateSession,
             onBackAndUpdate = this::onBackAndUpdate,
+            onProfile = this::onProfile,
+            share = share,
+            onShareCard = this::onShareCard
         )
 
     private val router = router<CustomerDetailsHost.Configuration, CustomerDetailsHost.Child<Any?>>(
@@ -32,16 +37,24 @@ internal class CustomerDetailsHostComponent(
         childFactory = childFactory,
     )
 
+    private fun onProfile(customer: Customer.ActivatedCustomer) {
+        router.bringToFront(CustomerDetailsHost.Configuration.CustomerInfoById(customer.id))
+    }
+
     private fun onEdit(customer: Customer) {
-        router.push(CustomerDetailsHost.Configuration.EditCustomer(customer.id))
+        router.bringToFront(CustomerDetailsHost.Configuration.EditCustomer(customer.id))
     }
 
     private fun onActivateSession(customer: Customer.ActivatedCustomer) {
-        router.push(CustomerDetailsHost.Configuration.SessionActivation(customer))
+        router.bringToFront(CustomerDetailsHost.Configuration.SessionActivation(customer))
     }
 
     private fun onUseSession(session: Session) {
-        router.push(CustomerDetailsHost.Configuration.SessionUse(session))
+        router.bringToFront(CustomerDetailsHost.Configuration.SessionUse(session))
+    }
+
+    private fun onShareCard(cardToken: String, customer: Customer.ActivatedCustomer) {
+        router.bringToFront(CustomerDetailsHost.Configuration.ShareCard(cardToken, customer))
     }
 
     private fun onBack() {
@@ -52,7 +65,7 @@ internal class CustomerDetailsHostComponent(
     }
 
     private fun onBackAndUpdate() {
-        router.pop()
+        onBack()
         (router.activeChild.instance.component as? Updatable)?.onUpdate()
     }
 
@@ -60,8 +73,12 @@ internal class CustomerDetailsHostComponent(
         router.replaceAll(CustomerDetailsHost.Configuration.Hidden)
     }
 
+    override fun onGenerateCustomer() {
+        router.bringToFront(CustomerDetailsHost.Configuration.GenerateCard())
+    }
+
     override fun onShowCustomer(token: String) {
-        router.push(CustomerDetailsHost.Configuration.CustomerInfo(token))
+        router.bringToFront(CustomerDetailsHost.Configuration.CustomerInfoByToken(token))
     }
 
     override val isShown: Value<Boolean>

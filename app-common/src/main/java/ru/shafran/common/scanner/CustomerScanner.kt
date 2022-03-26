@@ -9,4 +9,5 @@ interface CustomerScanner {
 
     val camera: Camera
 
+    fun onGenerateCustomer()
 }

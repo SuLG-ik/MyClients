@@ -7,10 +7,12 @@ import com.arkivanov.decompose.router.router
 import com.arkivanov.decompose.value.Value
 import ru.shafran.common.scanner.CustomerScannerComponent
 import ru.shafran.common.services.ServicesComponent
+import ru.shafran.common.utils.Share
 
 class RootComponent(
     componentContext: ComponentContext,
     private val onOpenSettings: () -> Unit,
+    private val share: Share,
 ) : Root, ComponentContext by componentContext {
 
     private val router = router<Root.Configuration, Root.Child>(
@@ -43,6 +45,7 @@ class RootComponent(
             component = CustomerScannerComponent(
                 componentContext = componentContext,
                 onOpenSettings = onOpenSettings,
+                share = share
             )
         )
     }

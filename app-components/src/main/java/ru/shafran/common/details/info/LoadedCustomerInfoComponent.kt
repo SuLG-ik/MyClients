@@ -10,6 +10,7 @@ internal class LoadedCustomerInfoComponent(
     private val onEdit: () -> Unit,
     private val onActivateSession: () -> Unit,
     private val onUseSession: (Session) -> Unit,
+    private val onShareCard: () -> Unit,
 ) : LoadedCustomerInfo {
 
     override fun onBack() {
@@ -18,6 +19,10 @@ internal class LoadedCustomerInfoComponent(
 
     override fun onEdit() {
         onEdit.invoke()
+    }
+
+    override fun onShareCard() {
+        onShareCard.invoke()
     }
 
     override fun onActivateSession() {

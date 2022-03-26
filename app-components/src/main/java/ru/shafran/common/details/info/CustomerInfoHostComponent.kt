@@ -18,11 +18,13 @@ import ru.shafran.network.utils.reduceStates
 
 class CustomerInfoHostComponent(
     componentContext: ComponentContext,
-    private val customerToken: String,
+    private val customerToken: String? = null,
     private val onBack: () -> Unit,
     private val onEdit: (Customer) -> Unit,
     private val onActivateSession: (Customer.ActivatedCustomer) -> Unit,
     private val onUseSession: (Session) -> Unit,
+    private val customerId: String? = null,
+    private val onShareCard: (cardToken: String, customer: Customer.ActivatedCustomer) -> Unit,
 ) : CustomerInfoHost, Updatable, ComponentContext by componentContext {
 
     private val store = getStore<CustomerInfoStore>()
@@ -75,6 +77,7 @@ class CustomerInfoHostComponent(
                 onBack = onBack,
                 onUseSession = onUseSession,
                 onEdit = { onEdit(customer) },
+                onShareCard = { onShareCard(cardToken, customer) }
             )
         )
     }
@@ -160,6 +163,7 @@ class CustomerInfoHostComponent(
     private fun CustomerInfoStore.State.CustomerActivatedLoaded.reduce() {
         router.replaceAll(
             CustomerInfoHost.Configuration.ActivatedLoaded(
+                cardToken = cardToken,
                 customer = customer,
                 history = history,
             )
@@ -185,7 +189,13 @@ class CustomerInfoHostComponent(
     }
 
     override fun onUpdate() {
-        store.accept(CustomerInfoStore.Intent.LoadCustomerWithToken(customerToken))
+        if (customerId != null) {
+            store.accept(CustomerInfoStore.Intent.LoadCustomerWithId(customerId))
+        } else if (customerToken != null) {
+            store.accept(CustomerInfoStore.Intent.LoadCustomerWithToken(customerToken))
+        } else {
+            throw IllegalStateException("Customer token and customerId are null")
+        }
     }
 
 }

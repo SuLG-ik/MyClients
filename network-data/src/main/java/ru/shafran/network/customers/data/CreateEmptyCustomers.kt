@@ -15,3 +15,17 @@ data class CreateEmptyCustomersRequest(
 data class CreateEmptyCustomersResponse(
     val customers: List<Customer.InactivatedCustomer>,
 ) : Parcelable
+
+@Parcelize
+@Serializable
+data class CreateCustomerRequest(
+    val data: CustomerData,
+) : Parcelable
+
+
+@Parcelize
+@Serializable
+data class CreateCustomerResponse(
+    val token: String,
+    val customer: Customer.ActivatedCustomer,
+) : Parcelable

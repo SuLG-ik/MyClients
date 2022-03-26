@@ -44,6 +44,7 @@ interface CustomerInfoHost {
 
         @Parcelize
         data class ActivatedLoaded(
+            val cardToken: String,
             val customer: Customer.ActivatedCustomer,
             val history: List<Session>,
         ) : Configuration()

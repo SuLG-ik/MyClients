@@ -5,6 +5,8 @@ import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*
+import ru.shafran.network.customers.data.CreateCustomerRequest
+import ru.shafran.network.customers.data.CreateCustomerResponse
 import ru.shafran.network.customers.data.CreateEmptyCustomersRequest
 import ru.shafran.network.customers.data.CreateEmptyCustomersResponse
 import ru.shafran.network.customers.data.EditCustomerDataResponse
@@ -19,6 +21,16 @@ import ru.shafran.network.customers.data.GetCustomerByTokenResponse
 internal class KtorCustomersRepository(
     private val httpClient: HttpClient,
 ) : CustomersRepository {
+
+    override suspend fun createCustomer(data: CreateCustomerRequest): CreateCustomerResponse {
+        return try {
+            httpClient.post("/customers/createCustomer") {
+                setBody(data)
+            }.body()
+        } catch (e: ResponseException) {
+            throw e.response.call.body<CustomersException>()
+        }
+    }
 
     override suspend fun getCustomerById(data: GetCustomerByIdRequest): GetCustomerByIdResponse {
         return try {

@@ -51,7 +51,6 @@ dependencies {
     implementation(Dependencies.Coroutines.guava)
     implementation(Dependencies.Coroutines.tasks)
 
-
     implementation(Dependencies.Decompose.core)
     implementation(Dependencies.Decompose.compose)
 
@@ -75,6 +74,7 @@ dependencies {
     implementation(Dependencies.Camera.extensions)
 
     implementation(Dependencies.MLKit.scanner)
+    implementation(Dependencies.ZXing.core)
     implementation(projects.appCommon)
     implementation(projects.networkData)
 }

@@ -47,4 +47,5 @@ dependencies {
     implementation(projects.networkData)
     implementation(projects.networkCore)
     implementation(projects.networkMvi)
+    implementation(Dependencies.ZXing.core)
 }

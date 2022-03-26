@@ -69,7 +69,13 @@ private fun ServicesList(
     modifier: Modifier = Modifier,
 ) {
     TitledDialog(
-        title = stringResource(R.string.customer_session_activation_services_title),
+        title = {
+            Text(
+                stringResource(R.string.customer_session_activation_services_title),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        },
         contentPadding = PaddingValues(0.dp),
         modifier = modifier,
     ) {

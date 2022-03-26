@@ -5,6 +5,7 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import ru.shafran.common.details.edit.CustomerEditingHost
+import ru.shafran.common.details.generator.CardGeneratorHost
 import ru.shafran.common.details.info.CustomerInfoHost
 import ru.shafran.common.details.sessions.activation.SessionActivationHost
 import ru.shafran.common.details.sessions.use.SessionUseHost
@@ -19,6 +20,8 @@ interface CustomerDetailsHost {
 
     fun onHide()
 
+    fun onGenerateCustomer()
+
     val routerState: Value<RouterState<Configuration, Child<Any?>>>
 
     sealed class Configuration : Parcelable {
@@ -27,8 +30,13 @@ interface CustomerDetailsHost {
         object Hidden : Configuration()
 
         @Parcelize
-        data class CustomerInfo(
+        data class CustomerInfoByToken(
             val customerToken: String,
+        ) : Configuration()
+
+        @Parcelize
+        data class CustomerInfoById(
+            val customerId: String,
         ) : Configuration()
 
         @Parcelize
@@ -44,6 +52,15 @@ interface CustomerDetailsHost {
         @Parcelize
         data class SessionUse(
             val session: Session,
+        ) : Configuration()
+
+        @Parcelize
+        class GenerateCard : Configuration()
+
+        @Parcelize
+        class ShareCard(
+            val cardToken: String,
+            val customer: Customer.ActivatedCustomer,
         ) : Configuration()
 
     }
@@ -74,6 +91,13 @@ interface CustomerDetailsHost {
             override val component: SessionUseHost,
         ) : Child<SessionUseHost>()
 
+        data class GenerateCard(
+            override val component: CardGeneratorHost,
+        ) : Child<CardGeneratorHost>()
+
+        data class CardSender(
+            override val component: ru.shafran.common.details.generator.CardSender,
+        ) : Child<ru.shafran.common.details.generator.CardSender>()
 
     }
 

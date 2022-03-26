@@ -29,4 +29,6 @@ internal class CameraComponent(
         onOpenSettings.invoke()
     }
 
+
+
 }

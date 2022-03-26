@@ -19,7 +19,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
@@ -74,17 +73,19 @@ private fun ServiceConfigurationList(
 ) {
     val configurations = service.data.configurations
     TitledDialog(
-        title = service.data.info.title,
+
+        title = {
+            Text(
+                service.data.info.title,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        },
         onBackPressed = onBack,
         contentPadding = PaddingValues(0.dp),
         modifier = modifier,
     ) {
         val state = rememberScrollState()
-        LaunchedEffect(key1 = selectedConfigurationId, block = {
-            if (selectedConfigurationId != null) {
-//                state.scrollToItem(configurations.indexOfFirst { it.id == selectedConfigurationId })
-            }
-        })
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -131,6 +132,12 @@ private fun ServiceConfiguration(
             style = MaterialTheme.typography.titleMedium,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.fillMaxWidth().weight(1f, false)
+        )
+        Text(
+            "${configuration.cost} ₽",
+            style = MaterialTheme.typography.titleMedium,
+            maxLines = 1,
         )
     }
 }

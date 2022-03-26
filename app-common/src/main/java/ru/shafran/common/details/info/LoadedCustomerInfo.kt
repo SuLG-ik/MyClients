@@ -17,4 +17,6 @@ interface LoadedCustomerInfo {
 
     fun onEdit()
 
+    fun onShareCard()
+
 }

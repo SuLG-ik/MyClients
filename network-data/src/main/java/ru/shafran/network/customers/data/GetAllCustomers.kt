@@ -25,11 +25,12 @@ data class GetCustomerByIdRequest(
 
 @Serializable
 data class GetCustomerByIdResponse(
+    val cardToken: String,
     val customer: Customer,
 )
 
-
 @Serializable
 data class GetCustomerByTokenResponse(
+    val cardToken: String,
     val customer: Customer,
 )

@@ -7,6 +7,7 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.coroutineScope
 import ru.shafran.network.customers.data.Customer
+import ru.shafran.network.customers.data.GetCustomerByIdRequest
 import ru.shafran.network.customers.data.GetCustomerByTokenRequest
 import ru.shafran.network.session.SessionsRepository
 import ru.shafran.network.session.data.GetSessionsForCustomerRequest
@@ -51,6 +52,8 @@ internal class CustomerInfoStoreImpl(
                     when (intent) {
                         is CustomerInfoStore.Intent.LoadCustomerWithToken ->
                             intent.execute()
+                        is CustomerInfoStore.Intent.LoadCustomerWithId ->
+                            intent.execute()
                     }
                 } catch (e: Exception) {
                     syncDispatch(Message.Error(e))
@@ -58,10 +61,22 @@ internal class CustomerInfoStoreImpl(
             }
         }
 
+        private suspend fun CustomerInfoStore.Intent.LoadCustomerWithId.execute() {
+            val response =
+                customersRepository.getCustomerById(GetCustomerByIdRequest(customerId))
+            syncDispatch(Message.CustomerPreloaded(response.cardToken, response.customer))
+            loadSessions(response.cardToken, response.customer)
+        }
+
         private suspend fun CustomerInfoStore.Intent.LoadCustomerWithToken.execute() {
-            val customer =
-                customersRepository.getCustomerByToken(GetCustomerByTokenRequest(customerToken)).customer
-            syncDispatch(Message.CustomerPreloaded(customer))
+            val response =
+                customersRepository.getCustomerByToken(GetCustomerByTokenRequest(customerToken))
+            syncDispatch(Message.CustomerPreloaded(response.cardToken, response.customer))
+            loadSessions(cardToken = response.cardToken, customer = response.customer)
+        }
+
+
+        private suspend fun loadSessions(cardToken: String, customer: Customer) {
             if (customer !is Customer.ActivatedCustomer) {
                 return
             }
@@ -70,6 +85,7 @@ internal class CustomerInfoStoreImpl(
             ).sessions
 
             syncDispatch(Message.CustomerActivatedLoaded(
+                cardToken = cardToken,
                 customer = customer,
                 history = history,
             ))
@@ -91,11 +107,13 @@ internal class CustomerInfoStoreImpl(
             when (customer) {
                 is Customer.InactivatedCustomer ->
                     CustomerInfoStore.State.CustomerInactivatedLoaded(
+                        cardToken = cardToken,
                         customer = customer,
                     )
 
                 is Customer.ActivatedCustomer ->
                     CustomerInfoStore.State.CustomerActivatedPreloaded(
+                        cardToken = cardToken,
                         customer = customer,
                     )
             }
@@ -103,6 +121,7 @@ internal class CustomerInfoStoreImpl(
 
         private fun Message.CustomerActivatedLoaded.reduce(): CustomerInfoStore.State =
             CustomerInfoStore.State.CustomerActivatedLoaded(
+                cardToken = cardToken,
                 customer = customer,
                 history = history,
             )
@@ -128,10 +147,12 @@ internal class CustomerInfoStoreImpl(
         class Loading : Message()
 
         data class CustomerPreloaded(
+            val cardToken: String,
             val customer: Customer,
         ) : Message()
 
         data class CustomerActivatedLoaded(
+            val cardToken: String,
             val customer: Customer.ActivatedCustomer,
             val history: List<Session>,
         ) : Message()

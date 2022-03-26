@@ -8,4 +8,5 @@ interface CustomersRepository {
     suspend fun getAllCustomers(data: GetAllCustomersRequest): GetAllCustomersResponse
     suspend fun createEmptyCustomers(data: CreateEmptyCustomersRequest): CreateEmptyCustomersResponse
     suspend fun editCustomerData(data: EditCustomerRequest): EditCustomerDataResponse
+    suspend fun createCustomer(data: CreateCustomerRequest): CreateCustomerResponse
 }

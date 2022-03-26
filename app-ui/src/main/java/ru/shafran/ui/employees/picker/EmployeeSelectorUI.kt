@@ -68,7 +68,13 @@ private fun EmployeesList(
     modifier: Modifier = Modifier,
 ) {
     TitledDialog(
-        title = stringResource(R.string.customer_session_activation_employees_title),
+        title = {
+            Text(
+                stringResource(R.string.customer_session_activation_employees_title),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        },
         contentPadding = PaddingValues(0.dp),
         modifier = modifier,
     ) {

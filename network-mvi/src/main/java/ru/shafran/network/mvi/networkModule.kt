@@ -9,6 +9,8 @@ import ru.shafran.network.customers.CustomerEditingStore
 import ru.shafran.network.customers.CustomerEditingStoreImpl
 import ru.shafran.network.customers.CustomerInfoStore
 import ru.shafran.network.customers.CustomerInfoStoreImpl
+import ru.shafran.network.customers.GenerateCustomerStore
+import ru.shafran.network.customers.GenerateCustomerStoreImpl
 import ru.shafran.network.customers.SessionActivationStore
 import ru.shafran.network.customers.SessionActivationStoreImpl
 import ru.shafran.network.employees.EmployeesListStore
@@ -30,6 +32,7 @@ private val mviNetworkModule = module {
     factoryOf(::EmployeesListStoreImpl) bind EmployeesListStore::class
     factoryOf(::CustomerEditingStoreImpl) bind CustomerEditingStore::class
     factoryOf(::SessionUseStoreImpl) bind SessionUseStore::class
+    factoryOf(::GenerateCustomerStoreImpl) bind GenerateCustomerStore::class
 }
 
 val networkModules = arrayOf(mviNetworkModule, networkModule)

@@ -6,8 +6,6 @@ interface CustomerEditor {
 
     val data: CustomerData?
 
-    fun onBack()
-
     fun onEdit(data: CustomerData)
 
 }

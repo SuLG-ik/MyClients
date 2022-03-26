@@ -10,15 +10,18 @@ import androidx.compose.runtime.CompositionLocalProvider
 import com.arkivanov.decompose.defaultComponentContext
 import org.koin.android.ext.android.get
 import ru.shafran.common.root.RootComponent
+import ru.shafran.startup.share.ContextShare
 import ru.shafran.ui.ShafranApp
 import ru.shafran.ui.utils.LocalTimeFormatter
 import ru.shafran.ui.utils.TimeFormatter
 
 fun ComponentActivity.setupShafran() {
+    val share = ContextShare(this)
     val timeFormatter = get<TimeFormatter>()
     val component = RootComponent(
         componentContext = defaultComponentContext(),
         onOpenSettings = this::onOpenSettings,
+        share = share,
     )
     setContent {
         CompositionLocalProvider(LocalTimeFormatter provides timeFormatter) {

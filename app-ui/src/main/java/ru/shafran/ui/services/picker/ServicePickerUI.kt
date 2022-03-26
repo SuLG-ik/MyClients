@@ -46,8 +46,8 @@ internal fun FloatingServicePickerUI(component: ConfiguredServicePicker, modifie
         ServicePickerDropdown(
             component = component,
             modifier = Modifier
-                .fillMaxWidth(0.85f)
-                .height(400.dp),
+                .fillMaxWidth(0.75f)
+                .height(300.dp),
         )
     }
 }
@@ -87,7 +87,11 @@ private fun EmptyServiceConfiguration(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         Icon(Icons.Outlined.Close, contentDescription = null)
-        Text(stringResource(R.string.customer_session_activation_empty_service))
+        Text(
+            stringResource(R.string.customer_session_activation_empty_service),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
     }
 }
 

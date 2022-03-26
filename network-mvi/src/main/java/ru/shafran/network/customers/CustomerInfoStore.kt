@@ -13,6 +13,11 @@ interface CustomerInfoStore :
             val customerToken: String,
         ) : Intent()
 
+        data class LoadCustomerWithId(
+            val customerId: String,
+        ) : Intent()
+
+
     }
 
     sealed class State {
@@ -22,14 +27,17 @@ interface CustomerInfoStore :
         class Loading : State()
 
         data class CustomerInactivatedLoaded(
+            val cardToken: String,
             val customer: Customer.InactivatedCustomer
         ) : State()
 
         data class CustomerActivatedPreloaded(
+            val cardToken: String,
             val customer: Customer.ActivatedCustomer,
         ) : State()
 
         data class CustomerActivatedLoaded(
+            val cardToken: String,
             val customer: Customer.ActivatedCustomer,
             val history: List<Session>,
         ) : State()

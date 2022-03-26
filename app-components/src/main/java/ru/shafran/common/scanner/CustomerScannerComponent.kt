@@ -7,14 +7,16 @@ import ru.shafran.common.camera.Camera
 import ru.shafran.common.camera.CameraComponent
 import ru.shafran.common.details.host.CustomerDetailsHost
 import ru.shafran.common.details.host.CustomerDetailsHostComponent
+import ru.shafran.common.utils.Share
 
 internal class CustomerScannerComponent(
     componentContext: ComponentContext,
     onOpenSettings: () -> Unit,
+    share: Share,
 ) : CustomerScanner, ComponentContext by componentContext {
 
     override val customerDetails: CustomerDetailsHost =
-        CustomerDetailsHostComponent(childContext("customer_details"))
+        CustomerDetailsHostComponent(childContext("customer_details"), share = share)
 
     init {
         customerDetails.isShown.observe(lifecycle) { isShown ->
@@ -35,6 +37,10 @@ internal class CustomerScannerComponent(
         if (!customerDetails.isShown.value) {
             customerDetails.onShowCustomer(token)
         }
+    }
+
+    override fun onGenerateCustomer() {
+        customerDetails.onGenerateCustomer()
     }
 
 }

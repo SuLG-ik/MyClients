@@ -15,7 +15,8 @@
     <string name="customers_activating">Activating</string>
     <string name="customers_name">Name</string>
     <string name="customers_remark">Remark</string>
-    <string name="customer_apply">Apply changes</string>
+    <string name="customer_apply">Apply</string>
+    <string name="customer_generate_request_title">Create QR-code</string>
     <string name="customer_empty_history">There are no active sessions</string>
     <string name="customer_empty_history_items">Session has never been used</string>
     <string name="customers_create_new_session">Add new session</string>
@@ -28,4 +29,5 @@
     <string name="customer_session_activation_empty_employee">Choose employee</string>
     <string name="customer_session_activation_employees_title">Employees</string>
     <string name="gender_selector_title">Gender</string>
+    <string name="customer_share_qr">Share QR-code</string>
 </resources>

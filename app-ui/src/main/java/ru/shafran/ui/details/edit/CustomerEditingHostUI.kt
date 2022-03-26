@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetpack.Children
 import ru.shafran.common.details.edit.CustomerEditingHost
-import ru.shafran.ui.loading.LoadingUI
 
 @Composable
 fun CustomerEditingHostUI(component: CustomerEditingHost, modifier: Modifier) {
@@ -19,7 +18,7 @@ fun CustomerEditingNavHost(child: CustomerEditingHost.Child, modifier: Modifier)
         is CustomerEditingHost.Child.Activating ->
             CustomerActivationUI(component = child.component, modifier = modifier)
         is CustomerEditingHost.Child.Loading ->
-            LoadingUI(component = child.component, modifier = modifier)
+            CustomerEditingLoadingUI(component = child.component, modifier = modifier)
         is CustomerEditingHost.Child.Editing ->
             CustomerEditingUI(component = child.component, modifier = modifier)
     }

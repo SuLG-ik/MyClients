@@ -17,6 +17,8 @@ import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import io.github.aakira.napier.Napier
 import ru.shafran.common.details.host.CustomerDetailsHost
 import ru.shafran.ui.details.edit.CustomerEditingHostUI
+import ru.shafran.ui.details.generator.CardGeneratorHostUI
+import ru.shafran.ui.details.generator.CustomerSenderUI
 import ru.shafran.ui.details.info.CustomerInfoHostUI
 import ru.shafran.ui.details.session.activation.SessionActivationHostUI
 import ru.shafran.ui.details.session.use.SessionUseHostUI
@@ -87,6 +89,10 @@ private fun CustomerDetailsNavHost(
             SessionActivationHostUI(component = child.component, modifier = modifier)
         is CustomerDetailsHost.Child.SessionUse ->
             SessionUseHostUI(component = child.component, modifier = modifier)
+        is CustomerDetailsHost.Child.GenerateCard ->
+            CardGeneratorHostUI(component = child.component, modifier = modifier)
+        is CustomerDetailsHost.Child.CardSender ->
+            CustomerSenderUI(component = child.component, modifier = modifier)
     }
 }
 

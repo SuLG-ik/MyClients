@@ -32,11 +32,12 @@ internal fun GenderSelector(
     selectedGender: Gender,
     onSelect: (Gender) -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
 ) {
     val isExpanded = rememberSaveable { mutableStateOf(false) }
     OutlinedSurface(
         modifier = modifier
-            .clickable { isExpanded.value = true },
+            .clickable { if (enabled) isExpanded.value = true },
     ) {
         Box(
             modifier = Modifier
@@ -48,8 +49,16 @@ internal fun GenderSelector(
                 onDismissRequest = { isExpanded.value = false },
             ) {
                 TitledDialog(
-                    title = stringResource(R.string.gender_selector_title),
-                    modifier = Modifier.fillMaxWidth(0.50f).padding(10.dp),
+                    title = {
+                        Text(
+                            stringResource(R.string.gender_selector_title),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(0.50f)
+                        .padding(10.dp),
                     contentPadding = PaddingValues(0.dp),
                 ) {
                     Gender.values().onEach {
@@ -61,7 +70,9 @@ internal fun GenderSelector(
                         ) {
                             Gender(
                                 gender = it,
-                                modifier = Modifier.fillMaxWidth().padding(10.dp)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(10.dp)
                             )
                         }
                     }

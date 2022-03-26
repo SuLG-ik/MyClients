@@ -14,7 +14,21 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.material.fade
+import com.google.accompanist.placeholder.material.placeholder
 
+
+@Composable
+fun PlaceholderTextField(modifier: Modifier) {
+    OutlinedTextField(
+        value = "",
+        onValueChange = {},
+        enabled = false,
+        modifier = modifier
+            .placeholder(true, highlight = PlaceholderHighlight.fade())
+    )
+}
 
 @Composable
 fun OutlinedTextField(

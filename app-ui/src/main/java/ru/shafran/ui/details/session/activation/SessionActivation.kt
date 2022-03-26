@@ -11,9 +11,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.material.fade
+import com.google.accompanist.placeholder.material.placeholder
 import ru.shafran.common.details.sessions.activation.SessionActivation
 import ru.shafran.common.employees.picker.EmployeePicker
+import ru.shafran.common.loading.Loading
 import ru.shafran.common.services.picker.ConfiguredServicePicker
 import ru.shafran.network.customers.data.Customer
 import ru.shafran.network.employees.data.Employee
@@ -25,7 +30,59 @@ import ru.shafran.ui.R
 import ru.shafran.ui.employees.picker.FloatingEmployeePickerUI
 import ru.shafran.ui.services.picker.FloatingServicePickerUI
 import ru.shafran.ui.view.OutlinedTextField
+import ru.shafran.ui.view.PlaceholderTextField
 import ru.shafran.ui.view.TitledDialog
+
+@Composable
+fun SessionActivationPlaceholderUI(
+    component: Loading,
+    modifier: Modifier = Modifier,
+) {
+    TitledDialog(
+        title = {
+            Text(
+                stringResource(id = component.message),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .placeholder(true, highlight = PlaceholderHighlight.fade())
+            )
+        },
+        onBackPressed = {},
+        modifier = modifier,
+    ) {
+        SessionActivationPlaceholderUI(
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@Composable
+fun SessionActivationPlaceholderUI(modifier: Modifier) {
+    val remark = rememberSaveable { mutableStateOf("") }
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        PlaceholderTextField(
+            modifier = Modifier.fillMaxWidth(),
+        )
+        PlaceholderTextField(
+            modifier = Modifier.fillMaxWidth(),
+        )
+        PlaceholderTextField(
+            modifier = Modifier.fillMaxWidth(),
+        )
+        OutlinedButton(
+            onClick = {},
+            enabled = false,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Text("Подключение не доступно", modifier = Modifier
+                .placeholder(true, highlight = PlaceholderHighlight.fade()))
+        }
+    }
+}
 
 @Composable
 fun SessionActivationUI(
@@ -33,10 +90,16 @@ fun SessionActivationUI(
     modifier: Modifier = Modifier,
 ) {
     TitledDialog(
-        title = stringResource(
-            id = R.string.customer_session_activation_title,
-            component.customer.data.name,
-        ),
+        title = {
+            Text(
+                stringResource(
+                    id = R.string.customer_session_activation_title,
+                    component.customer.data.name,
+                ),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        },
         onBackPressed = component::onBack,
         modifier = modifier,
     ) {

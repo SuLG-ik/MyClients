@@ -45,8 +45,8 @@ internal fun FloatingEmployeePickerUI(component: EmployeePicker, modifier: Modif
         EmployeePickerDropdown(
             component = component,
             modifier = Modifier
-                .fillMaxWidth(0.85f)
-                .height(400.dp),
+                .fillMaxWidth(0.75f)
+                .height(300.dp),
         )
     }
 }

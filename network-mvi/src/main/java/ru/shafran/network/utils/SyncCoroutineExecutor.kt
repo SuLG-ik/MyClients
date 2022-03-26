@@ -4,6 +4,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -25,7 +26,9 @@ abstract class CancelableSyncCoroutineExecutor<in Intent : Any, in Action : Any,
 ) :
     CoroutineExecutor<Intent, Action, State, Message, Label>() {
 
-    private var previousJob: Job? = null
+    private val supervisorJob = SupervisorJob()
+
+    private var currentJob: Job? = null
 
     protected suspend fun syncDispatch(result: Message) {
         withContext(Dispatchers.Main) { dispatch(result) }
@@ -40,8 +43,8 @@ abstract class CancelableSyncCoroutineExecutor<in Intent : Any, in Action : Any,
     }
 
     final override fun executeIntent(intent: Intent, getState: () -> State) {
-        previousJob?.cancel()
-        previousJob = scope.launch(defaultDispatcher) { execute(intent, getState) }
+        currentJob?.cancel()
+        currentJob = scope.launch(defaultDispatcher + supervisorJob) { execute(intent, getState) }
     }
 
     protected abstract suspend fun execute(intent: Intent, getState: () -> State)

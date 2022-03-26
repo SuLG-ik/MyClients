@@ -15,7 +15,7 @@
     <string name="customers_activating">Активация</string>
     <string name="customers_name">Имя</string>
     <string name="customers_remark">Пометка</string>
-    <string name="customer_apply">Применить изменения</string>
+    <string name="customer_apply">Применить</string>
     <string name="customer_empty_history">Ещё нет активный записей</string>
     <string name="customer_empty_history_items">Запись ещё ни разу не использовалась</string>
     <string name="customers_create_new_session">Добавить запись на приём</string>ч
@@ -28,4 +28,6 @@
     <string name="customer_session_activation_empty_employee">Выберите работника</string>
     <string name="customer_session_activation_employees_title">Работники</string>
     <string name="gender_selector_title">Пол</string>
+    <string name="customer_generate_request_title">Создать QR-код</string>
+    <string name="customer_share_qr">Поделиться QR кодом</string>
 </resources>

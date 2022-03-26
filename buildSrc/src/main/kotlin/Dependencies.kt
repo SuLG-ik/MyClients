@@ -58,25 +58,25 @@ interface Dependencies {
         const val compose = "com.arkivanov.decompose:extensions-compose-jetpack:$version"
     }
 
-    object Activity: Dependencies {
+    object Activity : Dependencies {
         const val version = "1.5.0-alpha03"
         const val core = "androidx.activity:activity-ktx:$version"
         const val compose = "androidx.activity:activity-compose:$version"
     }
 
-    object Appcompat: Dependencies {
+    object Appcompat : Dependencies {
         const val version = "1.4.1"
         const val core = "androidx.appcompat:appcompat:$version"
     }
 
-    object Android: Dependencies {
+    object Android : Dependencies {
         const val agpVersion = "7.1.0-rc01"
         const val version = "1.8.0-alpha05"
         const val core = "androidx.core:core-ktx:$version"
         const val splash = "androidx.core:core-splashscreen:1.0.0-beta01"
     }
 
-    object Lifecycle: Dependencies {
+    object Lifecycle : Dependencies {
         const val version = "2.5.0-alpha03"
         const val core = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
         const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel:$version"
@@ -94,7 +94,7 @@ interface Dependencies {
     }
 
     object Koin : Dependencies {
-        const val version =  "3.2.0-beta-1"
+        const val version = "3.2.0-beta-1"
         const val android = "io.insert-koin:koin-android:$version"
         const val core = "io.insert-koin:koin-core:$version"
     }
@@ -126,7 +126,7 @@ interface Dependencies {
         const val extensions = "androidx.camera:camera-extensions:1.0.0-alpha28"
     }
 
-    object Firebase: Dependencies {
+    object Firebase : Dependencies {
         const val BoM = "com.google.firebase:firebase-bom:29.2.1"
 
         const val crashlytics = "com.google.firebase:firebase-crashlytics-ktx"
@@ -140,6 +140,11 @@ interface Dependencies {
     object MLKit : Dependencies {
         const val version = "17.0.2"
         const val scanner = "com.google.mlkit:barcode-scanning:$version"
+    }
+
+    object ZXing {
+        val version = "3.4.1"
+        val core = "com.google.zxing:core:$version"
     }
 
     object Coil : Dependencies {

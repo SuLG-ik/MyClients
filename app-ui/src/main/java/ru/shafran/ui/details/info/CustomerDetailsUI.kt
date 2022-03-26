@@ -4,9 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.List
+import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -26,7 +25,6 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,6 +38,7 @@ import com.google.accompanist.placeholder.material.placeholder
 import ru.shafran.common.details.info.InactivatedCustomerInfo
 import ru.shafran.common.details.info.LoadedCustomerInfo
 import ru.shafran.common.details.info.PreloadedCustomerInfo
+import ru.shafran.common.loading.Loading
 import ru.shafran.network.customers.data.CustomerData
 import ru.shafran.network.session.data.Session
 import ru.shafran.network.session.data.SessionUsage
@@ -49,6 +48,20 @@ import ru.shafran.ui.view.Gender
 import ru.shafran.ui.view.MaterialDivider
 import ru.shafran.ui.view.OutlinedSurface
 import ru.shafran.ui.view.Phone
+
+
+@Composable
+internal fun LoadingCustomerDetailsUI(
+    component: Loading,
+    modifier: Modifier,
+) {
+    Column(modifier = modifier) {
+        PlaceholderCustomerInfo(
+            modifier = modifier,
+        )
+        PlaceholderSessionHistory(modifier = Modifier.fillMaxWidth())
+    }
+}
 
 
 @Composable
@@ -65,6 +78,45 @@ internal fun InactivatedCustomerDetailsUI(
 
 
 @Composable
+fun PlaceholderCustomerInfo(
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.logo_employees),
+            contentDescription = null,
+            modifier = Modifier
+                .size(80.dp)
+                .placeholder(true, highlight = PlaceholderHighlight.fade())
+        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(5.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f, false),
+        ) {
+            Text(
+                "Имя Фамилия",
+                maxLines = 1,
+                style = MaterialTheme.typography.titleLarge,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .placeholder(true, highlight = PlaceholderHighlight.fade())
+            )
+            Phone(null, modifier = Modifier
+                .placeholder(true, highlight = PlaceholderHighlight.fade()))
+            Gender(ru.shafran.network.Gender.UNKNOWN, modifier = Modifier
+                .placeholder(true, highlight = PlaceholderHighlight.fade()))
+        }
+    }
+}
+
+
+@Composable
 internal fun LoadedCustomerDetailsUI(
     component: LoadedCustomerInfo,
     modifier: Modifier,
@@ -76,6 +128,7 @@ internal fun LoadedCustomerDetailsUI(
         CustomerInfo(
             customer = component.customer.data,
             onEdit = component::onEdit,
+            onShare = component::onShareCard,
             modifier = Modifier.fillMaxWidth(),
         )
         SessionHistory(
@@ -157,6 +210,7 @@ private fun InactivatedCustomerInfo(
 fun CustomerInfo(
     customer: CustomerData,
     modifier: Modifier = Modifier,
+    onShare: (() -> Unit)? = null,
     onEdit: (() -> Unit)? = null,
 ) {
     Row(
@@ -185,21 +239,22 @@ fun CustomerInfo(
             Phone(customer.phone)
             Gender(customer.gender)
         }
-        if (onEdit != null) {
-            Box(modifier = Modifier
-                .size(16.dp)
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null,
-                    onClick = onEdit,
-                )
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.edit_button),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(16.dp),
-                )
+        Row {
+            if (onShare != null) {
+                IconButton(onClick = onShare) {
+                    Icon(
+                        Icons.Outlined.Share,
+                        contentDescription = null,
+                    )
+                }
+            }
+            if (onEdit != null) {
+                IconButton(onEdit) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.edit_button),
+                        contentDescription = null,
+                    )
+                }
             }
         }
 
@@ -373,7 +428,6 @@ private fun SessionHistoryItem(
             AnimatedVisibility(isExpanded.value) {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
                     MaterialDivider(modifier = Modifier.fillMaxWidth())
                     SessionActions(
@@ -383,12 +437,13 @@ private fun SessionHistoryItem(
                         modifier = Modifier
                             .align(Alignment.End)
                     )
+                    AnimatedVisibility(visible = isHistoryShown.value) {
+                        SessionHistoryUsages(usages = session.usages,
+                            modifier = Modifier.fillMaxWidth())
+                    }
                 }
             }
-            AnimatedVisibility(visible = isHistoryShown.value && isExpanded.value) {
-                SessionHistoryUsages(usages = session.usages,
-                    modifier = Modifier.fillMaxWidth())
-            }
+
         }
     }
 }
