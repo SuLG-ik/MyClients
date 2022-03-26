@@ -16,11 +16,11 @@ interface CustomerDetailsHost {
 
     val isShown: Value<Boolean>
 
-    fun onShowCustomer(token: String)
-
     fun onHide()
 
     fun onGenerateCustomer()
+
+    fun onShowCustomer(token: String)
 
     val routerState: Value<RouterState<Configuration, Child<Any?>>>
 

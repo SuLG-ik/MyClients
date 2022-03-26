@@ -12,4 +12,6 @@
     <string name="customers_info_error_illegal_card_message">Это не карта</string>
     <string name="customers_info_error_customer_not_found_message">Клиент не найден</string>
     <string name="customers_card_generate_loading">Создание карты</string>
+    <string name="services_details_loading">Загрузка услуш</string>
+    <string name="unknwon_error">Неизвестная ошибка</string>
 </resources>

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -23,7 +24,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 internal fun TitledDialog(
-    title: @Composable () -> Unit,
+    title: @Composable RowScope.() -> Unit,
     modifier: Modifier = Modifier,
     onBackPressed: (() -> Unit)? = null,
     contentPadding: PaddingValues = PaddingValues(10.dp),

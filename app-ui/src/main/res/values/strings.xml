@@ -30,4 +30,8 @@
     <string name="customer_session_activation_employees_title">Employees</string>
     <string name="gender_selector_title">Gender</string>
     <string name="customer_share_qr">Share QR-code</string>
+    <string name="services_details_title">Service</string>
+    <string name="services_item_description">Description:</string>
+    <string name="services_item_description_empty">Empty</string>
+    <string name="services_item_configurations">Configurations:</string>
 </resources>

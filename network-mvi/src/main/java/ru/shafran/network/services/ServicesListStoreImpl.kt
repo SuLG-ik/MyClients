@@ -37,7 +37,7 @@ internal class ServicesListStoreImpl(
         }
 
         private fun Message.Error.reduce(): ServicesListStore.State {
-            TODO()
+            return ServicesListStore.State.Error.Unknown //TODO
         }
 
 
@@ -55,16 +55,21 @@ internal class ServicesListStoreImpl(
     private class Executor(
         private val servicesRepository: ServicesRepository,
         coroutineDispatcher: CoroutineDispatcher,
-    ) : CancelableSyncCoroutineExecutor<ServicesListStore.Intent, Nothing, ServicesListStore.State, Message, ServicesListStore.Label>(coroutineDispatcher) {
+    ) : CancelableSyncCoroutineExecutor<ServicesListStore.Intent, Nothing, ServicesListStore.State, Message, ServicesListStore.Label>(
+        coroutineDispatcher) {
 
 
         override suspend fun execute(
             intent: ServicesListStore.Intent,
             getState: () -> ServicesListStore.State,
         ) {
-            when (intent) {
-                is ServicesListStore.Intent.LoadServices ->
-                    intent.execute()
+            try {
+                when (intent) {
+                    is ServicesListStore.Intent.LoadServices ->
+                        intent.execute()
+                }
+            } catch (e: Exception) {
+                syncDispatch(Message.Error(e))
             }
         }
 

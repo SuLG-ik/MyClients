@@ -18,6 +18,8 @@ import ru.shafran.network.employees.EmployeesListStoreImpl
 import ru.shafran.network.employees.SingleEmployeeStore
 import ru.shafran.network.employees.SingleEmployeeStoreImpl
 import ru.shafran.network.networkModule
+import ru.shafran.network.services.ServiceInfoStore
+import ru.shafran.network.services.ServiceInfoStoreImpl
 import ru.shafran.network.services.ServicesListStore
 import ru.shafran.network.services.ServicesListStoreImpl
 import ru.shafran.network.session.SessionUseStore
@@ -33,6 +35,7 @@ private val mviNetworkModule = module {
     factoryOf(::CustomerEditingStoreImpl) bind CustomerEditingStore::class
     factoryOf(::SessionUseStoreImpl) bind SessionUseStore::class
     factoryOf(::GenerateCustomerStoreImpl) bind GenerateCustomerStore::class
+    factoryOf(::ServiceInfoStoreImpl) bind ServiceInfoStore::class
 }
 
 val networkModules = arrayOf(mviNetworkModule, networkModule)

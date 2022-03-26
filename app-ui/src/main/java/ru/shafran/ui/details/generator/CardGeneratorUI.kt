@@ -16,7 +16,7 @@ fun CustomerGeneratorUI(component: CardGenerator, modifier: Modifier) {
     TitledDialog(
         title = {
             Text(
-                stringResource(R.string.customer_session_activation_employees_title),
+                stringResource(R.string.customer_generate_request_title),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )

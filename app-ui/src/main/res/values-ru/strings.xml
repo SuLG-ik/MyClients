@@ -30,4 +30,8 @@
     <string name="gender_selector_title">Пол</string>
     <string name="customer_generate_request_title">Создать QR-код</string>
     <string name="customer_share_qr">Поделиться QR кодом</string>
+    <string name="services_details_title">Услуга</string>
+    <string name="services_item_description">Описание:</string>
+    <string name="services_item_description_empty">Пусто</string>
+    <string name="services_item_configurations">Конфигурации:</string>
 </resources>

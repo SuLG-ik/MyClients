@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="services_list_loading_message">Loading services</string>
+    <string name="unknwon_error">Unknown error</string>
     <string name="customers_loading">Loading customers</string>
     <string name="services_loading">Loading services</string>
     <string name="customers_session_activation_details_loading_message">Loading activation</string>
@@ -12,4 +13,5 @@
     <string name="customers_info_error_illegal_card_message">It is not the card</string>
     <string name="customers_info_error_customer_not_found_message">Customer not found</string>
     <string name="customers_card_generate_loading">Creating card</string>
+    <string name="services_details_loading">Loading service...</string>
 </resources>

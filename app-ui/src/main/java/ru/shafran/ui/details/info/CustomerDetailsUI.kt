@@ -13,11 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Check
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.List
-import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -59,7 +54,9 @@ internal fun LoadingCustomerDetailsUI(
         PlaceholderCustomerInfo(
             modifier = modifier,
         )
-        PlaceholderSessionHistory(modifier = Modifier.fillMaxWidth())
+        PlaceholderHistoryItem(
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 
@@ -162,10 +159,8 @@ internal fun PreloadedCustomerDetailsUI(
         CustomerInfo(
             customer = component.customer.data,
         )
-        PlaceholderSessionHistory(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(unbounded = true)
+        PlaceholderHistoryItem(
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
@@ -243,7 +238,7 @@ fun CustomerInfo(
             if (onShare != null) {
                 IconButton(onClick = onShare) {
                     Icon(
-                        Icons.Outlined.Share,
+                        painter = painterResource(id = R.drawable.qr_code),
                         contentDescription = null,
                     )
                 }
@@ -261,7 +256,6 @@ fun CustomerInfo(
     }
 }
 
-//TODO
 @Composable
 private fun SessionHistory(
     history: List<Session>,
@@ -294,7 +288,7 @@ private fun EmptySessionHistory(modifier: Modifier) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Icon(Icons.Outlined.Info, contentDescription = null)
+        Icon(painterResource(id = R.drawable.empty_history), contentDescription = null)
         Text(stringResource(R.string.customer_empty_history))
     }
 }
@@ -319,22 +313,6 @@ private fun NotEmptySessionHistory(
     }
 }
 
-@Composable
-private fun PlaceholderSessionHistory(
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-        repeat(3) {
-            PlaceholderHistoryItem(
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-    }
-}
-
 
 @Composable
 private fun PlaceholderHistoryItem(modifier: Modifier = Modifier) {
@@ -346,8 +324,7 @@ private fun PlaceholderHistoryItem(modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp)
-                .animateContentSize(),
+                .padding(15.dp),
         ) {
             PlaceholderItemHeader(
                 modifier = Modifier.fillMaxWidth()
@@ -358,6 +335,55 @@ private fun PlaceholderHistoryItem(modifier: Modifier = Modifier) {
 
 @Composable
 private fun PlaceholderItemHeader(modifier: Modifier = Modifier) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = modifier,
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(5.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f, false),
+        ) {
+            Text(
+                text = "Название тут",
+                style = MaterialTheme.typography.headlineLarge,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .placeholder(true, highlight = PlaceholderHighlight.fade()))
+            Row(verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                Icon(painterResource(id = R.drawable.selection),
+                    contentDescription = null,
+                    modifier = Modifier.size(25.dp))
+                Text(
+                    text = "Исполнитель: да он тут",
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .placeholder(true, highlight = PlaceholderHighlight.fade()))
+            }
+            Row(verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                Gender(
+                    gender = ru.shafran.network.Gender.UNKNOWN,
+                    modifier = Modifier.size(25.dp).placeholder(true, highlight = PlaceholderHighlight.fade()))
+                Text("Исполнитель: Имя Фамилия",
+                    style = MaterialTheme.typography.labelLarge,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .placeholder(true, highlight = PlaceholderHighlight.fade()))
+            }
+        }
+        Text("0/0",
+            modifier = Modifier
+                .placeholder(true, highlight = PlaceholderHighlight.fade()))
+    }
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -380,7 +406,7 @@ private fun PlaceholderItemHeader(modifier: Modifier = Modifier) {
         ) {
             Text(
                 text = "Название тут",
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.headlineLarge,
                 modifier = Modifier
                     .placeholder(true, highlight = PlaceholderHighlight.fade())
             )
@@ -418,7 +444,7 @@ private fun SessionHistoryItem(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp)
+                .padding(15.dp)
                 .animateContentSize(),
         ) {
             SessionItemHeader(
@@ -432,6 +458,7 @@ private fun SessionHistoryItem(
                     MaterialDivider(modifier = Modifier.fillMaxWidth())
                     SessionActions(
                         isUsable = !session.isDeactivated,
+                        isHistoryAvailable = session.usages.isNotEmpty(),
                         onShowHistory = { isHistoryShown.value = !isHistoryShown.value },
                         onUse = onUse,
                         modifier = Modifier
@@ -451,6 +478,7 @@ private fun SessionHistoryItem(
 @Composable
 private fun SessionActions(
     isUsable: Boolean,
+    isHistoryAvailable: Boolean,
     onUse: () -> Unit,
     onShowHistory: () -> Unit,
     modifier: Modifier,
@@ -459,12 +487,13 @@ private fun SessionActions(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         modifier = modifier,
     ) {
-        IconButton(onClick = onShowHistory) {
-            Icon(Icons.Outlined.List, contentDescription = null)
-        }
+        if (isHistoryAvailable)
+            IconButton(onClick = onShowHistory) {
+                Icon(painterResource(id = R.drawable.history), contentDescription = null)
+            }
         if (isUsable)
             IconButton(onClick = onUse) {
-                Icon(Icons.Outlined.Check, contentDescription = null)
+                Icon(painterResource(id = R.drawable.check), contentDescription = null)
             }
     }
 }
@@ -477,7 +506,7 @@ private fun EmptySessionItems(modifier: Modifier) {
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(Icons.Outlined.Info, contentDescription = null)
+        Icon(painterResource(id = R.drawable.empty_history), contentDescription = null)
         Text(stringResource(R.string.customer_empty_history))
     }
 }
@@ -519,7 +548,7 @@ private fun SessionHistoryUsageItem(usage: SessionUsage, modifier: Modifier) {
                 style = MaterialTheme.typography.labelLarge,
             )
             Text(
-                text = "Исполнитель: ${usage.data.employee.id}",
+                text = "Исполнитель: ${usage.data.employee.data.name}",
                 style = MaterialTheme.typography.labelSmall,
             )
         }
@@ -535,21 +564,36 @@ private fun SessionItemHeader(session: Session, modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         modifier = modifier,
     ) {
-        Icon(
-            painterResource(id = R.drawable.turn_on_slider),
-            contentDescription = null,
-            modifier = Modifier.size(25.dp),
-        )
         Column(
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.spacedBy(5.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f, false),
         ) {
             Text(session.activation.service.info.title,
-                style = MaterialTheme.typography.labelMedium)
-            Text("Исполнитель: ${session.activation.employee.id}",
-                style = MaterialTheme.typography.labelSmall)
+                style = MaterialTheme.typography.headlineSmall,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis)
+            Row(verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                Icon(painterResource(id = R.drawable.selection),
+                    contentDescription = null,
+                    modifier = Modifier.size(25.dp))
+                Text(session.activation.service.configuration.title,
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis)
+            }
+            Row(verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                Gender(
+                    gender = session.activation.employee.data.gender,
+                    modifier = Modifier.size(25.dp))
+                Text("Исполнитель: ${session.activation.employee.data.name}",
+                    style = MaterialTheme.typography.labelLarge,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis)
+            }
         }
         Text("${session.usages.size}/${session.activation.service.configuration.amount}")
     }
