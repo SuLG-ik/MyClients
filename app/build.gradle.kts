@@ -9,14 +9,6 @@ plugins {
 
 
 android {
-    signingConfigs {
-        getByName("debug") {
-            storeFile = file("D:\\shafran\\apk-key\\shafran.jks")
-            storePassword = "snpn!8@%Jx&TY))g"
-            keyAlias = "Shafran"
-            keyPassword = "snpn!8@%Jx&TY))g"
-        }
-    }
     compileSdk = Config.compileSdk
     buildToolsVersion = "30.0.3"
 
