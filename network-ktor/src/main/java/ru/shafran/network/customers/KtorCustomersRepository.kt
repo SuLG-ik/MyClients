@@ -1,6 +1,5 @@
 package ru.shafran.network.customers
 
-import beauty.shafran.network.customers.exceptions.CustomersException
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
@@ -9,6 +8,7 @@ import ru.shafran.network.customers.data.CreateCustomerRequest
 import ru.shafran.network.customers.data.CreateCustomerResponse
 import ru.shafran.network.customers.data.CreateEmptyCustomersRequest
 import ru.shafran.network.customers.data.CreateEmptyCustomersResponse
+import ru.shafran.network.customers.data.CustomersException
 import ru.shafran.network.customers.data.EditCustomerDataResponse
 import ru.shafran.network.customers.data.EditCustomerRequest
 import ru.shafran.network.customers.data.GetAllCustomersRequest

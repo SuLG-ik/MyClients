@@ -120,7 +120,11 @@ private fun Description(text: String, modifier: Modifier) {
 
 @Composable
 private fun EmptyDescription(modifier: Modifier) {
-    Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
         Icon(painterResource(id = R.drawable.empty_history), contentDescription = null)
         Text(
             stringResource(R.string.services_item_description_empty),

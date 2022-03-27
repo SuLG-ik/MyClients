@@ -64,7 +64,7 @@ fun ExtendedModalBottomSheet(
 
 @Composable
 private fun CornerBasedShape.calculateTopShape(offset: Float): CornerBasedShape {
-    return copy(calculateShape(min = 0.dp, max = 20.dp, offset = offset * 2.5f))
+    return copy(calculateShape(min = 0.dp, max = 40.dp, offset = offset * 2.5f))
 }
 
 @Composable

@@ -1,12 +1,12 @@
 package ru.shafran.network.customers
 
-import beauty.shafran.network.customers.exceptions.CustomersException
 import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.coroutineScope
 import ru.shafran.network.customers.data.Customer
+import ru.shafran.network.customers.data.CustomersException
 import ru.shafran.network.customers.data.GetCustomerByIdRequest
 import ru.shafran.network.customers.data.GetCustomerByTokenRequest
 import ru.shafran.network.session.SessionsRepository
@@ -133,7 +133,7 @@ internal class CustomerInfoStoreImpl(
 
         private fun Message.Error.reduce(): CustomerInfoStore.State {
             return when (exception) {
-                is CustomersException.CardNotFoundException -> CustomerInfoStore.State.Error.CardNotFound
+                is CustomersException.CardNotFoundWithIdException, is CustomersException.CardNotFoundWithCustomerException -> CustomerInfoStore.State.Error.CardNotFound
                 is CustomersException.CustomerNotFoundException -> CustomerInfoStore.State.Error.CustomerNotFound
                 is CustomersException.IllegalCardTokenException -> CustomerInfoStore.State.Error.IllegalCard
                 else -> CustomerInfoStore.State.Error.Unknown

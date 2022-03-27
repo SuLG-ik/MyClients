@@ -357,7 +357,9 @@ private fun PlaceholderItemHeader(modifier: Modifier = Modifier) {
                 horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 Icon(painterResource(id = R.drawable.selection),
                     contentDescription = null,
-                    modifier = Modifier.size(25.dp))
+                    modifier = Modifier
+                        .size(25.dp)
+                        .placeholder(true, highlight = PlaceholderHighlight.fade()))
                 Text(
                     text = "Исполнитель: да он тут",
                     style = MaterialTheme.typography.titleMedium,
@@ -370,7 +372,9 @@ private fun PlaceholderItemHeader(modifier: Modifier = Modifier) {
                 horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 Gender(
                     gender = ru.shafran.network.Gender.UNKNOWN,
-                    modifier = Modifier.size(25.dp).placeholder(true, highlight = PlaceholderHighlight.fade()))
+                    modifier = Modifier
+                        .size(25.dp)
+                        .placeholder(true, highlight = PlaceholderHighlight.fade()))
                 Text("Исполнитель: Имя Фамилия",
                     style = MaterialTheme.typography.labelLarge,
                     maxLines = 1,
