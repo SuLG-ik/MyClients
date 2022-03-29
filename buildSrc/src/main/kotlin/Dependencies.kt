@@ -10,6 +10,10 @@ object Config {
 interface Dependencies {
 
 
+    object Validators : Dependencies {
+        const val phoneValidator = "com.googlecode.libphonenumber:libphonenumber:8.12.45"
+    }
+
     object Material : Dependencies {
         const val version = "1.4.0"
         const val design = "com.google.android.material:material:$version"

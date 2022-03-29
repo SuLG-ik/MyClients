@@ -1,6 +1,11 @@
 package ru.shafran.ui.error
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -29,8 +34,11 @@ internal fun ErrorUI(component: Error, modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(10.dp))
         Text(stringResource(id = component.message))
         Spacer(modifier = Modifier.height(10.dp))
-        OutlinedButton(onClick = component::onContinue, modifier = Modifier.fillMaxWidth()) {
-            Text(stringResource(R.string.error_continue_button))
+        val onContinue = component.onContinue
+        if (onContinue != null) {
+            OutlinedButton(onClick = onContinue, modifier = Modifier.fillMaxWidth()) {
+                Text(stringResource(R.string.error_continue_button))
+            }
         }
     }
 }

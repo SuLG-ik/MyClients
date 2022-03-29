@@ -21,25 +21,25 @@ internal class KtorEmployeesRepository(
     private val json: Json,
 ) : EmployeesRepository {
     override suspend fun getAllEmployees(data: GetAllEmployeesRequest): GetAllEmployeesResponse {
-        return httpClient.get("/employees/getAllEmployees") {
+        return httpClient.get("employees/getAllEmployees") {
             setBody(data)
         }.body()
     }
 
     override suspend fun createEmployee(data: CreateEmployeeRequest): CreateEmployeeResponse {
-        return httpClient.post("/employees/createEmployee") {
+        return httpClient.post("employees/createEmployee") {
             setBody(data)
         }.body()
     }
 
     override suspend fun layoffEmployee(data: LayoffEmployeeRequest): LayoffEmployeeResponse {
-        return httpClient.delete("/employees/layoffEmployee") {
+        return httpClient.delete("employees/layoffEmployee") {
             setBody(data)
         }.body()
     }
 
     override suspend fun getEmployeeById(data: GetEmployeeByIdRequest): GetEmployeeByIdResponse {
-        return httpClient.get("/employees/getEmployeeById") {
+        return httpClient.get("employees/getEmployeeById") {
             setBody(data)
         }.body()
     }

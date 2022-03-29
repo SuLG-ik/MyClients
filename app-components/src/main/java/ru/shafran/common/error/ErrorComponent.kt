@@ -3,11 +3,8 @@ package ru.shafran.common.error
 internal class ErrorComponent(
     override val message: Int,
     override val icon: Int,
-    private val onContinue: () -> Unit,
+    override val onContinue: (() -> Unit)? = null,
 ) : Error {
 
-    override fun onContinue() {
-        onContinue.invoke()
-    }
 
 }

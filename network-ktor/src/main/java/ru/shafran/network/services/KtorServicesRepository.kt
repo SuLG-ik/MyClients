@@ -19,31 +19,31 @@ internal class KtorServicesRepository(
 ) : ServicesRepository {
 
     override suspend fun getAllServices(data: GetAllServicesRequest): GetAllServicesResponse {
-        return httpClient.get("/services/getAllServices",) {
+        return httpClient.get("services/getAllServices",) {
             setBody(data)
         }.body()
     }
 
     override suspend fun createService(data: CreateServiceRequest): CreateServiceResponse {
-        return httpClient.post("/services/createService",) {
+        return httpClient.post("services/createService",) {
             setBody(data)
         }.body()
     }
 
     override suspend fun getServiceById(data: GetServiceByIdRequest): GetServiceByIdResponse {
-        return httpClient.get("/services/getServiceById",) {
+        return httpClient.get("services/getServiceById",) {
             setBody(data)
         }.body()
     }
 
     override suspend fun addConfiguration(data: CreateConfigurationRequest): CreateConfigurationResponse {
-        return httpClient.put("/services/addConfiguration",) {
+        return httpClient.put("services/addConfiguration",) {
             setBody(data)
         }.body()
     }
 
     override suspend fun deactivateConfiguration(data: DeactivateServiceConfigurationRequest): DeactivateServiceConfigurationResponse {
-        return httpClient.delete("/services/deactivateConfiguration",) {
+        return httpClient.delete("services/deactivateConfiguration",) {
             setBody(data)
         }.body()
     }

@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.library")  version Dependencies.Android.agpVersion
+    id("com.android.library") version Dependencies.Android.agpVersion
     kotlin("android") version Dependencies.Kotlin.version
 }
 
@@ -24,7 +24,12 @@ android {
             buildConfigField(
                 "String",
                 "NETWORK_API_VERSION",
-                "\"${System.getenv("SHAFRAN_API_VERSION_DEBUG")}\""
+                "\"${System.getenv("SHAFRAN_API_VERSION_RELEASE")}\""
+            )
+            buildConfigField(
+                "String",
+                "NETWORK_KEY_CODE",
+                "\"${System.getenv("SHAFRAN_KEY_CODE_RELEASE")}\""
             )
             isMinifyEnabled = true
             proguardFiles(
@@ -43,6 +48,11 @@ android {
                 "NETWORK_API_VERSION",
                 "\"${System.getenv("SHAFRAN_API_VERSION_DEBUG")}\""
             )
+            buildConfigField(
+                "String",
+                "NETWORK_KEY_CODE",
+                "\"${System.getenv("SHAFRAN_KEY_CODE_DEBUG")}\""
+            )
         }
     }
 
@@ -59,7 +69,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-    kotlin{
+    kotlin {
         explicitApi()
     }
 

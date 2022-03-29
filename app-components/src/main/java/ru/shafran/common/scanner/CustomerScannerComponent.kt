@@ -5,8 +5,8 @@ import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.value.observe
 import ru.shafran.common.camera.Camera
 import ru.shafran.common.camera.CameraComponent
-import ru.shafran.common.details.host.CustomerDetailsHost
-import ru.shafran.common.details.host.CustomerDetailsHostComponent
+import ru.shafran.common.customers.details.host.CustomerDetailsHost
+import ru.shafran.common.customers.details.host.CustomerDetailsHostComponent
 import ru.shafran.common.utils.Share
 
 internal class CustomerScannerComponent(
@@ -41,6 +41,10 @@ internal class CustomerScannerComponent(
 
     override fun onGenerateCustomer() {
         customerDetails.onGenerateCustomer()
+    }
+
+    override fun onSearch() {
+        customerDetails.onSearch()
     }
 
 }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -39,9 +40,12 @@ internal fun GenderSelector(
         modifier = modifier
             .clickable { if (enabled) isExpanded.value = true },
     ) {
+
         Box(
             modifier = Modifier
+                .fillMaxSize()
                 .padding(16.dp),
+            contentAlignment = Alignment.Center,
         ) {
             MinifyGender(selectedGender)
             StaticDropdownMenu(
@@ -108,7 +112,7 @@ internal fun Gender(
     style: TextStyle = MaterialTheme.typography.bodyLarge,
 ) {
     Row(
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalArrangement = Arrangement.spacedBy(5.dp),
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier,
     ) {

@@ -5,6 +5,6 @@ interface Error {
     val message: Int
     val icon: Int
 
-    fun onContinue()
+    val onContinue: (() -> Unit)?
 
 }

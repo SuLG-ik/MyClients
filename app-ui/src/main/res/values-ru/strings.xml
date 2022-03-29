@@ -34,4 +34,5 @@
     <string name="services_item_description">Описание:</string>
     <string name="services_item_description_empty">Пусто</string>
     <string name="services_item_configurations">Конфигурации:</string>
+    <string name="input_phonenumber">Номер телефона</string>
 </resources>

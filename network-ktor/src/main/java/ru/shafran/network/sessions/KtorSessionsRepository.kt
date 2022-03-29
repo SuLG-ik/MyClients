@@ -16,19 +16,19 @@ internal class KtorSessionsRepository(
 ) : SessionsRepository {
 
     override suspend fun getSessionsForCustomer(data: GetSessionsForCustomerRequest): GetSessionsForCustomerResponse {
-        return httpClient.get("/sessions/getServiceSessionsForCustomer") {
+        return httpClient.get("sessions/getServiceSessionsForCustomer") {
             setBody(data)
         }.body()
     }
 
     override suspend fun createSessionsForCustomer(data: CreateSessionForCustomerRequest): CreateSessionForCustomerResponse {
-        return httpClient.post("/sessions/createServiceSessionsForCustomer") {
+        return httpClient.post("sessions/createServiceSessionsForCustomer") {
             setBody(data)
         }.body()
     }
 
     override suspend fun useSession(data: UseSessionRequest): UseSessionResponse {
-        return httpClient.put("/sessions/useServiceSession") {
+        return httpClient.put("sessions/useServiceSession") {
             setBody(data)
         }.body()
     }

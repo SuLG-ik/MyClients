@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.library")  version Dependencies.Android.agpVersion
+    id("com.android.library") version Dependencies.Android.agpVersion
     kotlin("android") version Dependencies.Kotlin.version
 }
 
@@ -16,7 +16,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro")
         }
@@ -27,7 +27,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-    kotlin{
+    kotlin {
         explicitApi()
     }
 
@@ -75,6 +75,7 @@ dependencies {
 
     implementation(Dependencies.MLKit.scanner)
     implementation(Dependencies.ZXing.core)
+
     implementation(projects.appCommon)
     implementation(projects.networkData)
 }

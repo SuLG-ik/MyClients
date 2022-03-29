@@ -4,7 +4,12 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.*
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -49,7 +54,9 @@ internal fun RootUI(component: Root, modifier: Modifier = Modifier) {
         },
         bottomBar = {
             FloatingBottomNavigation(
-                modifier = Modifier.fillMaxWidth().padding(10.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
             ) {
                 children.forEach {
                     RootNavigationItem(
@@ -73,7 +80,10 @@ internal fun RootUI(component: Root, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun RootNavHost(value: RouterState<Root.Configuration, Root.Child>, modifier: Modifier) {
+private fun RootNavHost(
+    value: RouterState<Root.Configuration, Root.Child<Any?>>,
+    modifier: Modifier,
+) {
     Children(routerState = value) {
         when (val instance = it.instance) {
             is Root.Child.CustomerScanner ->

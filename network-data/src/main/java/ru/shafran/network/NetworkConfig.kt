@@ -8,4 +8,5 @@ data class NetworkConfig(
     val isDebugMode: Boolean,
     val url: String,
     val apiVersion: String,
+    val apiKey: String,
 ): Parcelable

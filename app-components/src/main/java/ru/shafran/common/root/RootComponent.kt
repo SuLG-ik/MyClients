@@ -15,7 +15,7 @@ class RootComponent(
     private val share: Share,
 ) : Root, ComponentContext by componentContext {
 
-    private val router = router<Root.Configuration, Root.Child>(
+    private val router = router<Root.Configuration, Root.Child<Any?>>(
         initialConfiguration = Root.Configuration.CustomerScanner,
         handleBackButton = true,
         childFactory = this::createChild,
@@ -25,7 +25,7 @@ class RootComponent(
     private fun createChild(
         configuration: Root.Configuration,
         componentContext: ComponentContext,
-    ): Root.Child {
+    ): Root.Child<Any?> {
         return when (configuration) {
             Root.Configuration.Services -> createServicesChild(componentContext)
             Root.Configuration.CustomerScanner -> createScannerChild(componentContext)
@@ -34,13 +34,13 @@ class RootComponent(
 
     private fun createServicesChild(
         componentContext: ComponentContext,
-    ): Root.Child {
+    ): Root.Child<Any?> {
         return Root.Child.Services(ServicesComponent(componentContext))
     }
 
     private fun createScannerChild(
         componentContext: ComponentContext,
-    ): Root.Child {
+    ): Root.Child<Any?> {
         return Root.Child.CustomerScanner(
             component = CustomerScannerComponent(
                 componentContext = componentContext,
@@ -50,7 +50,8 @@ class RootComponent(
         )
     }
 
-    override val routerState: Value<RouterState<Root.Configuration, Root.Child>> = router.state
+    override val routerState: Value<RouterState<Root.Configuration, Root.Child<Any?>>> =
+        router.state
 
 
     override fun onNavigate(configuration: Root.Configuration) {

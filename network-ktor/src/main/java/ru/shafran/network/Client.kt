@@ -30,11 +30,10 @@ internal fun ShafranHttpClient(
             }
         }
         defaultRequest {
-            val urlBuilder = URLBuilder(config.url)
-            url.host = urlBuilder.host
-            url.port = urlBuilder.port
-            url.protocol = urlBuilder.protocol
+
+            url(config.url)
             header("api", config.apiVersion)
+            header("X-Api-Key", config.apiKey)
             contentType(ContentType.Application.Json)
         }
         install(ContentNegotiation) {
