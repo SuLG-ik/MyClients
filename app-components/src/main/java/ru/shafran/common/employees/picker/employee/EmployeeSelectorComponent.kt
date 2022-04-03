@@ -10,7 +10,6 @@ import ru.shafran.common.utils.replaceAll
 import ru.shafran.common.utils.stores
 import ru.shafran.network.employees.EmployeesListStore
 import ru.shafran.network.employees.data.Employee
-import ru.shafran.network.utils.acceptOnCreate
 import ru.shafran.network.utils.reduceStates
 
 class EmployeeSelectorComponent(
@@ -56,7 +55,6 @@ class EmployeeSelectorComponent(
     }
 
     init {
-        store.acceptOnCreate(this, EmployeesListStore.Intent.LoadEmployees())
         store.reduceStates(this, this::reduceStates)
     }
 
@@ -64,6 +62,7 @@ class EmployeeSelectorComponent(
         when (state) {
             is EmployeesListStore.State.Loading -> router.replaceAll(EmployeeSelector.Configuration.Loading)
             is EmployeesListStore.State.EmployeesLoaded -> state.reduce()
+            EmployeesListStore.State.Empty -> EmployeesListStore.Intent.LoadEmployees()
             EmployeesListStore.State.Error.ConnectionLost -> TODO()
             EmployeesListStore.State.Error.Internal -> TODO()
             EmployeesListStore.State.Error.Unknown -> TODO()

@@ -21,6 +21,8 @@ import com.arkivanov.decompose.router.RouterState
 import ru.shafran.common.root.Root
 import ru.shafran.common.utils.NavigationItem
 import ru.shafran.ui.R
+import ru.shafran.ui.customers.CustomersUI
+import ru.shafran.ui.employees.EmployeesUI
 import ru.shafran.ui.scanner.CustomerScannerUI
 import ru.shafran.ui.services.ServicesUI
 import ru.shafran.ui.view.FloatingBottomNavigation
@@ -34,6 +36,14 @@ private val children: Map<Root.Configuration, NavigationItem> by lazy {
         Root.Configuration.Services to NavigationItem(
             R.string.navigation_services_title,
             R.drawable.logo_services,
+        ),
+        Root.Configuration.Customers to NavigationItem(
+            R.string.navigation_customers_title,
+            R.drawable.logo_customers,
+        ),
+        Root.Configuration.Employees to NavigationItem(
+            R.string.navigation_employees_title,
+            R.drawable.logo_employees,
         )
     )
 }
@@ -90,6 +100,10 @@ private fun RootNavHost(
                 CustomerScannerUI(component = instance.component, modifier = modifier)
             is Root.Child.Services ->
                 ServicesUI(component = instance.component, modifier = modifier)
+            is Root.Child.Customers ->
+                CustomersUI(customers = instance.component, modifier = modifier)
+            is Root.Child.Employees ->
+                EmployeesUI(component = instance.component, modifier = modifier)
         }
     }
 }

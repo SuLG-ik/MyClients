@@ -3,6 +3,7 @@ package ru.shafran.network.customers
 import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -14,7 +15,7 @@ import ru.shafran.network.services.ServicesRepository
 import ru.shafran.network.services.data.GetAllServicesRequest
 import ru.shafran.network.services.data.Service
 import ru.shafran.network.session.SessionsRepository
-import ru.shafran.network.utils.CancelableSyncCoroutineExecutor
+import ru.shafran.network.utils.SafeCancelableSyncCoroutineExecutor
 
 internal class SessionActivationStoreImpl(
     private val factory: StoreFactory,
@@ -23,19 +24,19 @@ internal class SessionActivationStoreImpl(
     private val employeesRepository: EmployeesRepository,
     private val coroutineDispatcher: CoroutineDispatcher,
 ) : SessionActivationStore,
-            Store<SessionActivationStore.Intent, SessionActivationStore.State, SessionActivationStore.Label> by factory.create(
-                name = "CustomerActivationStore",
-                initialState = SessionActivationStore.State.Empty,
-                executorFactory = {
-                    Executor(
-                        sessionsRepository = sessionsRepository,
-                        servicesRepository = servicesRepository,
-                        employeesRepository = employeesRepository,
-                        coroutineDispatcher = coroutineDispatcher,
-                    )
-                },
-                reducer = ReducerImpl
-            ) {
+    Store<SessionActivationStore.Intent, SessionActivationStore.State, SessionActivationStore.Label> by factory.create(
+        name = "CustomerActivationStore",
+        initialState = SessionActivationStore.State.Empty,
+        executorFactory = {
+            Executor(
+                sessionsRepository = sessionsRepository,
+                servicesRepository = servicesRepository,
+                employeesRepository = employeesRepository,
+                coroutineDispatcher = coroutineDispatcher,
+            )
+        },
+        reducer = ReducerImpl
+    ) {
 
     private object ReducerImpl : Reducer<SessionActivationStore.State, Message> {
         override fun SessionActivationStore.State.reduce(msg: Message): SessionActivationStore.State {
@@ -47,9 +48,20 @@ internal class SessionActivationStoreImpl(
                 )
                 is Message.Empty -> SessionActivationStore.State.Empty
                 is Message.DetailsLoading -> SessionActivationStore.State.DetailsLoading()
-                is Message.Error -> TODO()
+                is Message.Error -> msg.reduce()
             }
         }
+
+        private fun Message.Error.reduce(): SessionActivationStore.State {
+            return when (exception) {
+                else -> {
+                    Napier.e({ "Unknown exception" }, exception)
+                    SessionActivationStore.State.Error.Unknown
+                }
+            }
+        }
+
+
     }
 
     private class Executor(
@@ -57,9 +69,13 @@ internal class SessionActivationStoreImpl(
         private val servicesRepository: ServicesRepository,
         private val employeesRepository: EmployeesRepository,
         coroutineDispatcher: CoroutineDispatcher,
-    ) :
-        CancelableSyncCoroutineExecutor<SessionActivationStore.Intent, Nothing, SessionActivationStore.State, Message, SessionActivationStore.Label>(coroutineDispatcher) {
-        override suspend fun execute(
+    ) : SafeCancelableSyncCoroutineExecutor<SessionActivationStore.Intent, Nothing, SessionActivationStore.State, Message, SessionActivationStore.Label>(coroutineDispatcher) {
+
+        override suspend fun buildErrorMessage(exception: Exception): Message {
+            return Message.Error(exception)
+        }
+
+        override suspend fun safeExecute(
             intent: SessionActivationStore.Intent,
             getState: () -> SessionActivationStore.State,
         ) {

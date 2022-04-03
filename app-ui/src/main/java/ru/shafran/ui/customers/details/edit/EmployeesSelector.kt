@@ -32,7 +32,7 @@ import ru.shafran.network.employees.data.Employee
 import ru.shafran.ui.R
 import ru.shafran.ui.view.OutlinedSurface
 import ru.shafran.ui.view.StaticDropdownMenu
-import ru.shafran.ui.view.TitledDialog
+import ru.shafran.ui.view.OutlinedTitledDialog
 
 
 @Composable
@@ -47,9 +47,9 @@ internal fun EmployeesSelector(
     }
     Box(modifier = modifier) {
         OutlinedSurface(
+            onClick = { isExpanded.value = true },
             modifier = Modifier
-                .fillMaxWidth()
-                .clickable { isExpanded.value = true },
+                .fillMaxWidth(),
         ) {
             Box(modifier = Modifier
                 .fillMaxWidth()
@@ -132,7 +132,7 @@ private fun EmployeesList(
     onSelect: (Employee) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    TitledDialog(
+    OutlinedTitledDialog(
         title = {
             Text(
                 stringResource(R.string.customer_session_activation_employees_title),

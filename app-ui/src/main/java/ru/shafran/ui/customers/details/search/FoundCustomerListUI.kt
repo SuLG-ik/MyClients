@@ -23,7 +23,10 @@ import ru.shafran.ui.view.OutlinedSurface
 
 @Composable
 fun FoundCustomersListUI(component: FoundCustomersList, modifier: Modifier) {
-    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(10.dp)) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
         if (component.customers.isEmpty()) {
             EmptyCustomersList(modifier = Modifier.fillMaxWidth())
         } else {
@@ -80,7 +83,6 @@ fun FoundCustomerItemUI(item: FoundCustomerItem, modifier: Modifier) {
                     session = lastUsedSession,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 15.dp, end = 15.dp)
                 )
             }
         }

@@ -17,13 +17,17 @@ interface CustomerDetailsHost {
 
     val isShown: Value<Boolean>
 
-    fun onHide()
+    val onHide: () -> Unit
 
-    fun onGenerateCustomer()
+    val onGenerateCustomer: () -> Unit
 
-    fun onSearch()
+    val onSearch: () -> Unit
 
-    fun onShowCustomer(token: String)
+    val onShowCustomerByCardToken: (String) -> Unit
+
+    val onShowCustomerById: (String) -> Unit
+
+    val onShowCustomer: (Customer.ActivatedCustomer) -> Unit
 
     val routerState: Value<RouterState<Configuration, Child<Any?>>>
 
@@ -110,5 +114,6 @@ interface CustomerDetailsHost {
         ) : Child<CustomerSearchHost>()
 
     }
+
 
 }

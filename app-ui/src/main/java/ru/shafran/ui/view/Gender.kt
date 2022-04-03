@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -37,10 +38,9 @@ internal fun GenderSelector(
 ) {
     val isExpanded = rememberSaveable { mutableStateOf(false) }
     OutlinedSurface(
-        modifier = modifier
-            .clickable { if (enabled) isExpanded.value = true },
+        onClick = { if (enabled) isExpanded.value = true },
+        modifier = modifier.defaultMinSize(25.dp),
     ) {
-
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -48,40 +48,41 @@ internal fun GenderSelector(
             contentAlignment = Alignment.Center,
         ) {
             MinifyGender(selectedGender)
-            StaticDropdownMenu(
-                expanded = isExpanded.value,
-                onDismissRequest = { isExpanded.value = false },
-            ) {
-                TitledDialog(
-                    title = {
-                        Text(
-                            stringResource(R.string.gender_selector_title),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth(0.50f)
-                        .padding(10.dp),
-                    contentPadding = PaddingValues(0.dp),
+            if (enabled)
+                StaticDropdownMenu(
+                    expanded = isExpanded.value,
+                    onDismissRequest = { isExpanded.value = false },
                 ) {
-                    Gender.values().onEach {
-                        Surface(
-                            modifier = Modifier.clickable {
-                                isExpanded.value = false
-                                onSelect(it)
-                            }
-                        ) {
-                            Gender(
-                                gender = it,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(10.dp)
+                    OutlinedTitledDialog(
+                        title = {
+                            Text(
+                                stringResource(R.string.gender_selector_title),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
                             )
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth(0.50f)
+                            .padding(10.dp),
+                        contentPadding = PaddingValues(0.dp),
+                    ) {
+                        Gender.values().onEach {
+                            Surface(
+                                modifier = Modifier.clickable {
+                                    isExpanded.value = false
+                                    onSelect(it)
+                                }
+                            ) {
+                                Gender(
+                                    gender = it,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(10.dp)
+                                )
+                            }
                         }
                     }
                 }
-            }
         }
     }
 }
@@ -116,10 +117,9 @@ internal fun Gender(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier,
     ) {
-        Icon(
-            painterResource(id = gender.iconResource),
-            contentDescription = null,
-            modifier = Modifier.size(20.dp),
+        GenderIcon(
+            gender,
+            Modifier.size(20.dp)
         )
         Text(
             stringResource(gender.stringResource),
@@ -130,7 +130,19 @@ internal fun Gender(
     }
 }
 
-private val Gender.stringResource: Int
+@Composable
+internal fun GenderIcon(
+    gender: Gender,
+    modifier: Modifier = Modifier,
+) {
+    Icon(
+        painterResource(id = gender.iconResource),
+        contentDescription = null,
+        modifier = modifier.defaultMinSize(20.dp),
+    )
+}
+
+val Gender.stringResource: Int
     @StringRes
     get() {
         return when (this) {

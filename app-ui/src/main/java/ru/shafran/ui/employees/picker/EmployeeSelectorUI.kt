@@ -30,7 +30,7 @@ import ru.shafran.common.employees.picker.employee.EmployeesListSelector
 import ru.shafran.network.employees.data.Employee
 import ru.shafran.ui.R
 import ru.shafran.ui.loading.LoadingUI
-import ru.shafran.ui.view.TitledDialog
+import ru.shafran.ui.view.OutlinedTitledDialog
 
 @Composable
 internal fun EmployeeSelectorUI(component: EmployeeSelector, modifier: Modifier) {
@@ -67,7 +67,7 @@ private fun EmployeesList(
     onSelect: (Employee) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    TitledDialog(
+    OutlinedTitledDialog(
         title = {
             Text(
                 stringResource(R.string.customer_session_activation_employees_title),

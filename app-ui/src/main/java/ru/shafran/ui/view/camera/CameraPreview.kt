@@ -1,25 +1,25 @@
 package ru.shafran.ui.view.camera
 
+import android.content.Context
 import android.view.ViewGroup
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.LifecycleOwner
-import kotlinx.coroutines.guava.await
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asExecutor
+import java.util.concurrent.atomic.AtomicBoolean
 
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 internal fun CameraPreview(
     cameraState: CameraState,
@@ -28,35 +28,28 @@ internal fun CameraPreview(
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
-
-    val cameraProvider = remember { ProcessCameraProvider.getInstance(context) }
     val previewView = rememberPreviewView()
     val previewController = rememberPreviewViewController(previewView.surfaceProvider)
 
-    DisposableEffect(key1 = Unit, effect = {
+    val cameraProvider = remember<CameraProvider> {
+        CameraProviderImpl(
+            context = context,
+            lifecycleOwner = lifecycleOwner,
+            cameraSelector = cameraState.camera,
+            recognizer = recognizer,
+            previewController = previewController,
+        )
+    }
+
+    DisposableEffect(key1 = cameraState.isEnabled, effect = {
+        if (cameraState.isEnabled)
+            cameraProvider.enable()
+        else
+            cameraProvider.disable()
         onDispose {
-            cameraState.setEnabled(false)
-            val provider = cameraProvider.get()
-            previewController.onDisable()
-            provider?.unbindAll()
+            cameraProvider.disable()
         }
     })
-
-    LaunchedEffect(cameraState.camera, cameraState.isEnabled) {
-        val provider = cameraProvider.await()
-        if (cameraState.isEnabled) {
-            previewController.onEnable()
-            provider.tryBind(
-                lifecycleOwner,
-                cameraState.camera,
-                previewController.preview,
-                (recognizer as? MLKitImageRecognizer?)?.analysis
-            )
-        } else {
-            previewController.onDisable()
-            provider.unbindAll()
-        }
-    }
     AndroidView(modifier = modifier, factory = { previewView })
 }
 
@@ -99,30 +92,95 @@ private fun rememberPreviewView(): PreviewView {
     }
 }
 
-private fun ProcessCameraProvider.tryBind(
-    lifecycleOwner: LifecycleOwner,
-    selector: CameraSelector,
-    preview: Preview,
-    analysis: ImageAnalysis?,
-) {
-    try {
-        unbindAll()
-        if (analysis != null) {
-            bindToLifecycle(
+
+private class CameraProviderImpl(
+    context: Context,
+    private val lifecycleOwner: LifecycleOwner,
+    private val cameraSelector: CameraSelector,
+    private val recognizer: ImageRecognizer?,
+    private val previewController: PausedPreviewController,
+) : CameraProvider {
+
+    private val enable = AtomicBoolean(false)
+
+    private val provider = ProcessCameraProvider.getInstance(context)
+
+    override fun enable() {
+        enable.set(true)
+        enableIfNecessary()
+        recognizer?.setEnabled(true)
+        previewController.onEnable()
+    }
+
+    private fun enableIfNecessary() {
+        if (!provider.isDone) {
+            registerEnabling()
+            return
+        }
+        enableProvider()
+    }
+
+    private fun registerEnabling() {
+        provider.addListener({
+            enableProvider()
+        }, Dispatchers.Main.asExecutor())
+    }
+
+    private fun enableProvider() {
+        if (enable.get()) {
+            val camera = provider.get()
+            camera.tryBind(
                 lifecycleOwner,
-                selector,
-                preview,
-                analysis,
-            )
-        } else {
-            bindToLifecycle(
-                lifecycleOwner,
-                selector,
-                preview,
+                cameraSelector,
+                previewController.preview,
+                (recognizer as? MLKitImageRecognizer)?.analysis,
             )
         }
-
-    } catch (e: Exception) {
-        e.printStackTrace()
     }
+
+    private fun unableProvider() {
+        if (!enable.get()) {
+            val camera = provider.get()
+            camera.unbindAll()
+        }
+    }
+
+
+    override fun disable() {
+        enable.set(false)
+        recognizer?.setEnabled(false)
+        previewController.onDisable()
+        if (provider.isDone && !provider.isCancelled) {
+            unableProvider()
+        }
+    }
+
+    private fun ProcessCameraProvider.tryBind(
+        lifecycleOwner: LifecycleOwner,
+        selector: CameraSelector,
+        preview: Preview,
+        analysis: ImageAnalysis?,
+    ) {
+        try {
+            unbindAll()
+            if (analysis != null) {
+                bindToLifecycle(
+                    lifecycleOwner,
+                    selector,
+                    preview,
+                    analysis,
+                )
+            } else {
+                bindToLifecycle(
+                    lifecycleOwner,
+                    selector,
+                    preview,
+                )
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
 }

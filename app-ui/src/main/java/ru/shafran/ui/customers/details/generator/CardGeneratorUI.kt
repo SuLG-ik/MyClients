@@ -9,11 +9,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import ru.shafran.common.customers.details.generator.CardGenerator
 import ru.shafran.ui.R
 import ru.shafran.ui.customers.details.edit.CustomerEditorUI
-import ru.shafran.ui.view.TitledDialog
+import ru.shafran.ui.view.OutlinedTitledDialog
 
 @Composable
 fun CustomerGeneratorUI(component: CardGenerator, modifier: Modifier) {
-    TitledDialog(
+    OutlinedTitledDialog(
         title = {
             Text(
                 stringResource(R.string.customer_generate_request_title),

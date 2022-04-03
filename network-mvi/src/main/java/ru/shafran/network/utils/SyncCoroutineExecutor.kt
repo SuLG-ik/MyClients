@@ -21,6 +21,24 @@ abstract class SyncCoroutineExecutor<in Intent : Any, in Action : Any, in State 
 
 }
 
+abstract class SafeCancelableSyncCoroutineExecutor<in Intent : Any, in Action : Any, in State : Any, Message : Any, Label : Any>(
+    defaultDispatcher: CoroutineDispatcher = Dispatchers.IO,
+) : CancelableSyncCoroutineExecutor<Intent, Action, State, Message, Label>(defaultDispatcher) {
+
+    abstract suspend fun buildErrorMessage(exception: Exception): Message
+
+    final override suspend fun execute(intent: Intent, getState: () -> State) {
+        try {
+            safeExecute(intent, getState)
+        } catch (exception: Exception) {
+            syncDispatch(buildErrorMessage(exception))
+        }
+    }
+
+
+    abstract suspend fun safeExecute(intent: Intent, getState: () -> State)
+}
+
 abstract class CancelableSyncCoroutineExecutor<in Intent : Any, in Action : Any, in State : Any, Message : Any, Label : Any>(
     private val defaultDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) :

@@ -1,32 +1,36 @@
 package ru.shafran.network.session
 
 import com.arkivanov.mvikotlin.core.store.Store
-import ru.shafran.network.session.data.SessionUsage
+import ru.shafran.network.session.data.SessionUsageHistoryItem
 
-interface SessionUsageHistoryStore :
-    Store<SessionUsageHistoryStore.Intent, SessionUsageHistoryStore.State, SessionUsageHistoryStore.Label> {
+interface SessionsUsageHistoryStore :
+    Store<SessionsUsageHistoryStore.Intent, SessionsUsageHistoryStore.State, SessionsUsageHistoryStore.Label> {
 
     sealed class Intent {
         data class LoadHistory(
+            val offset: Int = 30,
             val page: Int = 0,
-        ): Intent()
+        ) : Intent()
     }
 
     sealed class State {
+
+        object Empty : State()
+
         data class HistoryLoaded(
+            val offset: Int,
             val page: Int,
-            val history: List<SessionUsage>,
+            val history: List<SessionUsageHistoryItem>,
         ) : State()
 
-        data class Loading(
-            val loadedHistory: List<SessionUsage>,
-        ): State()
+        object Loading : State()
 
         sealed class Error : State() {
             object ConnectionLost : Error()
             object Internal : Error()
             object Unknown : Error()
         }
+
     }
 
     sealed class Label {}

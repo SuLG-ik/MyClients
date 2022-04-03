@@ -3,7 +3,6 @@ package ru.shafran.ui.customers.details.session.use
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.OutlinedTextField
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,15 +19,16 @@ import ru.shafran.common.customers.details.sessions.use.SessionUse
 import ru.shafran.common.loading.Loading
 import ru.shafran.ui.R
 import ru.shafran.ui.employees.picker.FloatingEmployeePickerUI
+import ru.shafran.ui.view.OutlinedTextField
 import ru.shafran.ui.view.PlaceholderTextField
-import ru.shafran.ui.view.TitledDialog
+import ru.shafran.ui.view.OutlinedTitledDialog
 
 @Composable
 fun SessionUsePlaceholderUI(
     component: Loading,
     modifier: Modifier = Modifier,
 ) {
-    TitledDialog(
+    OutlinedTitledDialog(
         title = {
             Text(
                 stringResource(
@@ -65,7 +65,7 @@ fun SessionUseUI(
     component: SessionUse,
     modifier: Modifier = Modifier,
 ) {
-    TitledDialog(
+    OutlinedTitledDialog(
         title = {
             Text(
                 stringResource(

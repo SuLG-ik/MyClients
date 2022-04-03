@@ -50,6 +50,43 @@ internal fun TitledDialog(
                 title()
             }
         }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(contentPadding),
+            content = content,
+        )
+    }
+}
+
+@Composable
+internal fun OutlinedTitledDialog(
+    title: @Composable RowScope.() -> Unit,
+    modifier: Modifier = Modifier,
+    onBackPressed: (() -> Unit)? = null,
+    contentPadding: PaddingValues = PaddingValues(10.dp),
+    verticalArrangement: Arrangement.HorizontalOrVertical = Arrangement.spacedBy(10.dp),
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = verticalArrangement,
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            if (onBackPressed != null) {
+                CancelIcon(
+                    onClick = onBackPressed,
+                    modifier = Modifier
+                        .size(25.dp),
+                )
+            }
+            ProvideTextStyle(value = MaterialTheme.typography.headlineSmall) {
+                title()
+            }
+        }
         OutlinedSurface(modifier = Modifier.fillMaxWidth()) {
             Column(
                 modifier = Modifier

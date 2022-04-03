@@ -1,22 +1,22 @@
-package ru.shafran.common.customers.sessionslist
+package ru.shafran.common.employees.list
 
 import com.arkivanov.decompose.router.RouterState
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
-import ru.shafran.common.customers.details.host.CustomerDetailsHost
-import ru.shafran.network.session.data.Session
+import ru.shafran.common.utils.Updatable
+import ru.shafran.network.employees.data.Employee
 
-interface LastSessionsListHost {
+interface EmployeesListHost : Updatable {
 
-    val customerDetails: CustomerDetailsHost
+    override val onUpdate: (() -> Unit)
 
     val routerState: Value<RouterState<Configuration, Child>>
 
     sealed class Configuration : Parcelable {
 
         @Parcelize
-        data class ServicesList(val list: List<Session>, val isLoading: Boolean = false) :
+        data class EmployeesList(val employees: List<Employee>) :
             Configuration()
 
         @Parcelize
@@ -30,8 +30,8 @@ interface LastSessionsListHost {
 
     sealed class Child {
 
-        class LastSessionsList(
-            val component: ru.shafran.common.customers.sessionslist.LastSessionsList,
+        class EmployeesList(
+            val component: ru.shafran.common.employees.list.EmployeesList,
         ) : Child()
 
         class Loading(

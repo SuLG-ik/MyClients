@@ -31,7 +31,7 @@ import ru.shafran.common.services.picker.service.ServicesListSelector
 import ru.shafran.network.services.data.Service
 import ru.shafran.ui.R
 import ru.shafran.ui.loading.LoadingUI
-import ru.shafran.ui.view.TitledDialog
+import ru.shafran.ui.view.OutlinedTitledDialog
 
 @Composable
 internal fun ServiceSelectorUI(component: ServiceSelector, modifier: Modifier) {
@@ -68,7 +68,7 @@ private fun ServicesList(
     onSelect: (Service) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    TitledDialog(
+    OutlinedTitledDialog(
         title = {
             Text(
                 stringResource(R.string.customer_session_activation_services_title),

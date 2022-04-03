@@ -36,15 +36,15 @@ import ru.shafran.network.customers.data.CustomerData
 import ru.shafran.ui.R
 import ru.shafran.ui.view.GenderSelector
 import ru.shafran.ui.view.OutlinedTextField
+import ru.shafran.ui.view.OutlinedTitledDialog
 import ru.shafran.ui.view.PhoneInput
 import ru.shafran.ui.view.PlaceholderTextField
 import ru.shafran.ui.view.Saver
-import ru.shafran.ui.view.TitledDialog
 
 
 @Composable
 internal fun CustomerEditingLoadingUI(component: Loading, modifier: Modifier) {
-    TitledDialog(
+    OutlinedTitledDialog(
         title = {
             Text(
                 stringResource(R.string.customers_activating),
@@ -75,14 +75,17 @@ fun CustomerEditorPlaceholder(modifier: Modifier) {
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            PlaceholderTextField(modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f, false))
+            PlaceholderTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f, false)
+            )
             GenderSelector(
                 selectedGender = Gender.UNKNOWN,
                 onSelect = {},
                 enabled = false,
                 modifier = Modifier
+                    .size(55.dp)
                     .placeholder(true, highlight = PlaceholderHighlight.fade())
             )
         }
@@ -100,7 +103,7 @@ fun CustomerEditorPlaceholder(modifier: Modifier) {
 
 @Composable
 internal fun CustomerEditingUI(component: CustomerEditing, modifier: Modifier) {
-    TitledDialog(
+    OutlinedTitledDialog(
         title = {
             Text(
                 stringResource(R.string.customers_editing),
@@ -120,7 +123,7 @@ internal fun CustomerEditingUI(component: CustomerEditing, modifier: Modifier) {
 
 @Composable
 internal fun CustomerActivationUI(component: CustomerActivating, modifier: Modifier) {
-    TitledDialog(
+    OutlinedTitledDialog(
         title = {
             Text(
                 stringResource(R.string.customers_activating),

@@ -26,6 +26,8 @@ import ru.shafran.network.services.ServicesListStore
 import ru.shafran.network.services.ServicesListStoreImpl
 import ru.shafran.network.session.SessionUseStore
 import ru.shafran.network.session.SessionUseStoreImpl
+import ru.shafran.network.session.SessionsUsageHistoryStore
+import ru.shafran.network.session.SessionsUsageHistoryStoreImpl
 
 private val mviNetworkModule = module {
     factory { Dispatchers.Main } bind CoroutineDispatcher::class
@@ -39,6 +41,7 @@ private val mviNetworkModule = module {
     factoryOf(::GenerateCustomerStoreImpl) bind GenerateCustomerStore::class
     factoryOf(::ServiceInfoStoreImpl) bind ServiceInfoStore::class
     factoryOf(::CustomerSearchStoreImpl) bind CustomerSearchStore::class
+    factoryOf(::SessionsUsageHistoryStoreImpl) bind SessionsUsageHistoryStore::class
 }
 
 val networkModules = arrayOf(mviNetworkModule, networkModule)

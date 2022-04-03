@@ -3,7 +3,6 @@ package ru.shafran.ui.customers.details.info
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -84,7 +84,7 @@ fun PlaceholderCustomerInfo(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(id = R.drawable.logo_employees),
+            painter = painterResource(id = R.drawable.customer_image),
             contentDescription = null,
             modifier = Modifier
                 .size(80.dp)
@@ -177,7 +177,7 @@ private fun InactivatedCustomerInfo(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(id = R.drawable.logo_employees),
+            painter = painterResource(id = R.drawable.single_employee),
             contentDescription = null,
             modifier = Modifier
                 .size(60.dp),
@@ -210,11 +210,11 @@ fun CustomerInfo(
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalArrangement = Arrangement.spacedBy(5.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(id = R.drawable.logo_employees),
+            painter = painterResource(id = R.drawable.customer_image),
             contentDescription = null,
             modifier = Modifier
                 .size(80.dp)
@@ -231,8 +231,10 @@ fun CustomerInfo(
                 style = MaterialTheme.typography.titleLarge,
                 overflow = TextOverflow.Ellipsis,
             )
-            Phone(customer.phone, style = MaterialTheme.typography.titleMedium)
-            Gender(customer.gender, style = MaterialTheme.typography.titleMedium)
+            ProvideTextStyle(value = MaterialTheme.typography.bodyMedium) {
+                Phone(customer.phone)
+            }
+            Gender(customer.gender, style = MaterialTheme.typography.bodyMedium)
         }
         Row {
             if (onShare != null) {
@@ -439,12 +441,12 @@ private fun SessionHistoryItem(
     val isExpanded = rememberSaveable { mutableStateOf(false) }
     val isHistoryShown = rememberSaveable { mutableStateOf(false) }
     OutlinedSurface(
+        onClick = { isExpanded.value = !isExpanded.value },
         modifier = modifier
-            .clickable { isExpanded.value = !isExpanded.value }
             .animateContentSize()
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(10.dp),
+            verticalArrangement = Arrangement.spacedBy(5.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
@@ -574,29 +576,38 @@ fun SessionItemHeader(session: Session, modifier: Modifier = Modifier) {
                 .fillMaxWidth()
                 .weight(1f, false),
         ) {
-            Text(session.activation.service.info.title,
-                style = MaterialTheme.typography.headlineSmall,
+            Text(
+                session.activation.service.info.title,
+                style = MaterialTheme.typography.bodyLarge,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis)
-            Row(verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                Icon(painterResource(id = R.drawable.selection),
+                overflow = TextOverflow.Ellipsis,
+            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                Icon(
+                    painterResource(id = R.drawable.selection),
                     contentDescription = null,
-                    modifier = Modifier.size(25.dp))
+                    modifier = Modifier.size(25.dp)
+                )
                 Text(session.activation.service.configuration.title,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.bodyMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis)
             }
             Row(verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                Gender(
-                    gender = session.activation.employee.data.gender,
-                    modifier = Modifier.size(25.dp))
+                Icon(
+                    painter = painterResource(id = R.drawable.single_employee),
+                    contentDescription = null,
+                    modifier = Modifier.size(25.dp),
+                )
                 Text("Исполнитель: ${session.activation.employee.data.name}",
-                    style = MaterialTheme.typography.labelLarge,
+                    style = MaterialTheme.typography.bodyMedium,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis)
+                    overflow = TextOverflow.Ellipsis
+                )
             }
         }
         Text("${session.usages.size}/${session.activation.service.configuration.amount}")

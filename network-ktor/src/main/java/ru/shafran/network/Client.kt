@@ -2,6 +2,7 @@ package ru.shafran.network
 
 import io.github.aakira.napier.Napier
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.engine.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.logging.*
@@ -39,17 +40,21 @@ internal fun ShafranHttpClient(
         install(ContentNegotiation) {
             json(serializer)
         }
-        HttpResponseValidator {
-            handleResponseException { exception ->
-
-            }
-        }
     }
 }
 
-object NapierLogger : Logger {
+internal object NapierLogger : Logger {
     override fun log(message: String) {
         Napier.d({ message }, tag = "ShafranHttpClient")
     }
 
+}
+
+internal suspend inline fun <T> tryRequest(request: () -> T): T {
+    return try {
+        request()
+    } catch (e: ResponseException) {
+        throw kotlin.runCatching { e.response.call.body<ShafranNetworkException>() }
+            .getOrElse { e }
+    }
 }

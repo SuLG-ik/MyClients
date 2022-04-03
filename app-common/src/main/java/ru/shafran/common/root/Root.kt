@@ -24,6 +24,15 @@ interface Root {
             override val component: ru.shafran.common.services.Services,
         ) : Child<ru.shafran.common.services.Services>()
 
+
+        class Customers(
+            override val component: ru.shafran.common.customers.Customers,
+        ) : Child<ru.shafran.common.customers.Customers>()
+
+        class Employees(
+            override val component: ru.shafran.common.employees.Employees,
+        ) : Child<ru.shafran.common.employees.Employees>()
+
     }
 
     sealed class Configuration : Parcelable {
@@ -33,6 +42,12 @@ interface Root {
 
         @Parcelize
         object CustomerScanner : Configuration()
+
+        @Parcelize
+        object Customers : Configuration()
+
+        @Parcelize
+        object Employees : Configuration()
 
     }
 

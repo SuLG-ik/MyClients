@@ -3,9 +3,10 @@ package ru.shafran.network.customers
 import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineDispatcher
 import ru.shafran.network.customers.data.FoundCustomerItem
-import ru.shafran.network.utils.CancelableSyncCoroutineExecutor
+import ru.shafran.network.utils.SafeCancelableSyncCoroutineExecutor
 
 internal class CustomerSearchStoreImpl(
     private val factory: StoreFactory,
@@ -25,19 +26,34 @@ internal class CustomerSearchStoreImpl(
             return when (msg) {
                 is Message.SearchCompleted -> CustomerSearchStore.State.SearchCompleted(msg.searchResult)
                 is Message.Empty -> CustomerSearchStore.State.Empty
-                is Message.Error -> CustomerSearchStore.State.Error.Unknown
+                is Message.Error -> msg.reduce()
                 is Message.Loading -> CustomerSearchStore.State.Loading()
             }
         }
+
+        private fun Message.Error.reduce(): CustomerSearchStore.State {
+            return when (exception) {
+                else -> {
+                    Napier.e({ "Unknown exception" }, exception)
+                    CustomerSearchStore.State.Error.Unknown
+                }
+            }
+        }
+
+
     }
 
     private class Executor(
         private val customersRepository: CustomersRepository,
         coroutineDispatcher: CoroutineDispatcher,
     ) :
-        CancelableSyncCoroutineExecutor<CustomerSearchStore.Intent, Nothing, CustomerSearchStore.State, Message, CustomerSearchStore.Label>(
+        SafeCancelableSyncCoroutineExecutor<CustomerSearchStore.Intent, Nothing, CustomerSearchStore.State, Message, CustomerSearchStore.Label>(
             coroutineDispatcher) {
-        override suspend fun execute(
+        override suspend fun buildErrorMessage(exception: Exception): Message {
+            return Message.Error(exception)
+        }
+
+        override suspend fun safeExecute(
             intent: CustomerSearchStore.Intent,
             getState: () -> CustomerSearchStore.State,
         ) {

@@ -14,6 +14,7 @@ import ru.shafran.network.employees.data.GetEmployeeByIdRequest
 import ru.shafran.network.employees.data.GetEmployeeByIdResponse
 import ru.shafran.network.employees.data.LayoffEmployeeRequest
 import ru.shafran.network.employees.data.LayoffEmployeeResponse
+import ru.shafran.network.tryRequest
 
 
 internal class KtorEmployeesRepository(
@@ -21,29 +22,35 @@ internal class KtorEmployeesRepository(
     private val json: Json,
 ) : EmployeesRepository {
     override suspend fun getAllEmployees(data: GetAllEmployeesRequest): GetAllEmployeesResponse {
-        return httpClient.get("employees/getAllEmployees") {
-            setBody(data)
-        }.body()
+        return tryRequest {
+            httpClient.get("employees/getAllEmployees") {
+                setBody(data)
+            }.body()
+        }
     }
 
     override suspend fun createEmployee(data: CreateEmployeeRequest): CreateEmployeeResponse {
-        return httpClient.post("employees/createEmployee") {
-            setBody(data)
-        }.body()
+        return tryRequest {
+            httpClient.post("employees/createEmployee") {
+                setBody(data)
+            }.body()
+        }
     }
 
     override suspend fun layoffEmployee(data: LayoffEmployeeRequest): LayoffEmployeeResponse {
-        return httpClient.delete("employees/layoffEmployee") {
-            setBody(data)
-        }.body()
+        return tryRequest {
+            httpClient.delete("employees/layoffEmployee") {
+                setBody(data)
+            }.body()
+        }
     }
-
     override suspend fun getEmployeeById(data: GetEmployeeByIdRequest): GetEmployeeByIdResponse {
-        return httpClient.get("employees/getEmployeeById") {
-            setBody(data)
-        }.body()
+        return tryRequest {
+            httpClient.get("employees/getEmployeeById") {
+                setBody(data)
+            }.body()
+        }
     }
-
     override suspend fun addEmployeeImage(data: AddEmployeeImageRequest): AddEmployeeImageResponse {
         TODO("Image")
     }

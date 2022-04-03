@@ -5,6 +5,8 @@
     <string name="error_continue_button">Continue</string>
     <string name="navigation_services_title">Services</string>
     <string name="navigation_scanner_title">Scanner</string>
+    <string name="navigation_customers_title">Customers</string>
+    <string name="navigation_employees_title">Employees</string>
     <string name="customer_unknown_phone">Unknown</string>
     <string name="customer_gender_male">Male</string>
     <string name="customer_gender_female">Female</string>

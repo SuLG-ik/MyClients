@@ -7,10 +7,13 @@ interface EmployeesListStore :
     Store<EmployeesListStore.Intent, EmployeesListStore.State, EmployeesListStore.Label> {
 
     sealed class Intent {
-        data class LoadEmployees(val page: Int = 0) : Intent()
+        data class LoadEmployees(val offset: Int = 30, val page: Int = 0) : Intent()
     }
 
     sealed class State {
+
+        object Empty: State()
+
         data class EmployeesLoaded(
             val employees: List<Employee>,
         ) : State()
@@ -24,6 +27,7 @@ interface EmployeesListStore :
             object Internal : Error()
             object Unknown : Error()
         }
+
     }
 
     sealed class Label {}

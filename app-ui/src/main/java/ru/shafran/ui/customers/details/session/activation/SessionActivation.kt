@@ -31,14 +31,14 @@ import ru.shafran.ui.employees.picker.FloatingEmployeePickerUI
 import ru.shafran.ui.services.picker.FloatingServicePickerUI
 import ru.shafran.ui.view.OutlinedTextField
 import ru.shafran.ui.view.PlaceholderTextField
-import ru.shafran.ui.view.TitledDialog
+import ru.shafran.ui.view.OutlinedTitledDialog
 
 @Composable
 fun SessionActivationPlaceholderUI(
     component: Loading,
     modifier: Modifier = Modifier,
 ) {
-    TitledDialog(
+    OutlinedTitledDialog(
         title = {
             Text(
                 stringResource(id = component.message),
@@ -89,7 +89,7 @@ fun SessionActivationUI(
     component: SessionActivation,
     modifier: Modifier = Modifier,
 ) {
-    TitledDialog(
+    OutlinedTitledDialog(
         title = {
             Text(
                 stringResource(

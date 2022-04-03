@@ -26,6 +26,12 @@ interface SessionActivationStore :
 
     sealed class State {
 
+        sealed class Error: State() {
+
+            object Unknown : Error()
+
+        }
+
         object Empty : State()
 
         data class ActivationLoading(

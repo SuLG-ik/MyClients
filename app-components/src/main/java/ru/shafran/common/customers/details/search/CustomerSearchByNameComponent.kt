@@ -43,7 +43,7 @@ class CustomerSearchByPhoneComponent(
             is FoundCustomerConfiguration.EmptyInput ->
                 FoundCustomerChild.EmptyInput(EmptyInputComponent())
             is FoundCustomerConfiguration.Loading ->
-                FoundCustomerChild.Loading(LoadingComponent(R.string.customers_info_error_customer_not_found_message))
+                FoundCustomerChild.Loading(LoadingComponent(R.string.customers_loading))
             FoundCustomerConfiguration.UnknownError ->
                 FoundCustomerChild.Error(ErrorComponent(
                     R.string.unknwon_error,

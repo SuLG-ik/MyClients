@@ -6,7 +6,7 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import kotlinx.coroutines.CoroutineDispatcher
 import ru.shafran.network.services.data.GetAllServicesRequest
 import ru.shafran.network.services.data.Service
-import ru.shafran.network.utils.CancelableSyncCoroutineExecutor
+import ru.shafran.network.utils.SafeCancelableSyncCoroutineExecutor
 
 internal class ServicesListStoreImpl(
     private val storeFactory: StoreFactory,
@@ -55,21 +55,20 @@ internal class ServicesListStoreImpl(
     private class Executor(
         private val servicesRepository: ServicesRepository,
         coroutineDispatcher: CoroutineDispatcher,
-    ) : CancelableSyncCoroutineExecutor<ServicesListStore.Intent, Nothing, ServicesListStore.State, Message, ServicesListStore.Label>(
+    ) : SafeCancelableSyncCoroutineExecutor<ServicesListStore.Intent, Nothing, ServicesListStore.State, Message, ServicesListStore.Label>(
         coroutineDispatcher) {
 
+        override suspend fun buildErrorMessage(exception: Exception): Message {
+            return Message.Error(exception)
+        }
 
-        override suspend fun execute(
+        override suspend fun safeExecute(
             intent: ServicesListStore.Intent,
             getState: () -> ServicesListStore.State,
         ) {
-            try {
-                when (intent) {
-                    is ServicesListStore.Intent.LoadServices ->
-                        intent.execute()
-                }
-            } catch (e: Exception) {
-                syncDispatch(Message.Error(e))
+            when (intent) {
+                is ServicesListStore.Intent.LoadServices ->
+                    intent.execute()
             }
         }
 
@@ -82,6 +81,7 @@ internal class ServicesListStoreImpl(
                 )
             )
         }
+
 
     }
 

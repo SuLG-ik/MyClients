@@ -11,7 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetpack.Children
@@ -22,8 +24,8 @@ import ru.shafran.common.error.Error
 import ru.shafran.common.loading.Loading
 import ru.shafran.network.PhoneNumber
 import ru.shafran.ui.R
+import ru.shafran.ui.customers.details.info.PlaceholderCustomerInfo
 import ru.shafran.ui.error.ErrorUI
-import ru.shafran.ui.loading.LoadingUI
 import ru.shafran.ui.view.OutlinedSurface
 import ru.shafran.ui.view.PhoneInput
 import ru.shafran.ui.view.Saver
@@ -33,8 +35,10 @@ private val PhoneNumber.isValid: Boolean
         return number.length == 11
     }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CustomerSearchByPhoneUI(component: CustomerSearchByPhone, modifier: Modifier) {
+    val keyboard = LocalSoftwareKeyboardController.current
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(10.dp)) {
         val phone =
             rememberSaveable(stateSaver = PhoneNumber.Saver) { mutableStateOf(PhoneNumber("")) }
@@ -45,13 +49,20 @@ fun CustomerSearchByPhoneUI(component: CustomerSearchByPhone, modifier: Modifier
         )
         OutlinedButton(
             enabled = phone.value.isValid,
-            onClick = { component.onSearch(phone.value) },
+            onClick = {
+                component.onSearch(phone.value)
+                keyboard?.hide()
+            },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Поиск")
         }
         Children(component.routerState) {
-            CustomerSearchByPhoneNavHost(child = it.instance, modifier = Modifier.fillMaxWidth())
+            CustomerSearchByPhoneNavHost(
+                child = it.instance,
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
         }
     }
 }
@@ -75,9 +86,11 @@ fun CustomerSearchLoadingUI(component: Loading, modifier: Modifier) {
     OutlinedSurface(
         modifier = modifier
     ) {
-        LoadingUI(component = component, modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp))
+        PlaceholderCustomerInfo(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+        )
     }
 }
 

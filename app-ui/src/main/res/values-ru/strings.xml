@@ -35,4 +35,6 @@
     <string name="services_item_description_empty">Пусто</string>
     <string name="services_item_configurations">Конфигурации:</string>
     <string name="input_phonenumber">Номер телефона</string>
+    <string name="navigation_customers_title">Клиенты</string>
+    <string name="navigation_employees_title">Работники</string>
 </resources>

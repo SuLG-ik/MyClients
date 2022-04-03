@@ -3,10 +3,11 @@ package ru.shafran.network.customers
 import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineDispatcher
 import ru.shafran.network.customers.data.Customer
 import ru.shafran.network.customers.data.GetCustomerByIdRequest
-import ru.shafran.network.utils.CancelableSyncCoroutineExecutor
+import ru.shafran.network.utils.SafeCancelableSyncCoroutineExecutor
 
 internal class CustomerEditingStoreImpl(
     private val factory: StoreFactory,
@@ -26,19 +27,34 @@ internal class CustomerEditingStoreImpl(
             return when (msg) {
                 is Message.DetailsLoaded -> CustomerEditingStore.State.DetailsLoaded(msg.customer)
                 is Message.Empty -> CustomerEditingStore.State.Empty
-                is Message.Error -> TODO()
+                is Message.Error -> msg.reduce()
                 is Message.Loading -> CustomerEditingStore.State.Loading()
             }
         }
+
+        fun Message.Error.reduce(): CustomerEditingStore.State {
+            return when (exception) {
+                else -> {
+                    Napier.e({ "Unknown error" }, exception)
+                    CustomerEditingStore.State.Error.Unknown
+                }
+            }
+        }
+
     }
 
     private class Executor(
         private val customersRepository: CustomersRepository,
         coroutineDispatcher: CoroutineDispatcher,
     ) :
-        CancelableSyncCoroutineExecutor<CustomerEditingStore.Intent, Nothing, CustomerEditingStore.State, Message, CustomerEditingStore.Label>(
+        SafeCancelableSyncCoroutineExecutor<CustomerEditingStore.Intent, Nothing, CustomerEditingStore.State, Message, CustomerEditingStore.Label>(
             coroutineDispatcher) {
-        override suspend fun execute(
+
+        override suspend fun buildErrorMessage(exception: Exception): Message {
+            return Message.Error(exception)
+        }
+
+        override suspend fun safeExecute(
             intent: CustomerEditingStore.Intent,
             getState: () -> CustomerEditingStore.State,
         ) {

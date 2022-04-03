@@ -7,13 +7,14 @@ import kotlinx.serialization.Serializable
 @Parcelize
 @Serializable
 data class GetAllServicesRequest(
-    val sort: String? = null,
-    val page: Int? = null
+    val offset: Int = 30,
+    val page: Int=0,
 ):Parcelable
 
 @Parcelize
 @Serializable
 data class GetAllServicesResponse(
     val services: List<Service>,
-    val page: Int? = null,
+    val offset: Int = 30,
+    val page: Int = 0,
 ) : Parcelable

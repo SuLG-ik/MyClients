@@ -54,13 +54,3 @@ fun <Intent: Any, State: Any, Label: Any> Store<Intent, State, Label>.reduceLabe
     }
     return this
 }
-
-fun <Intent: Any, State: Any, Label: Any> Store<Intent, State, Label>.acceptOnCreate(
-    lifecycleOwner: LifecycleOwner,
-    intent: Intent,
-): Store<Intent, State, Label> {
-    lifecycleOwner.lifecycle.doOnCreate {
-        accept(intent)
-    }
-    return this
-}

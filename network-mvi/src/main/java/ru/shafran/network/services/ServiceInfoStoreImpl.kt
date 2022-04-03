@@ -4,10 +4,9 @@ import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.coroutineScope
 import ru.shafran.network.services.data.GetServiceByIdRequest
 import ru.shafran.network.services.data.Service
-import ru.shafran.network.utils.CancelableSyncCoroutineExecutor
+import ru.shafran.network.utils.SafeCancelableSyncCoroutineExecutor
 
 internal class ServiceInfoStoreImpl(
     private val factory: StoreFactory,
@@ -15,7 +14,7 @@ internal class ServiceInfoStoreImpl(
     private val coroutineDispatcher: CoroutineDispatcher,
 ) : ServiceInfoStore,
     Store<ServiceInfoStore.Intent, ServiceInfoStore.State, ServiceInfoStore.Label> by factory.create(
-        name = "SerInfoStore",
+        name = "ServiceInfoStore",
         initialState = ServiceInfoStore.State.Empty,
         executorFactory = {
             Executor(
@@ -31,25 +30,22 @@ internal class ServiceInfoStoreImpl(
         private val servicesRepository: ServicesRepository,
         coroutineDispatcher: CoroutineDispatcher,
     ) :
-        CancelableSyncCoroutineExecutor<ServiceInfoStore.Intent, Nothing, ServiceInfoStore.State, Message, ServiceInfoStore.Label>(
+        SafeCancelableSyncCoroutineExecutor<ServiceInfoStore.Intent, Nothing, ServiceInfoStore.State, Message, ServiceInfoStore.Label>(
             coroutineDispatcher) {
 
+        override suspend fun buildErrorMessage(exception: Exception): Message {
+            return Message.Error(exception)
+        }
 
-        override suspend fun execute(
+        override suspend fun safeExecute(
             intent: ServiceInfoStore.Intent,
             getState: () -> ServiceInfoStore.State,
         ) {
-            coroutineScope {
-                try {
-                    when (intent) {
-                        is ServiceInfoStore.Intent.LoadServiceWithId ->
-                            intent.execute()
-                        is ServiceInfoStore.Intent.LoadServiceWithData ->
-                            syncDispatch(Message.ServiceLoaded(service = intent.service))
-                    }
-                } catch (e: Exception) {
-                    syncDispatch(Message.Error(e))
-                }
+            when (intent) {
+                is ServiceInfoStore.Intent.LoadServiceWithId ->
+                    intent.execute()
+                is ServiceInfoStore.Intent.LoadServiceWithData ->
+                    syncDispatch(Message.ServiceLoaded(service = intent.service))
             }
         }
 

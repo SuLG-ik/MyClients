@@ -7,10 +7,13 @@ interface ServicesListStore :
     Store<ServicesListStore.Intent, ServicesListStore.State, ServicesListStore.Label> {
 
     sealed class Intent {
-        class LoadServices(val page: Long? =null) : Intent()
+        class LoadServices(val offset: Int = 30, val page: Int = 0) : Intent()
     }
 
     sealed class State {
+
+        object Empty : State()
+
         data class ServicesLoaded(
             val services: List<Service>,
         ) : State()
@@ -24,6 +27,7 @@ interface ServicesListStore :
             object Internal : Error()
             object Unknown : Error()
         }
+
     }
 
     sealed class Label {}

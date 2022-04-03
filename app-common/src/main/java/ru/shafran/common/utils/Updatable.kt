@@ -2,6 +2,6 @@ package ru.shafran.common.utils
 
 interface Updatable {
 
-    fun onUpdate()
+    val onUpdate: (() -> Unit)?
 
 }

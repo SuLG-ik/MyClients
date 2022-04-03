@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.saveable.listSaver
@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.OffsetMapping
@@ -29,7 +28,6 @@ import ru.shafran.ui.R
 internal fun Phone(
     number: PhoneNumber?,
     modifier: Modifier = Modifier,
-    style: TextStyle = MaterialTheme.typography.bodyLarge,
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(5.dp),
@@ -46,7 +44,7 @@ internal fun Phone(
                 ?: stringResource(R.string.customer_unknown_phone),
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
-            style = style,
+            style = LocalTextStyle.current,
         )
     }
 }

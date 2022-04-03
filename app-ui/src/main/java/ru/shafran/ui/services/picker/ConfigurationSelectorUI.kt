@@ -29,7 +29,7 @@ import ru.shafran.common.services.picker.configuration.ConfigurationsListSelecto
 import ru.shafran.network.services.data.Service
 import ru.shafran.network.services.data.ServiceConfiguration
 import ru.shafran.ui.loading.LoadingUI
-import ru.shafran.ui.view.TitledDialog
+import ru.shafran.ui.view.OutlinedTitledDialog
 
 @Composable
 internal fun ConfigurationSelectorUI(component: ConfigurationSelector, modifier: Modifier) {
@@ -72,7 +72,7 @@ private fun ServiceConfigurationList(
     modifier: Modifier = Modifier,
 ) {
     val configurations = service.data.configurations
-    TitledDialog(
+    OutlinedTitledDialog(
 
         title = {
             Text(

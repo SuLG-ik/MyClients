@@ -4,13 +4,15 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GetAllCustomersRequest(
-    val page: Int? = null,
-    val sort: String? = null,
+    val offset: Int = 30,
+    val page: Int = 0,
 )
 
 @Serializable
 data class GetAllCustomersResponse(
     val customers: List<Customer>,
+    val offset: Int,
+    val page: Int,
 )
 
 @Serializable

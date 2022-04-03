@@ -9,11 +9,6 @@ object Config {
 
 interface Dependencies {
 
-
-    object Validators : Dependencies {
-        const val phoneValidator = "com.googlecode.libphonenumber:libphonenumber:8.12.45"
-    }
-
     object Material : Dependencies {
         const val version = "1.4.0"
         const val design = "com.google.android.material:material:$version"
@@ -37,7 +32,7 @@ interface Dependencies {
     }
 
     object Serialization : Dependencies {
-        const val version = "1.3.1"
+        const val version = "1.3.2"
         const val core = "org.jetbrains.kotlinx:kotlinx-serialization-core:$version"
         const val json = "org.jetbrains.kotlinx:kotlinx-serialization-json:$version"
     }
@@ -63,7 +58,7 @@ interface Dependencies {
     }
 
     object Activity : Dependencies {
-        const val version = "1.5.0-alpha03"
+        const val version = "1.5.0-alpha04"
         const val core = "androidx.activity:activity-ktx:$version"
         const val compose = "androidx.activity:activity-compose:$version"
     }
@@ -74,14 +69,14 @@ interface Dependencies {
     }
 
     object Android : Dependencies {
-        const val agpVersion = "7.1.0-rc01"
-        const val version = "1.8.0-alpha05"
+        const val agpVersion = "7.1.2"
+        const val version = "1.8.0-alpha06"
         const val core = "androidx.core:core-ktx:$version"
-        const val splash = "androidx.core:core-splashscreen:1.0.0-beta01"
+        const val splash = "androidx.core:core-splashscreen:1.0.0-beta02"
     }
 
     object Lifecycle : Dependencies {
-        const val version = "2.5.0-alpha03"
+        const val version = "2.5.0-alpha05"
         const val core = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
         const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel:$version"
     }
@@ -91,7 +86,7 @@ interface Dependencies {
         const val version = "1.1.1"
         const val ui = "androidx.compose.ui:ui:$version"
         const val material = "androidx.compose.material:material:$version"
-        const val material3 = "androidx.compose.material3:material3:1.0.0-alpha06"
+        const val material3 = "androidx.compose.material3:material3:1.0.0-alpha08"
         const val animation = "androidx.compose.animation:animation:$version"
         const val foundation = "androidx.compose.foundation:foundation:$version"
         const val tooling = "androidx.compose.ui:ui-tooling:$version"
@@ -122,12 +117,12 @@ interface Dependencies {
 
 
     object Camera : Dependencies {
-        const val version = "1.0.2"
+        const val version = "1.1.0-beta02"
         const val core = "androidx.camera:camera-core:$version"
         const val camera = "androidx.camera:camera-camera2:$version"
         const val lifecycle = "androidx.camera:camera-lifecycle:$version"
-        const val view = "androidx.camera:camera-view:1.0.0-alpha28"
-        const val extensions = "androidx.camera:camera-extensions:1.0.0-alpha28"
+        const val view = "androidx.camera:camera-view:$version"
+        const val extensions = "androidx.camera:camera-extensions:$version"
     }
 
     object Firebase : Dependencies {
@@ -152,7 +147,7 @@ interface Dependencies {
     }
 
     object Coil : Dependencies {
-        const val version = "2.0.0-rc01"
+        const val version = "2.0.0-rc02"
         const val core = "io.coil-kt:coil:$version"
         const val compose = "io.coil-kt:coil-compose:$version"
     }

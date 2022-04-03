@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="services_list_loading_message">Загрузка услуг</string>
-    <string name="customers_loading">Загрузка клиентов</string>
-    <string name="services_loading">Загрузка услуг</string>
+    <string name="customers_loading">Загрузка клиентов…</string>
+    <string name="services_loading">Загрузка услуг…</string>
     <string name="customers_session_activation_details_loading_message">Загрузка</string>
     <string name="customers_session_activation_loading_message">Активация</string>
     <string name="customers_info_loading_message">Закгрузка клиентов</string>
@@ -14,4 +14,7 @@
     <string name="customers_card_generate_loading">Создание карты</string>
     <string name="services_details_loading">Загрузка услуш</string>
     <string name="unknwon_error">Неизвестная ошибка</string>
+    <string name="sessions_details_loading">Загрзука истории</string>
+    <string name="sessions_details_loading_error">Оштбка заргузки истории</string>
+    <string name="employees_loading">Загрузка работников…</string>
 </resources>

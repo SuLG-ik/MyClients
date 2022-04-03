@@ -35,7 +35,7 @@ internal class CustomerScannerComponent(
 
     private fun onTokenDetected(token: String) {
         if (!customerDetails.isShown.value) {
-            customerDetails.onShowCustomer(token)
+            customerDetails.onShowCustomerByCardToken(token)
         }
     }
 

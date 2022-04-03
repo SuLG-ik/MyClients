@@ -11,7 +11,6 @@ import ru.shafran.common.utils.stores
 import ru.shafran.network.services.ServicesListStore
 import ru.shafran.network.services.data.ConfiguredService
 import ru.shafran.network.services.data.Service
-import ru.shafran.network.utils.acceptOnCreate
 import ru.shafran.network.utils.reduceStates
 
 class ServiceSelectorComponent(
@@ -58,7 +57,6 @@ class ServiceSelectorComponent(
     }
 
     init {
-        store.acceptOnCreate(this, ServicesListStore.Intent.LoadServices())
         store.reduceStates(this, this::reduceStates)
     }
 
@@ -69,6 +67,8 @@ class ServiceSelectorComponent(
             ServicesListStore.State.Error.ConnectionLost -> TODO()
             ServicesListStore.State.Error.Internal -> TODO()
             ServicesListStore.State.Error.Unknown -> TODO()
+            is ServicesListStore.State.Empty ->
+                store.accept(ServicesListStore.Intent.LoadServices())
         }
     }
 

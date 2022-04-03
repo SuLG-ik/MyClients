@@ -188,13 +188,17 @@ class CustomerInfoHostComponent(
         }
     }
 
-    override fun onUpdate() {
-        if (customerId != null) {
-            store.accept(CustomerInfoStore.Intent.LoadCustomerWithId(customerId))
-        } else if (customerToken != null) {
-            store.accept(CustomerInfoStore.Intent.LoadCustomerWithToken(customerToken))
-        } else {
-            throw IllegalStateException("Customer token and customerId are null")
+    override val onUpdate: () -> Unit = {
+        when {
+            customerId != null -> {
+                store.accept(CustomerInfoStore.Intent.LoadCustomerWithId(customerId))
+            }
+            customerToken != null -> {
+                store.accept(CustomerInfoStore.Intent.LoadCustomerWithToken(customerToken))
+            }
+            else -> {
+                throw IllegalStateException("Customer token and customerId are null")
+            }
         }
     }
 

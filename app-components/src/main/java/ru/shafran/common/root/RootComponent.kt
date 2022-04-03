@@ -5,6 +5,8 @@ import com.arkivanov.decompose.router.RouterState
 import com.arkivanov.decompose.router.bringToFront
 import com.arkivanov.decompose.router.router
 import com.arkivanov.decompose.value.Value
+import ru.shafran.common.customers.CustomersComponent
+import ru.shafran.common.employees.EmployeesComponent
 import ru.shafran.common.scanner.CustomerScannerComponent
 import ru.shafran.common.services.ServicesComponent
 import ru.shafran.common.utils.Share
@@ -29,7 +31,13 @@ class RootComponent(
         return when (configuration) {
             Root.Configuration.Services -> createServicesChild(componentContext)
             Root.Configuration.CustomerScanner -> createScannerChild(componentContext)
+            Root.Configuration.Customers -> createCustomersChild(componentContext)
+            Root.Configuration.Employees -> createEmployeesChild(componentContext)
         }
+    }
+
+    private fun createCustomersChild(componentContext: ComponentContext): Root.Child<Any?> {
+        return Root.Child.Customers(CustomersComponent(componentContext, share))
     }
 
     private fun createServicesChild(
@@ -47,6 +55,14 @@ class RootComponent(
                 onOpenSettings = onOpenSettings,
                 share = share
             )
+        )
+    }
+
+    private fun createEmployeesChild(
+        componentContext: ComponentContext,
+    ): Root.Child<Any?> {
+        return Root.Child.Employees(
+            EmployeesComponent(componentContext)
         )
     }
 

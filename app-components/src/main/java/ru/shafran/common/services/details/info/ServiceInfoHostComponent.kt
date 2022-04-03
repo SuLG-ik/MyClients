@@ -77,7 +77,7 @@ class ServiceInfoHostComponent(
     }
 
 
-    override fun onUpdate() {
+    override val onUpdate: () -> Unit = {
         if (service != null)
             store.accept(ServiceInfoStore.Intent.LoadServiceWithData(service))
         else if (serviceId != null)

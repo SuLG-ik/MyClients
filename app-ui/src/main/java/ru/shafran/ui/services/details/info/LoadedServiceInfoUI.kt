@@ -2,7 +2,6 @@ package ru.shafran.ui.services.details.info
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -148,7 +147,7 @@ private fun ServiceConfigurationsList(service: Service, modifier: Modifier) {
 @Composable
 private fun ServiceConfiguration(configuration: ServiceConfiguration, modifier: Modifier) {
     val isExpanded = rememberSaveable { mutableStateOf(false) }
-    OutlinedSurface(modifier = modifier.clickable { isExpanded.value = !isExpanded.value }) {
+    OutlinedSurface(onClick = { isExpanded.value = !isExpanded.value }, modifier = modifier) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
