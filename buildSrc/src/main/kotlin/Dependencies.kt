@@ -73,6 +73,7 @@ interface Dependencies {
         const val version = "1.8.0-alpha06"
         const val core = "androidx.core:core-ktx:$version"
         const val splash = "androidx.core:core-splashscreen:1.0.0-beta02"
+        const val startup = "androidx.startup:startup-runtime:1.1.1"
     }
 
     object Lifecycle : Dependencies {

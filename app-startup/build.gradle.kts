@@ -98,6 +98,7 @@ dependencies {
     implementation(Dependencies.Ktor.serialization)
     implementation(Dependencies.Ktor.cio)
     implementation(Dependencies.Activity.compose)
+    implementation(Dependencies.Android.startup)
     implementation(Dependencies.Compose.ui)
 
     implementation(platform(Dependencies.Firebase.BoM))
