@@ -11,6 +11,8 @@ interface EmployeeSelector {
     val routerState: Value<RouterState<Configuration, Child>>
 
     sealed class Configuration : Parcelable {
+        @Parcelize
+        object UnknownError : Configuration()
 
         @Parcelize
         object Loading : Configuration()
@@ -29,6 +31,7 @@ interface EmployeeSelector {
 
         class EmployeeList(val component: EmployeesListSelector) : Child()
 
+        class Error(val component: ru.shafran.common.error.Error) : Child()
 
     }
 

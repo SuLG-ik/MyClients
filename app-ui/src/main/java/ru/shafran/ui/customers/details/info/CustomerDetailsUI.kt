@@ -57,6 +57,13 @@ internal fun LoadingCustomerDetailsUI(
         PlaceholderHistoryItem(
             modifier = Modifier.fillMaxWidth()
         )
+        OutlinedButton(enabled = false,
+            onClick = { /*TODO*/ },
+            modifier = Modifier
+                .fillMaxWidth()) {
+            Text("Подключить услугу", modifier = Modifier
+                .placeholder(true, highlight = PlaceholderHighlight.fade()))
+        }
     }
 }
 
@@ -124,19 +131,20 @@ internal fun LoadedCustomerDetailsUI(
     ) {
         CustomerInfo(
             customer = component.customer.data,
-            onEdit = component::onEdit,
-            onShare = component::onShareCard,
+            onEdit = component.onEdit,
+            onShare = component.onShareCard,
             modifier = Modifier.fillMaxWidth(),
         )
         SessionHistory(
             component.history,
-            onUse = component::onUseSession,
+            onUse = component.onUseSession,
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight(unbounded = true)
+                .wrapContentHeight(unbounded = true),
+            onDelete = component.onDeleteSession
         )
         OutlinedButton(
-            onClick = component::onActivateSession,
+            onClick = component.onActivateSession,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
@@ -162,6 +170,13 @@ internal fun PreloadedCustomerDetailsUI(
         PlaceholderHistoryItem(
             modifier = Modifier.fillMaxWidth()
         )
+        OutlinedButton(enabled = false,
+            onClick = { /*TODO*/ },
+            modifier = Modifier
+                .fillMaxWidth()) {
+            Text("Подключить услугу", modifier = Modifier
+                .placeholder(true, highlight = PlaceholderHighlight.fade()))
+        }
     }
 }
 
@@ -262,6 +277,7 @@ fun CustomerInfo(
 private fun SessionHistory(
     history: List<Session>,
     onUse: (Session) -> Unit,
+    onDelete: (Session) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     if (history.isEmpty()) {
@@ -278,6 +294,7 @@ private fun SessionHistory(
         NotEmptySessionHistory(
             history = history,
             onUse = onUse,
+            onDelete = onDelete,
             modifier = modifier
         )
     }
@@ -299,6 +316,7 @@ private fun EmptySessionHistory(modifier: Modifier) {
 private fun NotEmptySessionHistory(
     history: List<Session>,
     onUse: (Session) -> Unit,
+    onDelete: (Session) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -309,6 +327,7 @@ private fun NotEmptySessionHistory(
             SessionHistoryItem(
                 session = session,
                 onUse = { onUse(session) },
+                onDelete = { onDelete(session) },
                 modifier = Modifier.fillMaxWidth()
             )
         }
@@ -329,7 +348,9 @@ private fun PlaceholderHistoryItem(modifier: Modifier = Modifier) {
                 .padding(15.dp),
         ) {
             PlaceholderItemHeader(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
             )
         }
     }
@@ -389,46 +410,6 @@ private fun PlaceholderItemHeader(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .placeholder(true, highlight = PlaceholderHighlight.fade()))
     }
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
-        modifier = modifier,
-    ) {
-        Icon(
-            painterResource(id = R.drawable.turn_on_slider),
-            contentDescription = null,
-            modifier = Modifier
-                .size(25.dp)
-                .placeholder(
-                    true, highlight = PlaceholderHighlight.fade(),
-                )
-        )
-        Column(
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f, false),
-        ) {
-            Text(
-                text = "Название тут",
-                style = MaterialTheme.typography.headlineLarge,
-                modifier = Modifier
-                    .placeholder(true, highlight = PlaceholderHighlight.fade())
-            )
-            Text(
-                text = "Исполнитель: да он тут",
-                style = MaterialTheme.typography.labelSmall,
-                modifier = Modifier
-                    .placeholder(true, highlight = PlaceholderHighlight.fade())
-            )
-        }
-        Text(
-            text = "2/2",
-            modifier = Modifier
-                .placeholder(true, highlight = PlaceholderHighlight.fade())
-        )
-    }
 }
 
 
@@ -436,6 +417,7 @@ private fun PlaceholderItemHeader(modifier: Modifier = Modifier) {
 private fun SessionHistoryItem(
     session: Session,
     onUse: () -> Unit,
+    onDelete: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val isExpanded = rememberSaveable { mutableStateOf(false) }
@@ -465,8 +447,10 @@ private fun SessionHistoryItem(
                     SessionActions(
                         isUsable = !session.isDeactivated,
                         isHistoryAvailable = session.usages.isNotEmpty(),
+                        isDeletable = session.usages.isEmpty(),
                         onShowHistory = { isHistoryShown.value = !isHistoryShown.value },
                         onUse = onUse,
+                        onDelete = onDelete,
                         modifier = Modifier
                             .align(Alignment.End)
                     )
@@ -485,21 +469,36 @@ private fun SessionHistoryItem(
 private fun SessionActions(
     isUsable: Boolean,
     isHistoryAvailable: Boolean,
+    isDeletable: Boolean,
     onUse: () -> Unit,
     onShowHistory: () -> Unit,
+    onDelete: () -> Unit,
     modifier: Modifier,
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         modifier = modifier,
     ) {
+        if (isDeletable)
+            IconButton(onClick = onDelete) {
+                Icon(
+                    painter = painterResource(id = R.drawable.trash),
+                    contentDescription = null
+                )
+            }
         if (isHistoryAvailable)
             IconButton(onClick = onShowHistory) {
-                Icon(painterResource(id = R.drawable.history), contentDescription = null)
+                Icon(
+                    painter = painterResource(id = R.drawable.history),
+                    contentDescription = null
+                )
             }
         if (isUsable)
             IconButton(onClick = onUse) {
-                Icon(painterResource(id = R.drawable.check), contentDescription = null)
+                Icon(
+                    painter = painterResource(id = R.drawable.check),
+                    contentDescription = null
+                )
             }
     }
 }

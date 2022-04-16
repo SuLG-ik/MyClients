@@ -12,7 +12,8 @@ internal fun ShafranCardsTheme(
 ) {
     MaterialTheme3(
         colorScheme = theme3.colors,
-        content = content
+        shapes = shapes3,
+        content = content,
     )
 }
 
@@ -41,30 +42,30 @@ internal sealed class Theme3(val colors: ColorScheme) {
         ColorScheme(
             primary = lightPrimary,
             onPrimary = lightOnPrimary,
-            primaryContainer = lightPrimaryContainer, /* TODO */
-            onPrimaryContainer = lightOnPrimaryContainer, /* TODO */
-            inversePrimary = lightUnknown, /* TODO */
+            primaryContainer = lightPrimaryContainer,
+            onPrimaryContainer = lightOnPrimaryContainer,
+            inversePrimary = lightUnknown,
             secondary = lightSecondary,
             onSecondary = lightOnSecondary,
-            secondaryContainer = lightSecondaryContainer, /* TODO */
-            onSecondaryContainer = lightOnSecondaryContainer, /* TODO */
-            tertiary = lightUnknown, /* TODO */
-            onTertiary = lightOnUnknown, /* TODO */
-            tertiaryContainer = lightUnknown, /* TODO */
-            onTertiaryContainer = lightOnUnknown,/* TODO */
+            secondaryContainer = lightSecondaryContainer,
+            onSecondaryContainer = lightOnSecondaryContainer,
+            tertiary = lightUnknown,
+            onTertiary = lightOnUnknown,
+            tertiaryContainer = lightUnknown,
+            onTertiaryContainer = lightOnUnknown,
             background = lightBackground,
             onBackground = lightOnBackground,
             surface = lightSurface,
             onSurface = lightOnSurface,
-            surfaceVariant = lightSurfaceVariant, /* TODO */
-            onSurfaceVariant = lightOnSurfaceVariant, /* TODO */
-            surfaceTint = lightUnknown, /* TODO */
-            inverseSurface = lightUnknown, /* TODO */
-            inverseOnSurface = lightOnUnknown, /* TODO */
+            surfaceVariant = lightSurfaceVariant,
+            onSurfaceVariant = lightOnSurfaceVariant,
+            surfaceTint = lightUnknown,
+            inverseSurface = lightUnknown,
+            inverseOnSurface = lightOnUnknown,
             error = lightError,
             onError = lightOnError,
-            errorContainer = lightUnknown, /* TODO */
-            onErrorContainer = lightOnUnknown, /* TODO */
+            errorContainer = lightUnknown,
+            onErrorContainer = lightOnUnknown,
             outline = lightOutline,
         )
     )

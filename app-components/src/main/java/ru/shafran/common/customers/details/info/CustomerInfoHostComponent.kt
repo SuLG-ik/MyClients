@@ -23,6 +23,7 @@ class CustomerInfoHostComponent(
     private val onEdit: (Customer) -> Unit,
     private val onActivateSession: (Customer.ActivatedCustomer) -> Unit,
     private val onUseSession: (Session) -> Unit,
+    private val onDeleteSession: (Session) -> Unit,
     private val customerId: String? = null,
     private val onShareCard: (cardToken: String, customer: Customer.ActivatedCustomer) -> Unit,
 ) : CustomerInfoHost, Updatable, ComponentContext by componentContext {
@@ -74,6 +75,7 @@ class CustomerInfoHostComponent(
                 customer = customer,
                 history = history,
                 onActivateSession = { onActivateSession(customer) },
+                onDeleteSession = onDeleteSession,
                 onBack = onBack,
                 onUseSession = onUseSession,
                 onEdit = { onEdit(customer) },

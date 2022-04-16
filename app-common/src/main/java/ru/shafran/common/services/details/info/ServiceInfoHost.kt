@@ -12,8 +12,6 @@ interface ServiceInfoHost {
 
     sealed class Configuration : Parcelable {
 
-        @Parcelize
-        object Empty : Configuration()
 
         @Parcelize
         object Loading : Configuration()
@@ -22,6 +20,9 @@ interface ServiceInfoHost {
         data class ServiceLoaded(
             val service: Service,
         ) : Configuration()
+
+        @Parcelize
+        object UnknownError : Configuration()
 
     }
 
@@ -34,6 +35,10 @@ interface ServiceInfoHost {
 
         class Loaded(
             val component: LoadedServiceInfo,
+        ) : Child()
+
+        class Error(
+            val component: ru.shafran.common.error.Error,
         ) : Child()
 
     }

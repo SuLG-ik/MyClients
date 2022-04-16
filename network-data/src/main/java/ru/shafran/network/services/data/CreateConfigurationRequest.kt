@@ -14,11 +14,11 @@ data class CreateConfigurationRequest(
 
 @Parcelize
 @Serializable
-class CreateConfigurationRequestData(
+data class CreateConfigurationRequestData(
     val title: String,
     val description: String,
-    val cost: Long,
-    val amount: Long,
+    val cost: Int,
+    val amount: Int,
 ) : Parcelable
 
 

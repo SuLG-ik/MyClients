@@ -9,4 +9,5 @@ interface TimeFormatter {
 
 }
 
-val LocalTimeFormatter = compositionLocalOf<TimeFormatter> { error("TimeFormatter does not exist in this composition context") }
+val LocalTimeFormatter =
+    compositionLocalOf<TimeFormatter> { error("TimeFormatter does not exist in this composition context") }

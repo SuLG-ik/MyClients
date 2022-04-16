@@ -1,10 +1,13 @@
 package ru.shafran.common.employees.list
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.router.RouterState
 import com.arkivanov.decompose.router.router
 import com.arkivanov.decompose.value.Value
 import ru.shafran.common.components.R
+import ru.shafran.common.employees.details.host.EmployeeDetailsHost
+import ru.shafran.common.employees.details.host.EmployeeDetailsHostComponent
 import ru.shafran.common.error.ErrorComponent
 import ru.shafran.common.loading.LoadingComponent
 import ru.shafran.common.utils.getStore
@@ -16,6 +19,10 @@ class EmployeesListHostComponent(componentContext: ComponentContext) : Employees
     ComponentContext by componentContext {
 
     private val store = getStore<EmployeesListStore>().reduceStates(this, this::reduceState)
+
+    override val onUpdate: () -> Unit = {
+        store.accept(EmployeesListStore.Intent.LoadEmployees())
+    }
 
     private fun reduceState(state: EmployeesListStore.State) {
         when (state) {
@@ -29,9 +36,11 @@ class EmployeesListHostComponent(componentContext: ComponentContext) : Employees
         }
     }
 
-    override val onUpdate: () -> Unit = {
-        store.accept(EmployeesListStore.Intent.LoadEmployees())
-    }
+    override val employeeDetails: EmployeeDetailsHost =
+        EmployeeDetailsHostComponent(
+            componentContext = childContext("employee_details"),
+            onUpdateEmployeesList = onUpdate,
+        )
 
     private val router =
         router<EmployeesListHost.Configuration, EmployeesListHost.Child>(initialConfiguration = EmployeesListHost.Configuration.Loading,
@@ -46,7 +55,9 @@ class EmployeesListHostComponent(componentContext: ComponentContext) : Employees
             is EmployeesListHost.Configuration.EmployeesList ->
                 EmployeesListHost.Child.EmployeesList(EmployeeListComponent(
                     employee = configuration.employees,
-                    onUpdate = onUpdate
+                    onUpdate = onUpdate,
+                    onSelect = employeeDetails.onShowEmployee,
+                    onCreateEmployee = employeeDetails.onCreateEmployee,
                 ))
             is EmployeesListHost.Configuration.Loading ->
                 EmployeesListHost.Child.Loading(LoadingComponent(R.string.customers_loading))

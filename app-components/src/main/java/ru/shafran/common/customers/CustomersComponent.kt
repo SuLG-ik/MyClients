@@ -4,7 +4,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.RouterState
 import com.arkivanov.decompose.router.router
 import com.arkivanov.decompose.value.Value
-import ru.shafran.common.sessions.SessionsHistoryListHostComponent
+import ru.shafran.common.sessions.history.SessionsHistoryListHostComponent
 import ru.shafran.common.utils.Share
 
 class CustomersComponent(
@@ -27,8 +27,8 @@ class CustomersComponent(
             Customers.Configuration.SessionsHistory ->
                 Customers.Child.SessionsHistory(
                     SessionsHistoryListHostComponent(
-                        componentContext,
-                        share
+                        componentContext = componentContext,
+                        share = share,
                     )
 
                 )

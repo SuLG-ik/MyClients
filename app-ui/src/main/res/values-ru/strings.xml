@@ -18,7 +18,7 @@
     <string name="customer_apply">Применить</string>
     <string name="customer_empty_history">Ещё нет активный записей</string>
     <string name="customer_empty_history_items">Запись ещё ни разу не использовалась</string>
-    <string name="customers_create_new_session">Добавить запись на приём</string>ч
+    <string name="customers_create_new_session">Добавить запись на приём</string>
     <string name="customer_session_activation_remark">Пометка</string>
     <string name="customer_session_activation_empty_continue">Подключить</string>
     <string name="customer_session_activation_continue">Подключить: %1$s</string>
@@ -37,4 +37,23 @@
     <string name="input_phonenumber">Номер телефона</string>
     <string name="navigation_customers_title">Клиенты</string>
     <string name="navigation_employees_title">Работники</string>
+    <string name="services_create_description">Описание</string>
+    <string name="services_create_title">Название</string>
+    <string name="services_create_amount">Кол-во (мин 1)</string>
+    <string name="services_create_cost">Стоимость (мин 1)</string>
+    <string name="services_create_confgiuration">Добавить конфигурацию</string>
+    <string name="sessions_deactivating_title">Отмена услуги</string>
+    <string name="session_deactivating_reason_unknown">Неизвестно</string>
+    <string name="session_deactivating_reason_miss_click">Случаное создание</string>
+    <string name="session_use_note">Пометка</string>
+    <string name="session_use_apply">Подтвердить использование</string>
+    <string name="sessions_deactivating_reason_title">Причина отмены</string>
+    <string name="session_deactivating_note">Заметка</string>
+    <string name="session_deactiving_apply">Подтвердить</string>
+    <string name="session_deactivating_reason_money_back">Возврат средст</string>
+    <string name="employee_title">Работник</string>
+    <string name="employee_create_name">Имя</string>
+    <string name="employee_create_apply">Нанять работника</string>
+    <string name="employee_create_title">Новый работник</string>
+    <string name="sessions_stats_title">Статистика</string>
 </resources>

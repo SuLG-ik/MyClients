@@ -1,6 +1,5 @@
 package ru.shafran.ui.customers.details.generator
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,7 +27,7 @@ import ru.shafran.common.loading.Loading
 import ru.shafran.ui.R
 import ru.shafran.ui.customers.details.info.CustomerInfo
 import ru.shafran.ui.customers.details.info.PlaceholderCustomerInfo
-import ru.shafran.ui.theme.shapes
+import ru.shafran.ui.view.OutlinedSurface
 import ru.shafran.ui.view.QRCode
 
 @Composable
@@ -44,7 +44,7 @@ fun CustomerPlaceholderSenderUI(component: Loading, modifier: Modifier) {
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                 Spacer(modifier = Modifier
                     .size(250.dp)
-                    .clip(shapes.medium)
+                    .clip(MaterialTheme.shapes.medium)
                     .placeholder(true, highlight = PlaceholderHighlight.fade()))
             }
             PlaceholderCustomerInfo(
@@ -83,14 +83,17 @@ fun CustomerSenderUI(component: CardSender, modifier: Modifier) {
                     modifier = Modifier.size(300.dp),
                 )
             }
-            CustomerInfo(
-                customer = component.customer.data,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(shapes.medium)
-                    .clickable(onClick = component::onProfile)
-                    .padding(10.dp),
-            )
+            OutlinedSurface(
+                onClick = component::onProfile,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                CustomerInfo(
+                    customer = component.customer.data,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp),
+                )
+            }
         }
         OutlinedButton(
             onClick = component::onShare,

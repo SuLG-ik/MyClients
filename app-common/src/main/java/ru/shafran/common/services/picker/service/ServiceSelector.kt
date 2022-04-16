@@ -17,16 +17,23 @@ interface ServiceSelector {
         object Loading : Configuration()
 
         @Parcelize
-        class ServicesList(val services: List<Service>, val selectedConfiguration: ConfiguredService? = null) : Configuration()
+        class ServicesList(
+            val services: List<Service>,
+            val selectedConfiguration: ConfiguredService? = null,
+        ) : Configuration()
+
+        @Parcelize
+        object UnknownError : Configuration()
 
     }
 
     sealed class Child {
 
-        class Loading(val component: ru.shafran.common.loading.Loading): Child()
+        class Loading(val component: ru.shafran.common.loading.Loading) : Child()
 
         class ServicesList(val component: ServicesListSelector) : Child()
 
+        class Error(val component: ru.shafran.common.error.Error) : Child()
 
     }
 

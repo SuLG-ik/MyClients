@@ -9,7 +9,9 @@ import ru.shafran.common.customers.details.generator.CardGeneratorHost
 import ru.shafran.common.customers.details.info.CustomerInfoHost
 import ru.shafran.common.customers.details.search.CustomerSearchHost
 import ru.shafran.common.customers.details.sessions.activation.SessionActivationHost
-import ru.shafran.common.customers.details.sessions.use.SessionUseHost
+import ru.shafran.common.customers.details.sessions.deactivation.SessionDeactivationHost
+import ru.shafran.common.customers.details.sessions.use.SessionUsageHost
+import ru.shafran.common.sessions.stats.AllSessionsStatsHost
 import ru.shafran.network.customers.data.Customer
 import ru.shafran.network.session.data.Session
 
@@ -28,6 +30,8 @@ interface CustomerDetailsHost {
     val onShowCustomerById: (String) -> Unit
 
     val onShowCustomer: (Customer.ActivatedCustomer) -> Unit
+
+    val onShowStats: () -> Unit
 
     val routerState: Value<RouterState<Configuration, Child<Any?>>>
 
@@ -73,6 +77,12 @@ interface CustomerDetailsHost {
         @Parcelize
         object Search : Configuration()
 
+        @Parcelize
+        class SessionDeactivation(val session: Session) : Configuration()
+
+        @Parcelize
+        object SessionStats: Configuration()
+
     }
 
     sealed class Child<out T> {
@@ -98,8 +108,8 @@ interface CustomerDetailsHost {
 
 
         class SessionUse(
-            override val component: SessionUseHost,
-        ) : Child<SessionUseHost>()
+            override val component: SessionUsageHost,
+        ) : Child<SessionUsageHost>()
 
         class GenerateCard(
             override val component: CardGeneratorHost,
@@ -109,9 +119,17 @@ interface CustomerDetailsHost {
             override val component: ru.shafran.common.customers.details.generator.CardSender,
         ) : Child<ru.shafran.common.customers.details.generator.CardSender>()
 
-        data class CustomerSearch(
+        class CustomerSearch(
             override val component: CustomerSearchHost,
         ) : Child<CustomerSearchHost>()
+
+        class SessionDeactivate(
+            override val component: SessionDeactivationHost,
+        ) : Child<SessionDeactivationHost>()
+
+        class SessionsStats(
+            override val component: AllSessionsStatsHost,
+        ) : Child<AllSessionsStatsHost>()
 
     }
 

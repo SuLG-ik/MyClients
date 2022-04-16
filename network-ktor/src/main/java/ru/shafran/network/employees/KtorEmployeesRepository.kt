@@ -10,7 +10,7 @@ import ru.shafran.network.employees.data.CreateEmployeeRequest
 import ru.shafran.network.employees.data.CreateEmployeeResponse
 import ru.shafran.network.employees.data.GetAllEmployeesRequest
 import ru.shafran.network.employees.data.GetAllEmployeesResponse
-import ru.shafran.network.employees.data.GetEmployeeByIdRequest
+import ru.shafran.network.employees.data.GetEmployeeWithIdRequest
 import ru.shafran.network.employees.data.GetEmployeeByIdResponse
 import ru.shafran.network.employees.data.LayoffEmployeeRequest
 import ru.shafran.network.employees.data.LayoffEmployeeResponse
@@ -44,7 +44,7 @@ internal class KtorEmployeesRepository(
             }.body()
         }
     }
-    override suspend fun getEmployeeById(data: GetEmployeeByIdRequest): GetEmployeeByIdResponse {
+    override suspend fun getEmployeeById(data: GetEmployeeWithIdRequest): GetEmployeeByIdResponse {
         return tryRequest {
             httpClient.get("employees/getEmployeeById") {
                 setBody(data)

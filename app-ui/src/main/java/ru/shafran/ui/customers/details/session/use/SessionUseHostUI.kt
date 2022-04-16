@@ -3,21 +3,21 @@ package ru.shafran.ui.customers.details.session.use
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetpack.Children
-import ru.shafran.common.customers.details.sessions.use.SessionUseHost
+import ru.shafran.common.customers.details.sessions.use.SessionUsageHost
 
 @Composable
-fun SessionUseHostUI(component: SessionUseHost, modifier: Modifier) {
+fun SessionUseHostUI(component: SessionUsageHost, modifier: Modifier) {
     Children(routerState = component.routerState) {
         SessionUseNavHost(child = it.instance, modifier = modifier)
     }
 }
 
 @Composable
-fun SessionUseNavHost(child: SessionUseHost.Child, modifier: Modifier) {
+fun SessionUseNavHost(child: SessionUsageHost.Child, modifier: Modifier) {
     when (child) {
-        is SessionUseHost.Child.Loading ->
+        is SessionUsageHost.Child.Loading ->
             SessionUsePlaceholderUI(component = child.component, modifier = modifier)
-        is SessionUseHost.Child.Loaded ->
+        is SessionUsageHost.Child.Loaded ->
             SessionUseUI(component = child.component, modifier = modifier)
     }
 }

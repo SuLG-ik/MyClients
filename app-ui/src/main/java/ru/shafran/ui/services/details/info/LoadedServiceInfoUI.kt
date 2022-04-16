@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,7 +12,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -20,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import ru.shafran.common.services.details.info.LoadedServiceInfo
 import ru.shafran.network.services.data.Service
@@ -33,6 +37,8 @@ import ru.shafran.ui.view.TitledDialog
 fun LoadedServiceInfoUI(component: LoadedServiceInfo, modifier: Modifier) {
     LoadedServiceInfo(
         service = component.service,
+        onEdit = component.onEdit,
+        onCreateConfiguration = component.onCreateConfiguration,
         modifier = modifier.verticalScroll(rememberScrollState()),
     )
 }
@@ -42,6 +48,7 @@ fun LoadedServiceInfoUI(component: LoadedServiceInfo, modifier: Modifier) {
 fun LoadedServiceInfo(
     service: Service,
     onEdit: (() -> Unit)? = null,
+    onCreateConfiguration: () -> Unit,
     modifier: Modifier,
 ) {
     TitledDialog(
@@ -49,20 +56,35 @@ fun LoadedServiceInfo(
             Icon(painterResource(id = R.drawable.service_logo),
                 contentDescription = null,
                 modifier = Modifier.size(50.dp))
-            Text(text = service.data.info.title, style = MaterialTheme.typography.headlineLarge)
+            Text(
+                text = service.data.info.title,
+                style = MaterialTheme.typography.headlineLarge,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f, false),
+            )
+            if (onEdit != null) {
+                IconButton(onClick = onEdit) {
+                    Icon(painterResource(id = R.drawable.edit_button), contentDescription = null)
+                }
+            }
         },
+        contentPadding = PaddingValues(0.dp),
         modifier = modifier,
     ) {
         ServiceInfoHeader(
             service = service,
+            onCreateConfiguration = onCreateConfiguration,
             modifier = Modifier.fillMaxWidth()
         )
+
     }
 }
 
 @Composable
 fun ServiceInfoHeader(
     service: Service,
+    onCreateConfiguration: () -> Unit,
     modifier: Modifier,
 ) {
     Column(
@@ -83,6 +105,7 @@ fun ServiceInfoHeader(
         )
         ServiceConfigurationsList(
             service = service,
+            onCreateConfiguration = onCreateConfiguration,
             modifier = Modifier.fillMaxWidth()
         )
     }
@@ -133,13 +156,50 @@ private fun EmptyDescription(modifier: Modifier) {
 }
 
 @Composable
-private fun ServiceConfigurationsList(service: Service, modifier: Modifier) {
+private fun ServiceConfigurationsList(
+    service: Service,
+    onCreateConfiguration: () -> Unit,
+    modifier: Modifier,
+) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        service.data.configurations.forEach {
-            ServiceConfiguration(it, modifier = Modifier.fillMaxWidth())
+        if (service.data.configurations.isNotEmpty()) {
+            service.data.configurations.forEach {
+                ServiceConfiguration(it, modifier = Modifier.fillMaxWidth())
+            }
+        } else {
+            EmptyServiceConfiguration(modifier = Modifier.fillMaxWidth())
+        }
+        OutlinedButton(
+            onClick = onCreateConfiguration,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Text(
+                stringResource(R.string.services_create_confgiuration),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+    }
+}
+
+@Composable
+fun EmptyServiceConfiguration(modifier: Modifier) {
+    OutlinedSurface(modifier = modifier) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(15.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(painterResource(id = R.drawable.empty_history), contentDescription = null)
+            Text(
+                stringResource(R.string.services_item_description_empty),
+                style = MaterialTheme.typography.bodyMedium,
+            )
         }
     }
 }
@@ -199,7 +259,7 @@ fun ServiceConfigurationData(configuration: ServiceConfiguration, modifier: Modi
             Icon(painterResource(id = R.drawable.amount),
                 contentDescription = null,
                 modifier = Modifier.size(25.dp))
-            Text("${configuration.amount}", style = MaterialTheme.typography.bodyMedium)
+            Text("${configuration.amount} раз(а)", style = MaterialTheme.typography.bodyMedium)
         }
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -208,7 +268,7 @@ fun ServiceConfigurationData(configuration: ServiceConfiguration, modifier: Modi
             Icon(painterResource(id = R.drawable.cost),
                 contentDescription = null,
                 modifier = Modifier.size(25.dp))
-            Text("${configuration.cost}", style = MaterialTheme.typography.bodyMedium)
+            Text("${configuration.cost} ₽", style = MaterialTheme.typography.bodyMedium)
         }
     }
 }

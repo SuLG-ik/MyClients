@@ -52,7 +52,7 @@ interface Dependencies {
     }
 
     object Decompose : Dependencies {
-        const val version = "0.5.2"
+        const val version = "0.6.0"
         const val core = "com.arkivanov.decompose:decompose:$version"
         const val compose = "com.arkivanov.decompose:extensions-compose-jetpack:$version"
     }
@@ -82,12 +82,18 @@ interface Dependencies {
         const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel:$version"
     }
 
+
+    object Work {
+        const val version = "2.7.1"
+        const val core = "androidx.work:work-runtime-ktx:$version"
+    }
+
     object Compose : Dependencies {
         const val compilerVersion = "1.1.1"
         const val version = "1.1.1"
         const val ui = "androidx.compose.ui:ui:$version"
         const val material = "androidx.compose.material:material:$version"
-        const val material3 = "androidx.compose.material3:material3:1.0.0-alpha08"
+        const val material3 = "androidx.compose.material3:material3:1.0.0-alpha09"
         const val animation = "androidx.compose.animation:animation:$version"
         const val foundation = "androidx.compose.foundation:foundation:$version"
         const val tooling = "androidx.compose.ui:ui-tooling:$version"
@@ -107,7 +113,7 @@ interface Dependencies {
     }
 
     object Ktor : Dependencies {
-        const val version = "2.0.0-beta-1"
+        const val version = "2.0.0"
         const val core = "io.ktor:ktor-client-core:$version"
         const val android = "io.ktor:ktor-client-android:$version"
         const val cio = "io.ktor:ktor-client-cio:$version"

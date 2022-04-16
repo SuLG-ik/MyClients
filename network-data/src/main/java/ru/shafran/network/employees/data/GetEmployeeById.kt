@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Parcelize
 @Serializable
-data class GetEmployeeByIdRequest(
+data class GetEmployeeWithIdRequest(
     val employeeId: String,
 ) : Parcelable
 

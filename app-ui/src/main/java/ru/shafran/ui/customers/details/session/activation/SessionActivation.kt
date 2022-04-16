@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.fade
 import com.google.accompanist.placeholder.material.placeholder
-import ru.shafran.common.customers.details.sessions.activation.SessionActivation
+import ru.shafran.common.customers.details.sessions.activation.SessionActivating
 import ru.shafran.common.employees.picker.EmployeePicker
 import ru.shafran.common.loading.Loading
 import ru.shafran.common.services.picker.ConfiguredServicePicker
@@ -86,7 +86,7 @@ fun SessionActivationPlaceholderUI(modifier: Modifier) {
 
 @Composable
 fun SessionActivationUI(
-    component: SessionActivation,
+    component: SessionActivating,
     modifier: Modifier = Modifier,
 ) {
     OutlinedTitledDialog(

@@ -32,9 +32,9 @@ import ru.shafran.common.customers.details.edit.CustomerEditor
 import ru.shafran.common.loading.Loading
 import ru.shafran.network.Gender
 import ru.shafran.network.PhoneNumber
-import ru.shafran.network.customers.data.CustomerData
+import ru.shafran.network.customers.data.EditableCustomerData
 import ru.shafran.ui.R
-import ru.shafran.ui.view.GenderSelector
+import ru.shafran.ui.view.FloatingGenderSelector
 import ru.shafran.ui.view.OutlinedTextField
 import ru.shafran.ui.view.OutlinedTitledDialog
 import ru.shafran.ui.view.PhoneInput
@@ -73,14 +73,14 @@ fun CustomerEditorPlaceholder(modifier: Modifier) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.Bottom,
         ) {
             PlaceholderTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f, false)
             )
-            GenderSelector(
+            FloatingGenderSelector(
                 selectedGender = Gender.UNKNOWN,
                 onSelect = {},
                 enabled = false,
@@ -164,9 +164,8 @@ fun CustomerEditorUI(component: CustomerEditor, modifier: Modifier) {
             OutlinedTextField(
                 value = name.value,
                 onValueChange = {
-                    val trimmedName = it.trim()
-                    if (trimmedName.length >= 64) return@OutlinedTextField
-                    name.value = trimmedName
+                    if (it.length >= 64) return@OutlinedTextField
+                    name.value = it
                 },
                 label = { Text(stringResource(R.string.customers_name)) },
                 singleLine = true,
@@ -183,7 +182,7 @@ fun CustomerEditorUI(component: CustomerEditor, modifier: Modifier) {
                     .fillMaxWidth()
                     .weight(1f, false)
             )
-            GenderSelector(
+            FloatingGenderSelector(
                 selectedGender = gender.value,
                 onSelect = {
                     gender.value = it
@@ -199,9 +198,8 @@ fun CustomerEditorUI(component: CustomerEditor, modifier: Modifier) {
         OutlinedTextField(
             value = remark.value,
             onValueChange = {
-                val trimmedName = it.trim()
-                if (trimmedName.length >= 250) return@OutlinedTextField
-                remark.value = trimmedName
+                if (it.length >= 250) return@OutlinedTextField
+                remark.value = it
             },
             label = { Text(stringResource(R.string.customers_remark)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text,
@@ -219,9 +217,9 @@ fun CustomerEditorUI(component: CustomerEditor, modifier: Modifier) {
             enabled = name.value.isNotEmpty() && (phone.value.isValid || phone.value.isBlank),
             onClick = {
                 component.onEdit(
-                    CustomerData(
-                        name = name.value,
-                        remark = remark.value,
+                    EditableCustomerData(
+                        name = name.value.trim(),
+                        remark = remark.value.trim(),
                         gender = gender.value,
                         phone = phone.value,
                     )

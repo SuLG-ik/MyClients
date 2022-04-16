@@ -60,6 +60,7 @@ abstract class CancelableSyncCoroutineExecutor<in Intent : Any, in Action : Any,
         super.executeAction(action, getState)
     }
 
+    @Synchronized
     final override fun executeIntent(intent: Intent, getState: () -> State) {
         currentJob?.cancel()
         currentJob = scope.launch(defaultDispatcher + supervisorJob) { execute(intent, getState) }

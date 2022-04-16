@@ -13,4 +13,6 @@ interface SessionsHistoryList : Updatable {
 
     val onDetails: (Customer.ActivatedCustomer) -> Unit
 
+    val onStats: () -> Unit
+
 }

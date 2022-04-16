@@ -14,49 +14,49 @@ import ru.shafran.network.session.data.UseSessionRequest
 import ru.shafran.network.utils.reduceLabels
 import ru.shafran.network.utils.reduceStates
 
-class SessionUseHostComponent(
+class SessionUsageHostComponent(
     componentContext: ComponentContext,
     private val session: Session,
     private val onBack: () -> Unit,
     private val onBackAndUpdate: () -> Unit,
-) : SessionUseHost, ComponentContext by componentContext {
+) : SessionUsageHost, ComponentContext by componentContext {
 
     private val store = getStore<SessionUseStore>()
 
-    private val router = router<SessionUseHost.Configuration, SessionUseHost.Child>(
-        initialConfiguration = SessionUseHost.Configuration.Loaded(session),
+    private val router = router<SessionUsageHost.Configuration, SessionUsageHost.Child>(
+        initialConfiguration = SessionUsageHost.Configuration.Loaded(session),
         childFactory = this::createChild,
     )
 
     private fun createChild(
-        configuration: SessionUseHost.Configuration,
+        configuration: SessionUsageHost.Configuration,
         componentContext: ComponentContext,
-    ): SessionUseHost.Child {
+    ): SessionUsageHost.Child {
         return when (configuration) {
-            is SessionUseHost.Configuration.DetailsLoading ->
+            is SessionUsageHost.Configuration.DetailsLoading ->
                 configuration.create()
-            is SessionUseHost.Configuration.Empty ->
+            is SessionUsageHost.Configuration.Empty ->
                 configuration.create()
-            is SessionUseHost.Configuration.Loaded ->
+            is SessionUsageHost.Configuration.Loaded ->
                 configuration.create(componentContext)
         }
     }
 
-    private fun SessionUseHost.Configuration.DetailsLoading.create(): SessionUseHost.Child {
-        return SessionUseHost.Child.Loading(
+    private fun SessionUsageHost.Configuration.DetailsLoading.create(): SessionUsageHost.Child {
+        return SessionUsageHost.Child.Loading(
             LoadingComponent(R.string.customers_loading)
         )
     }
 
-    private fun SessionUseHost.Configuration.Empty.create(): SessionUseHost.Child {
-        return SessionUseHost.Child.Loading(
+    private fun SessionUsageHost.Configuration.Empty.create(): SessionUsageHost.Child {
+        return SessionUsageHost.Child.Loading(
             LoadingComponent(R.string.customers_loading)
         )
     }
 
-    private fun SessionUseHost.Configuration.Loaded.create(componentContext: ComponentContext): SessionUseHost.Child {
-        return SessionUseHost.Child.Loaded(
-            SessionUseComponent(
+    private fun SessionUsageHost.Configuration.Loaded.create(componentContext: ComponentContext): SessionUsageHost.Child {
+        return SessionUsageHost.Child.Loaded(
+            SessionUsingComponent(
                 componentContext = componentContext,
                 session = session,
                 onUse = ::onUse,
@@ -74,7 +74,7 @@ class SessionUseHostComponent(
     }
 
 
-    override val routerState: Value<RouterState<SessionUseHost.Configuration, SessionUseHost.Child>>
+    override val routerState: Value<RouterState<SessionUsageHost.Configuration, SessionUsageHost.Child>>
         get() = router.state
 
     private fun reduceStates(state: SessionUseStore.State) {
@@ -100,21 +100,21 @@ class SessionUseHostComponent(
     }
 
     private fun SessionUseStore.State.SessionLoading.reduce() {
-        router.replaceAll(SessionUseHost.Configuration.DetailsLoading)
+        router.replaceAll(SessionUsageHost.Configuration.DetailsLoading)
     }
 
 
     private fun SessionUseStore.State.SessionLoaded.reduce() {
-        router.replaceAll(SessionUseHost.Configuration.Loaded(session))
+        router.replaceAll(SessionUsageHost.Configuration.Loaded(session))
     }
 
     private fun SessionUseStore.State.SessionUseLoading.reduce() {
-        router.replaceAll(SessionUseHost.Configuration.DetailsLoading)
+        router.replaceAll(SessionUsageHost.Configuration.DetailsLoading)
     }
 
 
     private fun SessionUseStore.State.Empty.reduce() {
-        router.replaceAll(SessionUseHost.Configuration.DetailsLoading)
+        router.replaceAll(SessionUsageHost.Configuration.DetailsLoading)
         store.accept(SessionUseStore.Intent.LoadSession(session = session))
 
     }

@@ -8,7 +8,7 @@ interface EmployeesRepository {
     suspend fun createEmployee(data: CreateEmployeeRequest): CreateEmployeeResponse
     suspend fun getAllEmployees(data: GetAllEmployeesRequest): GetAllEmployeesResponse
     suspend fun layoffEmployee(data: LayoffEmployeeRequest): LayoffEmployeeResponse
-    suspend fun getEmployeeById(data: GetEmployeeByIdRequest): GetEmployeeByIdResponse
+    suspend fun getEmployeeById(data: GetEmployeeWithIdRequest): GetEmployeeByIdResponse
     suspend fun addEmployeeImage(data: AddEmployeeImageRequest): AddEmployeeImageResponse
 
 }

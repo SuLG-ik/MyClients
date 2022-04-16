@@ -8,10 +8,16 @@ import ru.shafran.network.Gender
 @Parcelize
 @Serializable
 data class CreateEmployeeRequest(
+    val data: CreateEmployeeRequestData,
+) : Parcelable
+
+@Parcelize
+@Serializable
+data class CreateEmployeeRequestData(
     val name: String,
     val gender: Gender,
     val description: String,
-) : Parcelable
+): Parcelable
 
 @Parcelize
 @Serializable

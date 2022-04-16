@@ -9,14 +9,16 @@ interface LoadedCustomerInfo {
 
     val history: List<Session>
 
-    fun onBack()
+    val onBack: () -> Unit
 
-    fun onActivateSession()
+    val onActivateSession: () -> Unit
 
-    fun onUseSession(session: Session)
+    val onUseSession: (session: Session) -> Unit
 
-    fun onEdit()
+    val onDeleteSession: (session: Session) -> Unit
 
-    fun onShareCard()
+    val onEdit : () -> Unit
+
+    val onShareCard: () -> Unit
 
 }

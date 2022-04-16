@@ -6,5 +6,8 @@ interface LoadedServiceInfo {
 
     val service: Service
 
-    fun onEdit()
+    val onEdit: () -> Unit
+
+    val onCreateConfiguration: () -> Unit
+
 }

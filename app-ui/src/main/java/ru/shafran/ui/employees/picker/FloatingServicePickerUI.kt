@@ -26,7 +26,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.extensions.compose.jetpack.Children
-import com.arkivanov.decompose.extensions.compose.jetpack.animation.child.crossfade
+import com.arkivanov.decompose.extensions.compose.jetpack.animation.child.childAnimation
+import com.arkivanov.decompose.extensions.compose.jetpack.animation.child.fade
 import ru.shafran.common.employees.picker.EmployeePicker
 import ru.shafran.network.employees.data.Employee
 import ru.shafran.ui.R
@@ -133,7 +134,7 @@ private fun EmployeePickerDropdown(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(10.dp),
-            animation = crossfade(animationSpec = tween(250)),
+            animation = childAnimation(fade(tween(250)))
         ) {
             EmployeesPickerNavHost(child = it.instance,
                 modifier = Modifier

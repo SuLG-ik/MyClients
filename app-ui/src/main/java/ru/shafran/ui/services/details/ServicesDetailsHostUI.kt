@@ -14,8 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetpack.Children
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
-import io.github.aakira.napier.Napier
 import ru.shafran.common.services.details.host.ServicesDetailsHost
+import ru.shafran.ui.services.details.create.ServiceConfigurationCreatingHostUI
+import ru.shafran.ui.services.details.create.ServiceCreatingHostUI
+import ru.shafran.ui.services.details.edit.ServiceEditingHostUI
 import ru.shafran.ui.services.details.info.ServiceInfoHostUI
 import ru.shafran.ui.view.ExtendedModalBottomSheet
 
@@ -41,7 +43,6 @@ fun ServicesDetailsHostUI(
                 state.animateTo(ModalBottomSheetValue.Expanded)
             }
         } catch (e: Exception) {
-            Napier.e({ "SheetStateError" }, e)
         }
     }
     )
@@ -72,6 +73,14 @@ fun ServicesDetailsHostUI(
 fun ServicesDetailsHost(child: ServicesDetailsHost.Child<Any?>, modifier: Modifier) {
     when (child) {
         is ServicesDetailsHost.Child.Hidden -> Text("")
-        is ServicesDetailsHost.Child.ServiceInfo -> ServiceInfoHostUI(child.component, modifier)
+        is ServicesDetailsHost.Child.ServiceInfo ->
+            ServiceInfoHostUI(child.component, modifier)
+        is ServicesDetailsHost.Child.CreateService ->
+            ServiceCreatingHostUI(component = child.component, modifier = modifier)
+        is ServicesDetailsHost.Child.CreateConfiguration ->
+            ServiceConfigurationCreatingHostUI(component = child.component, modifier = modifier)
+        is ServicesDetailsHost.Child.EditConfiguration -> TODO()
+        is ServicesDetailsHost.Child.EditService ->
+            ServiceEditingHostUI(component = child.component, modifier = modifier)
     }
 }

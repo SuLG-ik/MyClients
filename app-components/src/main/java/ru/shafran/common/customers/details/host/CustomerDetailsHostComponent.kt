@@ -20,6 +20,10 @@ internal class CustomerDetailsHostComponent(
 ) : CustomerDetailsHost, ComponentContext by componentContext {
 
 
+    private val onDeleteSession: (Session) -> Unit = {
+        router.bringToFront(CustomerDetailsHost.Configuration.SessionDeactivation(it))
+    }
+
     override val onShowCustomer: (customer: Customer.ActivatedCustomer) -> Unit = { customer ->
         router.bringToFront(CustomerDetailsHost.Configuration.CustomerInfoById(customer.id))
     }
@@ -72,7 +76,9 @@ internal class CustomerDetailsHostComponent(
     override val onShowCustomerById: (String) -> Unit = { id ->
         router.bringToFront(CustomerDetailsHost.Configuration.CustomerInfoById(id))
     }
-
+    override val onShowStats: () -> Unit = {
+        router.bringToFront(CustomerDetailsHost.Configuration.SessionStats)
+    }
     private val childFactory: (CustomerDetailsHost.Configuration, ComponentContext) -> CustomerDetailsHost.Child<Any?> =
         CustomerDetailsChildFactory(
             onBack = onBack,
@@ -81,6 +87,7 @@ internal class CustomerDetailsHostComponent(
             onActivateSession = onActivateSession,
             onBackAndUpdate = onBackAndUpdate,
             onProfile = onShowCustomer,
+            onDeleteSession = onDeleteSession,
             share = share,
             onShareCard = onShareCard
         )

@@ -9,6 +9,8 @@ import ru.shafran.network.services.data.CreateServiceRequest
 import ru.shafran.network.services.data.CreateServiceResponse
 import ru.shafran.network.services.data.DeactivateServiceConfigurationRequest
 import ru.shafran.network.services.data.DeactivateServiceConfigurationResponse
+import ru.shafran.network.services.data.EditServiceRequest
+import ru.shafran.network.services.data.EditServiceResponse
 import ru.shafran.network.services.data.GetAllServicesRequest
 import ru.shafran.network.services.data.GetAllServicesResponse
 import ru.shafran.network.services.data.GetServiceByIdRequest
@@ -18,33 +20,40 @@ internal class KtorServicesRepository(
     private val httpClient: HttpClient,
 ) : ServicesRepository {
 
-    override suspend fun getAllServices(data: GetAllServicesRequest): GetAllServicesResponse {
+
+    override suspend fun editService(request: EditServiceRequest): EditServiceResponse {
+        return httpClient.patch("services/editService",) {
+            setBody(request)
+        }.body()
+    }
+
+    override suspend fun getAllServices(request: GetAllServicesRequest): GetAllServicesResponse {
         return httpClient.get("services/getAllServices",) {
-            setBody(data)
+            setBody(request)
         }.body()
     }
 
-    override suspend fun createService(data: CreateServiceRequest): CreateServiceResponse {
+    override suspend fun createService(request: CreateServiceRequest): CreateServiceResponse {
         return httpClient.post("services/createService",) {
-            setBody(data)
+            setBody(request)
         }.body()
     }
 
-    override suspend fun getServiceById(data: GetServiceByIdRequest): GetServiceByIdResponse {
+    override suspend fun getServiceById(request: GetServiceByIdRequest): GetServiceByIdResponse {
         return httpClient.get("services/getServiceById",) {
-            setBody(data)
+            setBody(request)
         }.body()
     }
 
-    override suspend fun addConfiguration(data: CreateConfigurationRequest): CreateConfigurationResponse {
-        return httpClient.put("services/addConfiguration",) {
-            setBody(data)
+    override suspend fun createConfiguration(request: CreateConfigurationRequest): CreateConfigurationResponse {
+        return httpClient.put("services/createConfiguration",) {
+            setBody(request)
         }.body()
     }
 
-    override suspend fun deactivateConfiguration(data: DeactivateServiceConfigurationRequest): DeactivateServiceConfigurationResponse {
+    override suspend fun deactivateConfiguration(request: DeactivateServiceConfigurationRequest): DeactivateServiceConfigurationResponse {
         return httpClient.delete("services/deactivateConfiguration",) {
-            setBody(data)
+            setBody(request)
         }.body()
     }
 

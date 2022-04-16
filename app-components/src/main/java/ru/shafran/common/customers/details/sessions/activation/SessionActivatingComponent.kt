@@ -9,12 +9,12 @@ import ru.shafran.common.services.picker.ConfiguredServicePickerComponent
 import ru.shafran.network.customers.data.Customer
 import ru.shafran.network.session.data.CreateSessionForCustomerRequest
 
-internal class SessionActivationComponent(
+internal class SessionActivatingComponent(
     componentContext: ComponentContext,
     override val customer: Customer.ActivatedCustomer,
     private val onActivate: (CreateSessionForCustomerRequest) -> Unit,
     private val onBack: () -> Unit,
-) : SessionActivation, ComponentContext by componentContext {
+) : SessionActivating, ComponentContext by componentContext {
     override val servicePicker: ConfiguredServicePicker =
         ConfiguredServicePickerComponent(childContext("service_picker"))
     override val employeePicker: EmployeePicker =

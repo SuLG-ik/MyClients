@@ -5,16 +5,21 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -44,37 +49,52 @@ fun SessionsHistoryListUI(component: SessionsHistoryList, modifier: Modifier) {
         component.history,
         onUpdate = component.onUpdate,
         onDetails = component.onDetails,
+        onStats = component.onStats,
         modifier = modifier,
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SessionsHistoryList(
     history: List<SessionUsageHistoryItem>,
     onUpdate: () -> Unit,
     onDetails: (Customer.ActivatedCustomer) -> Unit,
+    onStats: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = false)
-    SwipeRefresh(
-        state = swipeRefreshState,
-        onRefresh = onUpdate,
-        modifier = modifier
-    ) {
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(10.dp)
-        ) {
-            items(history) { item ->
-                val isExpanded = rememberSaveable { mutableStateOf(false) }
-                SessionsHistoryItem(
-                    item = item,
-                    isExpanded = isExpanded.value,
-                    onClick = { isExpanded.value = !isExpanded.value },
-                    onDetails = { onDetails(item.customer) },
-                    modifier = Modifier.fillMaxWidth()
+    Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(onClick = onStats) {
+                Icon(
+                    painterResource(id = R.drawable.stats),
+                    contentDescription = null,
                 )
+            }
+        },
+        modifier = modifier,
+    ) {
+        SwipeRefresh(
+            state = swipeRefreshState,
+            onRefresh = onUpdate,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(10.dp)
+            ) {
+                items(history) { item ->
+                    val isExpanded = rememberSaveable { mutableStateOf(false) }
+                    SessionsHistoryItem(
+                        item = item,
+                        isExpanded = isExpanded.value,
+                        onClick = { isExpanded.value = !isExpanded.value },
+                        onDetails = { onDetails(item.customer) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             }
         }
     }
@@ -93,48 +113,66 @@ fun SessionsHistoryItem(
         onClick = onClick,
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
+            SessionHistoryItemHeader(
+                item = item,
+                isExpanded = isExpanded,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp),
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.customer_image),
-                    contentDescription = null,
-                    modifier = Modifier.size(75.dp)
-                )
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f, false),
-                    verticalArrangement = Arrangement.spacedBy(5.dp)
-                ) {
-                    Text(
-                        item.service.info.title,
-                        style = MaterialTheme.typography.titleLarge,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    TimeDetails(item.usage)
-                    CustomerDetails(item.customer)
-                    AnimatedVisibility(visible = isExpanded, modifier = Modifier.fillMaxWidth()) {
-                        Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                            EmployeeDetails(item.usage.data.employee)
-                            ProvideTextStyle(value = MaterialTheme.typography.bodyMedium) {
-                                Phone(item.customer.data.phone)
-                            }
-                        }
-                    }
-                }
-            }
+            )
             AnimatedVisibility(visible = isExpanded, modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     SessionUsageActions(
                         onDetails = onDetails,
                         modifier = Modifier.align(Alignment.End)
                     )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun SessionHistoryItemHeader(
+    item: SessionUsageHistoryItem,
+    isExpanded: Boolean,
+    modifier: Modifier,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = modifier,
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.customer_image),
+            contentDescription = null,
+            modifier = Modifier.size(75.dp)
+        )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f, false),
+        ) {
+            Text(
+                item.service.info.title,
+                style = MaterialTheme.typography.titleLarge,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            TimeDetails(item.usage)
+            Spacer(modifier = Modifier.height(5.dp))
+            CustomerDetails(item.customer)
+            AnimatedVisibility(
+                visible = isExpanded,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                    Spacer(modifier = Modifier.height(5.dp))
+                    EmployeeDetails(item.usage.data.employee)
+                    ProvideTextStyle(value = MaterialTheme.typography.bodyMedium) {
+                        Phone(item.customer.data.phone)
+                    }
                 }
             }
         }

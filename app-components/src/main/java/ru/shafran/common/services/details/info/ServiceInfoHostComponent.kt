@@ -6,6 +6,7 @@ import com.arkivanov.decompose.router.replaceCurrent
 import com.arkivanov.decompose.router.router
 import com.arkivanov.decompose.value.Value
 import ru.shafran.common.components.R
+import ru.shafran.common.error.ErrorComponent
 import ru.shafran.common.loading.LoadingComponent
 import ru.shafran.common.utils.Updatable
 import ru.shafran.common.utils.getStore
@@ -17,34 +18,37 @@ class ServiceInfoHostComponent(
     componentContext: ComponentContext,
     private val serviceId: String? = null,
     private val service: Service? = null,
-) :
-    ComponentContext by componentContext, ServiceInfoHost, Updatable {
+    private val onEdit: (Service) -> Unit,
+    private val onCreateConfiguration: (Service) -> Unit,
+) : ComponentContext by componentContext, ServiceInfoHost, Updatable {
 
-
-    private val store = getStore<ServiceInfoStore>()
-
-    private val router = router<ServiceInfoHost.Configuration, ServiceInfoHost.Child>(
-        initialConfiguration = ServiceInfoHost.Configuration.Empty,
-        childFactory = this::createChild
-    )
 
     private fun createChild(
         configuration: ServiceInfoHost.Configuration,
         componentContext: ComponentContext,
     ): ServiceInfoHost.Child {
         return when (configuration) {
-            is ServiceInfoHost.Configuration.Empty -> ServiceInfoHost.Child.Loading(
-                LoadingComponent(
-                    R.string.services_details_loading
-                )
-            )
             is ServiceInfoHost.Configuration.Loading -> ServiceInfoHost.Child.Loading(
                 LoadingComponent(
                     R.string.services_details_loading
                 )
             )
             is ServiceInfoHost.Configuration.ServiceLoaded ->
-                ServiceInfoHost.Child.Loaded(LoadedServiceInfoComponent(configuration.service))
+                ServiceInfoHost.Child.Loaded(
+                    LoadedServiceInfoComponent(
+                        service = configuration.service,
+                        onEdit = { onEdit(configuration.service) },
+                        onCreateConfiguration = { onCreateConfiguration(configuration.service) },
+                    )
+                )
+            is ServiceInfoHost.Configuration.UnknownError ->
+                ServiceInfoHost.Child.Error(
+                    ErrorComponent(
+                        message = R.string.unknwon_error,
+                        icon = R.drawable.error,
+                        onContinue = onUpdate,
+                    )
+                )
         }
     }
 
@@ -55,7 +59,7 @@ class ServiceInfoHostComponent(
         when (state) {
             is ServiceInfoStore.State.Empty ->
                 state.reduce()
-            ServiceInfoStore.State.Error.Unknown -> TODO()
+            is ServiceInfoStore.State.Error.Unknown -> TODO()
             is ServiceInfoStore.State.Loading ->
                 state.reduce()
             is ServiceInfoStore.State.ServiceLoaded ->
@@ -76,13 +80,20 @@ class ServiceInfoHostComponent(
         router.replaceCurrent(ServiceInfoHost.Configuration.ServiceLoaded(service = service))
     }
 
-
     override val onUpdate: () -> Unit = {
         if (service != null)
             store.accept(ServiceInfoStore.Intent.LoadServiceWithData(service))
         else if (serviceId != null)
             store.accept(ServiceInfoStore.Intent.LoadServiceWithId(serviceId))
     }
+
+    private val store = getStore<ServiceInfoStore>()
+
+    private val router = router<ServiceInfoHost.Configuration, ServiceInfoHost.Child>(
+        initialConfiguration = ServiceInfoHost.Configuration.Loading,
+        childFactory = this::createChild
+    )
+
 
     init {
         if (serviceId == null && service == null) throw IllegalStateException("serviceId and service can not be null together")

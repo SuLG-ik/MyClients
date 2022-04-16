@@ -118,10 +118,10 @@ private fun DrawScope.drawFinderPatternCircleStyle(
     val middleOffset = circleDiameter * 2 / 7
     drawRoundRect(
         contentColor,
-        Offset(x, y),
-        Size(circleDiameter, circleDiameter),
-        CornerRadius(25f, 25f),
-        style = Stroke(15f)
+        Offset(x + circleDiameter / 11, y + circleDiameter / 11),
+        Size(circleDiameter * 5 / 6, circleDiameter * 5 / 6),
+        CornerRadius(15f, 15f),
+        style = Stroke(12.5f)
     )
     drawRoundRect(
         contentColor,

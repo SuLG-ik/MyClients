@@ -5,17 +5,20 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import ru.shafran.common.services.details.info.ServiceInfoHost
+import ru.shafran.network.services.data.ConfiguredService
 import ru.shafran.network.services.data.Service
 
 interface ServicesDetailsHost {
 
     val isShown: Value<Boolean>
 
-    fun onShowServiceDetails(service: Service)
+    val onShowServiceDetails: (service: Service) -> Unit
 
-    fun onShowServiceDetails(serviceId: String)
+    val onShowServiceDetailsById: (serviceId: String) -> Unit
 
-    fun onHide()
+    val onCreateService: () -> Unit
+
+    val onHide: () -> Unit
 
     val routerState: Value<RouterState<Configuration, Child<Any?>>>
 
@@ -34,6 +37,24 @@ interface ServicesDetailsHost {
             val service: Service,
         ) : Configuration()
 
+        @Parcelize
+        data class EditConfiguration(
+            val configuration: ConfiguredService,
+        ) : Configuration()
+
+        @Parcelize
+        data class EditService(
+            val service: Service,
+        ) : Configuration()
+
+        @Parcelize
+        data class CreateConfiguration(
+            val service: Service,
+        ) : Configuration()
+
+        @Parcelize
+        object CreateService : Configuration()
+
     }
 
     sealed class Child<out T> {
@@ -45,10 +66,30 @@ interface ServicesDetailsHost {
                 get() = null
         }
 
-        data class ServiceInfo(
+        class ServiceInfo(
             override val component: ServiceInfoHost,
         ) : Child<ServiceInfoHost>()
 
+        class CreateService(
+            override val component: ru.shafran.common.services.details.create.ServiceCreatingHost,
+        ) : Child<ru.shafran.common.services.details.create.ServiceCreatingHost>()
+
+        class EditService(
+            override val component: ru.shafran.common.services.details.edit.ServiceEditingHost,
+        ) : Child<ru.shafran.common.services.details.edit.ServiceEditingHost>()
+
+
+        class CreateConfiguration(
+            override val component: ru.shafran.common.services.details.create.ServiceConfigurationCreatingHost,
+        ) : Child<ru.shafran.common.services.details.create.ServiceConfigurationCreatingHost>()
+
+
+        class EditConfiguration(
+            override val component: ru.shafran.common.services.details.edit.ServiceConfigurationEditing,
+        ) : Child<ru.shafran.common.services.details.edit.ServiceConfigurationEditing>()
+
     }
 
+    val onEditService: (service: Service) -> Unit
+    val onCreateConfiguration: (service: Service) -> Unit
 }

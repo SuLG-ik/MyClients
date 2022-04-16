@@ -1,4 +1,4 @@
-package ru.shafran.common.sessions
+package ru.shafran.common.sessions.history
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.RouterState
@@ -10,7 +10,6 @@ import ru.shafran.common.customers.details.host.CustomerDetailsHost
 import ru.shafran.common.customers.details.host.CustomerDetailsHostComponent
 import ru.shafran.common.error.ErrorComponent
 import ru.shafran.common.loading.LoadingComponent
-import ru.shafran.common.sessions.history.SessionsHistoryListHost
 import ru.shafran.common.utils.Share
 import ru.shafran.common.utils.getStore
 import ru.shafran.network.session.SessionsUsageHistoryStore
@@ -22,11 +21,13 @@ class SessionsHistoryListHostComponent(
     share: Share,
 ) : SessionsHistoryListHost, ComponentContext by componentContext {
 
+    override val customerDetails: CustomerDetailsHost =
+        CustomerDetailsHostComponent(componentContext, share)
+
 
     val store = getStore<SessionsUsageHistoryStore>()
         .reduceStates(this, this::reduceState)
         .reduceLabels(this, this::reduceLabel)
-
 
     private fun reduceState(state: SessionsUsageHistoryStore.State) {
         when (state) {
@@ -63,7 +64,8 @@ class SessionsHistoryListHostComponent(
                 SessionsHistoryListComponent(
                     history = configuration.history,
                     onUpdate = onUpdate,
-                    onDetails = customerDetails.onShowCustomer
+                    onStats = customerDetails.onShowStats,
+                    onDetails = customerDetails.onShowCustomer,
                 )
             )
             is SessionsHistoryListHost.Configuration.UnknownError -> SessionsHistoryListHost.Child.Error(
@@ -78,9 +80,6 @@ class SessionsHistoryListHostComponent(
     private val onUpdate: () -> Unit = {
         store.accept(SessionsUsageHistoryStore.Intent.LoadHistory())
     }
-
-    override val customerDetails: CustomerDetailsHost =
-        CustomerDetailsHostComponent(componentContext, share)
 
     override val routerState: Value<RouterState<SessionsHistoryListHost.Configuration, SessionsHistoryListHost.Child>>
         get() = router.state

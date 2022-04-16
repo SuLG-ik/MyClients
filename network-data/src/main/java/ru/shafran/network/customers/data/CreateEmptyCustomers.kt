@@ -19,7 +19,7 @@ data class CreateEmptyCustomersResponse(
 @Parcelize
 @Serializable
 data class CreateCustomerRequest(
-    val data: CustomerData,
+    val data: EditableCustomerData,
 ) : Parcelable
 
 

@@ -67,5 +67,13 @@ data class SessionManualDeactivationData(
 
 
 enum class SessionManualDeactivationReason {
-    UNKNOWN
+    UNKNOWN, MISS_CLICK, MONEY_BACK;
+
 }
+
+
+//private object SessionManualDeactivationReasonSerializer :
+//    EnumIgnoreUnknownSerializer<SessionManualDeactivationReason>(
+//        SessionManualDeactivationReason.values(),
+//        SessionManualDeactivationReason.UNKNOWN
+//    )

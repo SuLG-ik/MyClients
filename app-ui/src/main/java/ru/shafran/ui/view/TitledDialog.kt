@@ -33,7 +33,7 @@ internal fun TitledDialog(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = verticalArrangement,
+        verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -54,6 +54,7 @@ internal fun TitledDialog(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(contentPadding),
+            verticalArrangement = verticalArrangement,
             content = content,
         )
     }

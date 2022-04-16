@@ -7,12 +7,12 @@ import ru.shafran.common.employees.picker.EmployeePickerComponent
 import ru.shafran.network.session.data.Session
 import ru.shafran.network.session.data.UseSessionRequest
 
-class SessionUseComponent(
+class SessionUsingComponent(
     componentContext: ComponentContext,
     override val session: Session,
     private val onUse: (UseSessionRequest) -> Unit,
     private val onBack: () -> Unit,
-) : SessionUse, ComponentContext by componentContext {
+) : SessionUsing, ComponentContext by componentContext {
 
     override val employeePicker: EmployeePicker =
         EmployeePickerComponent(childContext("employee_picker"))

@@ -16,8 +16,8 @@ android {
         applicationId = Config.packageName
         minSdk = Config.minSdk
         targetSdk = Config.targetSdk
-        versionCode = 8
-        versionName = "0.1.0"
+        versionCode = 11
+        versionName = "0.1.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -36,6 +36,7 @@ android {
         }
         debug {
             extra["enableCrashlytics"] = false
+            manifestPlaceholders["crashlyticsCollectionEnabled"] = "false"
         }
     }
 

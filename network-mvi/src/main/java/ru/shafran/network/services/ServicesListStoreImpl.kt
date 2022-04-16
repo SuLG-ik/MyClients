@@ -15,7 +15,7 @@ internal class ServicesListStoreImpl(
 ) : ServicesListStore,
     Store<ServicesListStore.Intent, ServicesListStore.State, ServicesListStore.Label> by storeFactory.create(
         name = "ServicesListStore",
-        initialState = ServicesListStore.State.Loading(emptyList()),
+        initialState = ServicesListStore.State.Empty,
         reducer = ReducerImpl,
         executorFactory = {
             Executor(
@@ -37,7 +37,7 @@ internal class ServicesListStoreImpl(
         }
 
         private fun Message.Error.reduce(): ServicesListStore.State {
-            return ServicesListStore.State.Error.Unknown //TODO
+            return ServicesListStore.State.Error.Unknown
         }
 
 

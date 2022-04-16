@@ -13,7 +13,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -62,13 +65,13 @@ private fun ServicesListNavHost(child: ServicesListHost.Child, modifier: Modifie
 @Composable
 private fun ServicesListUI(component: ServicesList, modifier: Modifier) {
     Scaffold(
-//        floatingActionButton = {
-//            FloatingActionButton(
-//                onClick = { component.onCreateService() },
-//            ) {
-//                Icon(Icons.Outlined.Add, contentDescription = null)
-//            }
-//        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = component::onCreateService,
+            ) {
+                Icon(Icons.Outlined.Add, contentDescription = null)
+            }
+        },
         modifier = modifier,
     ) {
         ServicesList(

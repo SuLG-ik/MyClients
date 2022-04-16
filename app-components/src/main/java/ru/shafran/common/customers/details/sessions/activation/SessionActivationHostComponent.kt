@@ -86,7 +86,7 @@ class SessionActivationHostComponent(
     ): SessionActivationHost.Child {
         return when (configuration) {
             is SessionActivationHost.Configuration.Loaded -> SessionActivationHost.Child.Loaded(
-                SessionActivationComponent(
+                SessionActivatingComponent(
                     componentContext = componentContext,
                     customer = configuration.customer,
                     onBack = onBack,

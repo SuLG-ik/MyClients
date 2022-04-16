@@ -15,17 +15,29 @@ import ru.shafran.network.customers.GenerateCustomerStore
 import ru.shafran.network.customers.GenerateCustomerStoreImpl
 import ru.shafran.network.customers.SessionActivationStore
 import ru.shafran.network.customers.SessionActivationStoreImpl
+import ru.shafran.network.employees.CreateEmployeeStore
+import ru.shafran.network.employees.CreateEmployeeStoreImpl
 import ru.shafran.network.employees.EmployeesListStore
 import ru.shafran.network.employees.EmployeesListStoreImpl
 import ru.shafran.network.employees.SingleEmployeeStore
 import ru.shafran.network.employees.SingleEmployeeStoreImpl
 import ru.shafran.network.networkModule
+import ru.shafran.network.services.CreateServiceConfigurationStore
+import ru.shafran.network.services.CreateServiceConfigurationStoreImpl
+import ru.shafran.network.services.CreateServiceStore
+import ru.shafran.network.services.CreateServiceStoreImpl
+import ru.shafran.network.services.EditServiceStore
+import ru.shafran.network.services.EditServiceStoreImpl
 import ru.shafran.network.services.ServiceInfoStore
 import ru.shafran.network.services.ServiceInfoStoreImpl
 import ru.shafran.network.services.ServicesListStore
 import ru.shafran.network.services.ServicesListStoreImpl
+import ru.shafran.network.session.DeactivateSessionStore
+import ru.shafran.network.session.DeactivateSessionStoreImpl
 import ru.shafran.network.session.SessionUseStore
 import ru.shafran.network.session.SessionUseStoreImpl
+import ru.shafran.network.session.SessionsStatsStore
+import ru.shafran.network.session.SessionsStatsStoreImpl
 import ru.shafran.network.session.SessionsUsageHistoryStore
 import ru.shafran.network.session.SessionsUsageHistoryStoreImpl
 
@@ -42,6 +54,12 @@ private val mviNetworkModule = module {
     factoryOf(::ServiceInfoStoreImpl) bind ServiceInfoStore::class
     factoryOf(::CustomerSearchStoreImpl) bind CustomerSearchStore::class
     factoryOf(::SessionsUsageHistoryStoreImpl) bind SessionsUsageHistoryStore::class
+    factoryOf(::CreateServiceStoreImpl) bind CreateServiceStore::class
+    factoryOf(::EditServiceStoreImpl) bind EditServiceStore::class
+    factoryOf(::CreateServiceConfigurationStoreImpl) bind CreateServiceConfigurationStore::class
+    factoryOf(::DeactivateSessionStoreImpl) bind DeactivateSessionStore::class
+    factoryOf(::CreateEmployeeStoreImpl) bind CreateEmployeeStore::class
+    factoryOf(::SessionsStatsStoreImpl) bind SessionsStatsStore::class
 }
 
 val networkModules = arrayOf(mviNetworkModule, networkModule)

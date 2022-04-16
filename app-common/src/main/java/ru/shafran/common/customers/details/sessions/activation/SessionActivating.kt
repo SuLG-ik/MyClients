@@ -5,7 +5,7 @@ import ru.shafran.common.services.picker.ConfiguredServicePicker
 import ru.shafran.network.customers.data.Customer
 import ru.shafran.network.session.data.CreateSessionForCustomerRequest
 
-interface SessionActivation {
+interface SessionActivating {
 
     val customer: Customer.ActivatedCustomer
 

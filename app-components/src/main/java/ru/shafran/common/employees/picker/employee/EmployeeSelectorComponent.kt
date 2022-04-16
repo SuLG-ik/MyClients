@@ -5,7 +5,9 @@ import com.arkivanov.decompose.router.RouterState
 import com.arkivanov.decompose.router.router
 import com.arkivanov.decompose.value.Value
 import ru.shafran.common.components.R
+import ru.shafran.common.error.ErrorComponent
 import ru.shafran.common.loading.LoadingComponent
+import ru.shafran.common.utils.Updatable
 import ru.shafran.common.utils.replaceAll
 import ru.shafran.common.utils.stores
 import ru.shafran.network.employees.EmployeesListStore
@@ -15,7 +17,7 @@ import ru.shafran.network.utils.reduceStates
 class EmployeeSelectorComponent(
     componentContext: ComponentContext,
     private val onSelect: (Employee) -> Unit,
-) : EmployeeSelector, ComponentContext by componentContext {
+) : EmployeeSelector, Updatable, ComponentContext by componentContext {
 
     private val store by stores<EmployeesListStore>()
 
@@ -33,18 +35,28 @@ class EmployeeSelectorComponent(
     ): EmployeeSelector.Child {
         return when (configuration) {
             is EmployeeSelector.Configuration.Loading ->
-                configuration.create(componentContext)
+                configuration.create()
             is EmployeeSelector.Configuration.EmployeeList ->
-                configuration.create(componentContext)
-
+                configuration.create()
+            is EmployeeSelector.Configuration.UnknownError ->
+                configuration.create()
         }
     }
 
-    private fun EmployeeSelector.Configuration.Loading.create(componentContext: ComponentContext): EmployeeSelector.Child {
-        return EmployeeSelector.Child.Loading(LoadingComponent(R.string.services_loading))
+    private fun EmployeeSelector.Configuration.UnknownError.create(): EmployeeSelector.Child {
+        return EmployeeSelector.Child.Error(ErrorComponent(
+            R.string.unknwon_error,
+            R.drawable.error,
+            onContinue = onUpdate,
+        ))
     }
 
-    private fun EmployeeSelector.Configuration.EmployeeList.create(componentContext: ComponentContext): EmployeeSelector.Child {
+
+    private fun EmployeeSelector.Configuration.Loading.create(): EmployeeSelector.Child {
+        return EmployeeSelector.Child.Loading(LoadingComponent(R.string.employees_loading))
+    }
+
+    private fun EmployeeSelector.Configuration.EmployeeList.create(): EmployeeSelector.Child {
         return EmployeeSelector.Child.EmployeeList(
             EmployeesListSelectorComponent(
                 employees = employees,
@@ -60,17 +72,19 @@ class EmployeeSelectorComponent(
 
     private fun reduceStates(state: EmployeesListStore.State) {
         when (state) {
-            is EmployeesListStore.State.Loading -> router.replaceAll(EmployeeSelector.Configuration.Loading)
-            is EmployeesListStore.State.EmployeesLoaded -> state.reduce()
-            EmployeesListStore.State.Empty -> EmployeesListStore.Intent.LoadEmployees()
-            EmployeesListStore.State.Error.ConnectionLost -> TODO()
-            EmployeesListStore.State.Error.Internal -> TODO()
-            EmployeesListStore.State.Error.Unknown -> TODO()
+            is EmployeesListStore.State.Loading ->
+                router.replaceAll(EmployeeSelector.Configuration.Loading)
+            is EmployeesListStore.State.EmployeesLoaded ->
+                router.replaceAll(EmployeeSelector.Configuration.EmployeeList(state.employees))
+            is EmployeesListStore.State.Error ->
+                router.replaceAll(EmployeeSelector.Configuration.UnknownError)
+            is EmployeesListStore.State.Empty ->
+                onUpdate()
         }
     }
 
-    private fun EmployeesListStore.State.EmployeesLoaded.reduce() {
-        router.replaceAll(EmployeeSelector.Configuration.EmployeeList(employees))
+    override val onUpdate: (() -> Unit) = {
+        store.accept(EmployeesListStore.Intent.LoadEmployees())
     }
 
 }

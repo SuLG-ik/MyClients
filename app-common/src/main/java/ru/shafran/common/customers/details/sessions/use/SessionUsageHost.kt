@@ -6,7 +6,7 @@ import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import ru.shafran.network.session.data.Session
 
-interface SessionUseHost {
+interface SessionUsageHost {
 
     val routerState: Value<RouterState<Configuration, Child>>
 
@@ -33,7 +33,7 @@ interface SessionUseHost {
         ) : Child()
 
         class Loaded(
-            val component: SessionUse,
+            val component: SessionUsing,
         ) : Child()
 
     }

@@ -30,7 +30,7 @@ import ru.shafran.network.Gender
 import ru.shafran.ui.R
 
 @Composable
-internal fun GenderSelector(
+internal fun FloatingGenderSelector(
     selectedGender: Gender,
     onSelect: (Gender) -> Unit,
     modifier: Modifier = Modifier,
@@ -39,7 +39,7 @@ internal fun GenderSelector(
     val isExpanded = rememberSaveable { mutableStateOf(false) }
     OutlinedSurface(
         onClick = { if (enabled) isExpanded.value = true },
-        modifier = modifier.defaultMinSize(25.dp),
+        modifier = Modifier.size(55.dp).then(modifier),
     ) {
         Box(
             modifier = Modifier

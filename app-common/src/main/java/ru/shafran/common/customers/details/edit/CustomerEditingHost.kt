@@ -26,6 +26,9 @@ interface CustomerEditingHost {
             val customer: Customer.ActivatedCustomer,
         ) : Configuration()
 
+        @Parcelize
+        class UnknownError() : Configuration()
+
     }
 
 
@@ -41,7 +44,12 @@ interface CustomerEditingHost {
 
         class Editing(
             val component: CustomerEditing,
-        ): Child()
+        ) : Child()
+
+        class Error(
+            val component: ru.shafran.common.error.Error,
+        ) : Child()
+
     }
 
 }

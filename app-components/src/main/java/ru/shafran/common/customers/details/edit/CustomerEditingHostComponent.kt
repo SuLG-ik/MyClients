@@ -5,12 +5,14 @@ import com.arkivanov.decompose.router.RouterState
 import com.arkivanov.decompose.router.router
 import com.arkivanov.decompose.value.Value
 import ru.shafran.common.components.R
+import ru.shafran.common.error.ErrorComponent
 import ru.shafran.common.loading.LoadingComponent
-import ru.shafran.common.utils.stores
+import ru.shafran.common.utils.getStore
+import ru.shafran.common.utils.replaceAll
 import ru.shafran.network.customers.CustomerEditingStore
 import ru.shafran.network.customers.data.Customer
-import ru.shafran.network.customers.data.CustomerData
 import ru.shafran.network.customers.data.EditCustomerRequest
+import ru.shafran.network.customers.data.EditableCustomerData
 import ru.shafran.network.utils.reduceLabels
 import ru.shafran.network.utils.reduceStates
 
@@ -21,12 +23,6 @@ class CustomerEditingHostComponent(
     private val onBackAndUpdate: () -> Unit,
 ) : CustomerEditingHost, ComponentContext by componentContext {
 
-    private val store by stores<CustomerEditingStore>()
-
-    private val router = router<CustomerEditingHost.Configuration, CustomerEditingHost.Child>(
-        initialConfiguration = CustomerEditingHost.Configuration.Loading,
-        childFactory = this::createChild,
-    )
 
     private fun createChild(
         configuration: CustomerEditingHost.Configuration,
@@ -39,7 +35,19 @@ class CustomerEditingHostComponent(
                 configuration.create()
             is CustomerEditingHost.Configuration.Loading ->
                 configuration.create()
+            is CustomerEditingHost.Configuration.UnknownError ->
+                configuration.create()
         }
+    }
+
+    private fun CustomerEditingHost.Configuration.UnknownError.create(): CustomerEditingHost.Child.Error {
+        return CustomerEditingHost.Child.Error(
+            ErrorComponent(
+                message = R.string.unknwon_error,
+                icon = R.drawable.error,
+                onContinue = onBack,
+            )
+        )
     }
 
     private fun CustomerEditingHost.Configuration.Activating.create(): CustomerEditingHost.Child.Activating {
@@ -71,7 +79,7 @@ class CustomerEditingHostComponent(
     }
 
 
-    private fun onEdit(request: CustomerData) {
+    private fun onEdit(request: EditableCustomerData) {
         store.accept(CustomerEditingStore.Intent.Edit(
             EditCustomerRequest(
                 customerId = customerId,
@@ -84,13 +92,14 @@ class CustomerEditingHostComponent(
         get() = router.state
 
 
-
     private fun reduceStates(state: CustomerEditingStore.State) {
         when (state) {
             is CustomerEditingStore.State.DetailsLoaded -> state.reduce()
             is CustomerEditingStore.State.Loading -> state.reduce()
             is CustomerEditingStore.State.Empty ->
                 store.accept(CustomerEditingStore.Intent.LoadDetails(customerId))
+            is CustomerEditingStore.State.Error ->
+                router.replaceAll(CustomerEditingHost.Configuration.UnknownError())
         }
     }
 
@@ -104,28 +113,32 @@ class CustomerEditingHostComponent(
     private fun CustomerEditingStore.State.DetailsLoaded.reduce() {
         when (val customer = customer) {
             is Customer.ActivatedCustomer ->
-                router.navigate {
-                    listOf(CustomerEditingHost.Configuration.Editing(
+                router.replaceAll(
+                    CustomerEditingHost.Configuration.Editing(
                         customer = customer,
-                    ))
-                }
-
+                    )
+                )
             is Customer.InactivatedCustomer ->
-                router.navigate {
-                    listOf(CustomerEditingHost.Configuration.Activating(
-                        customer = customer,
-                    ))
-                }
+
+                router.replaceAll(CustomerEditingHost.Configuration.Activating(
+                    customer = customer,
+                )
+                )
+
         }
     }
 
     private fun CustomerEditingStore.State.Loading.reduce() {
-        router.navigate { listOf(CustomerEditingHost.Configuration.Loading) }
+        router.replaceAll(CustomerEditingHost.Configuration.Loading)
     }
 
-    init {
-        store.reduceStates(this, this::reduceStates)
-        store.reduceLabels(this, this::reduceLabels)
-    }
+    private val store = getStore<CustomerEditingStore>()
+        .reduceStates(this, this::reduceStates)
+        .reduceLabels(this, this::reduceLabels)
+
+    private val router = router<CustomerEditingHost.Configuration, CustomerEditingHost.Child>(
+        initialConfiguration = CustomerEditingHost.Configuration.Loading,
+        childFactory = this::createChild,
+    )
 
 }

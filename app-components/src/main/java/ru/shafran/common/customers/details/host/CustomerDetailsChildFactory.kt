@@ -7,7 +7,9 @@ import ru.shafran.common.customers.details.generator.CardSenderComponent
 import ru.shafran.common.customers.details.info.CustomerInfoHostComponent
 import ru.shafran.common.customers.details.search.CustomerSearchHostComponent
 import ru.shafran.common.customers.details.sessions.activation.SessionActivationHostComponent
-import ru.shafran.common.customers.details.sessions.use.SessionUseHostComponent
+import ru.shafran.common.customers.details.sessions.deactivation.SessionDeactivationHostComponent
+import ru.shafran.common.customers.details.sessions.use.SessionUsageHostComponent
+import ru.shafran.common.sessions.stats.AllSessionsStatsHostComponent
 import ru.shafran.common.utils.Share
 import ru.shafran.network.customers.data.Customer
 import ru.shafran.network.session.data.Session
@@ -21,6 +23,7 @@ internal class CustomerDetailsChildFactory(
     private val onProfile: (Customer.ActivatedCustomer) -> Unit,
     private val onShareCard: (String, Customer.ActivatedCustomer) -> Unit,
     private val share: Share,
+    private val onDeleteSession: (Session) -> Unit,
 ) : (CustomerDetailsHost.Configuration, ComponentContext) -> CustomerDetailsHost.Child<Any?> {
 
     override fun invoke(
@@ -45,7 +48,29 @@ internal class CustomerDetailsChildFactory(
             configuration.create(componentContext)
         is CustomerDetailsHost.Configuration.Search ->
             configuration.create(componentContext)
+        is CustomerDetailsHost.Configuration.SessionDeactivation ->
+            configuration.create(componentContext)
+        is CustomerDetailsHost.Configuration.SessionStats ->
+            configuration.create(componentContext)
+    }
 
+    private fun CustomerDetailsHost.Configuration.SessionStats.create(componentContext: ComponentContext): CustomerDetailsHost.Child<Any?> {
+        return CustomerDetailsHost.Child.SessionsStats(
+            AllSessionsStatsHostComponent(
+                componentContext=componentContext
+            )
+        )
+    }
+
+    private fun CustomerDetailsHost.Configuration.SessionDeactivation.create(componentContext: ComponentContext): CustomerDetailsHost.Child<Any?> {
+        return CustomerDetailsHost.Child.SessionDeactivate(
+            SessionDeactivationHostComponent(
+                componentContext = componentContext,
+                session = session,
+                onBack = onBack,
+                onBackAndUpdate = onBackAndUpdate,
+            )
+        )
     }
 
     private fun CustomerDetailsHost.Configuration.Search.create(componentContext: ComponentContext): CustomerDetailsHost.Child<Any?> {
@@ -70,7 +95,7 @@ internal class CustomerDetailsChildFactory(
 
     private fun CustomerDetailsHost.Configuration.SessionUse.create(componentContext: ComponentContext): CustomerDetailsHost.Child<Any?> {
         return CustomerDetailsHost.Child.SessionUse(
-            SessionUseHostComponent(
+            SessionUsageHostComponent(
                 componentContext = componentContext,
                 session = session,
                 onBack = onBack,
@@ -110,6 +135,7 @@ internal class CustomerDetailsChildFactory(
                 onBack = onBack,
                 onEdit = { onEdit(it) },
                 onUseSession = onUseSession,
+                onDeleteSession = onDeleteSession,
                 onActivateSession = { onActivateSession(it) },
                 onShareCard = onShareCard,
             )
@@ -124,6 +150,7 @@ internal class CustomerDetailsChildFactory(
                 onBack = onBack,
                 onEdit = { onEdit(it) },
                 onUseSession = onUseSession,
+                onDeleteSession = onDeleteSession,
                 onActivateSession = { onActivateSession(it) },
                 onShareCard = onShareCard,
             )

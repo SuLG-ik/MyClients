@@ -17,4 +17,10 @@
     <string name="sessions_details_loading">Загрзука истории</string>
     <string name="sessions_details_loading_error">Оштбка заргузки истории</string>
     <string name="employees_loading">Загрузка работников…</string>
+    <string name="services_creating">Создание новой услуги</string>
+    <string name="services_editing">Обновление услуги…</string>
+    <string name="sessions_deaction_title">Отменить услугу</string>
+    <string name="sessions_deactivationg_loading">Отмена услуги…</string>
+    <string name="employee_creating">Нанимаем…</string>
+    <string name="sessions_stats_loading">Загрзука статистики</string>
 </resources>

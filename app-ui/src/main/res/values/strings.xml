@@ -36,5 +36,24 @@
     <string name="services_item_description">Description:</string>
     <string name="services_item_description_empty">Empty</string>
     <string name="services_item_configurations">Configurations:</string>
+    <string name="services_create_description">Description</string>
+    <string name="services_create_amount">Amount (min 1)</string>
+    <string name="services_create_cost">Cost (min 1)</string>
+    <string name="services_create_title">Title</string>
     <string name="input_phonenumber">Phone number</string>
+    <string name="services_create_confgiuration">Create configuration</string>
+    <string name="sessions_deactivating_title">Deactivating session</string>
+    <string name="sessions_deactivating_reason_title">Deactivation reason</string>
+    <string name="session_deactivating_reason_unknown">Unknown</string>
+    <string name="session_deactivating_reason_miss_click">Miss click</string>
+    <string name="session_deactivating_reason_money_back">Money back</string>
+    <string name="session_use_note">Note</string>
+    <string name="session_use_apply">Apply usage</string>
+    <string name="session_deactivating_note">Note</string>
+    <string name="session_deactiving_apply">Apply</string>
+    <string name="employee_title">Employee</string>
+    <string name="employee_create_name">Name</string>
+    <string name="employee_create_apply">Hire the employee</string>
+    <string name="employee_create_title">New employee</string>
+    <string name="sessions_stats_title">Stats</string>
 </resources>

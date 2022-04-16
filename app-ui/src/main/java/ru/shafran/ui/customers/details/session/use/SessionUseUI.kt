@@ -15,13 +15,13 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.fade
 import com.google.accompanist.placeholder.material.placeholder
-import ru.shafran.common.customers.details.sessions.use.SessionUse
+import ru.shafran.common.customers.details.sessions.use.SessionUsing
 import ru.shafran.common.loading.Loading
 import ru.shafran.ui.R
 import ru.shafran.ui.employees.picker.FloatingEmployeePickerUI
 import ru.shafran.ui.view.OutlinedTextField
-import ru.shafran.ui.view.PlaceholderTextField
 import ru.shafran.ui.view.OutlinedTitledDialog
+import ru.shafran.ui.view.PlaceholderTextField
 
 @Composable
 fun SessionUsePlaceholderUI(
@@ -62,7 +62,7 @@ fun SessionUsePlaceholderUI(
 
 @Composable
 fun SessionUseUI(
-    component: SessionUse,
+    component: SessionUsing,
     modifier: Modifier = Modifier,
 ) {
     OutlinedTitledDialog(
@@ -91,14 +91,14 @@ fun SessionUseUI(
             OutlinedTextField(
                 value = note.value,
                 onValueChange = { note.value = it },
-                label = { Text(text = "Note") },
+                label = { Text(text = stringResource(R.string.session_use_note)) },
                 modifier = Modifier.fillMaxWidth(),
             )
             OutlinedButton(
                 onClick = { component.onUse(note = note.value) },
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Text("Подтвердить использование")
+                Text(stringResource(R.string.session_use_apply))
             }
         }
     }

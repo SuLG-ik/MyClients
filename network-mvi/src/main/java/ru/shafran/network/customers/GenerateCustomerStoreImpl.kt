@@ -5,8 +5,10 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineDispatcher
+import ru.shafran.network.customers.data.CreateCustomerRequest
 import ru.shafran.network.customers.data.Customer
-import ru.shafran.network.utils.SafeCancelableSyncCoroutineExecutor
+import ru.shafran.network.customers.data.EditableCustomerData
+import ru.shafran.network.utils.CancelableSyncCoroutineExecutor
 
 class GenerateCustomerStoreImpl(
     private val factory: StoreFactory,
@@ -15,7 +17,7 @@ class GenerateCustomerStoreImpl(
 ) : GenerateCustomerStore,
     Store<GenerateCustomerStore.Intent, GenerateCustomerStore.State, GenerateCustomerStore.Label> by factory.create(
         name = "GenerateCustomerStore",
-        initialState = GenerateCustomerStore.State.Request(),
+        initialState = GenerateCustomerStore.State.Request(null),
         executorFactory = {
             Executor(
                 customersRepository = customersRepository,
@@ -35,7 +37,7 @@ class GenerateCustomerStoreImpl(
                 is Message.Loading ->
                     GenerateCustomerStore.State.Loading()
                 is Message.Request ->
-                    GenerateCustomerStore.State.Request()
+                    GenerateCustomerStore.State.Request(msg.data)
             }
         }
 
@@ -43,7 +45,7 @@ class GenerateCustomerStoreImpl(
             return when (exception) {
                 else -> {
                     Napier.e({ "Unknown exception" }, exception)
-                    GenerateCustomerStore.State.Error.Unknown
+                    GenerateCustomerStore.State.Error.Unknown(request)
                 }
             }
         }
@@ -54,35 +56,45 @@ class GenerateCustomerStoreImpl(
         private val customersRepository: CustomersRepository,
         coroutineDispatcher: CoroutineDispatcher,
     ) :
-        SafeCancelableSyncCoroutineExecutor<GenerateCustomerStore.Intent, Nothing, GenerateCustomerStore.State, Message, GenerateCustomerStore.Label>(
+        CancelableSyncCoroutineExecutor<GenerateCustomerStore.Intent, Nothing, GenerateCustomerStore.State, Message, GenerateCustomerStore.Label>(
             coroutineDispatcher) {
 
 
-        override suspend fun buildErrorMessage(exception: Exception): Message {
-            return Message.Error(exception)
-        }
-
-        override suspend fun safeExecute(
-            intent: GenerateCustomerStore.Intent,
-            getState: () -> GenerateCustomerStore.State,
-        ) {
-                when (intent) {
-                    is GenerateCustomerStore.Intent.GenerateCustomer ->
-                        intent.execute()
-                }
+        private fun buildErrorMessage(
+            request: CreateCustomerRequest,
+            exception: Exception,
+        ): Message {
+            return Message.Error(request, exception)
         }
 
         private suspend fun GenerateCustomerStore.Intent.GenerateCustomer.execute() {
+
             syncDispatch(Message.Loading())
             val response = customersRepository.createCustomer(request)
             syncDispatch(Message.CustomerGenerated(response.token, response.customer))
+        }
+
+        override suspend fun execute(
+            intent: GenerateCustomerStore.Intent,
+            getState: () -> GenerateCustomerStore.State,
+        ) {
+            when (intent) {
+                is GenerateCustomerStore.Intent.GenerateCustomer ->
+                    try {
+                        intent.execute()
+                    } catch (e: Exception) {
+                        syncDispatch(buildErrorMessage(intent.request, e))
+                    }
+                is GenerateCustomerStore.Intent.LoadDetails ->
+                    syncDispatch(Message.Request(intent.request))
+            }
         }
     }
 
 
     private sealed class Message {
 
-        class Request() : Message()
+        class Request(val data: EditableCustomerData?) : Message()
 
         class Loading() : Message()
 
@@ -91,7 +103,7 @@ class GenerateCustomerStoreImpl(
             val customer: Customer.ActivatedCustomer,
         ) : Message()
 
-        class Error(val exception: Exception) : Message()
+        class Error(val request: CreateCustomerRequest, val exception: Exception) : Message()
 
     }
 

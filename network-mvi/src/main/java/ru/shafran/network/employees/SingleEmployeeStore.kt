@@ -1,31 +1,26 @@
 package ru.shafran.network.employees
 
 import com.arkivanov.mvikotlin.core.store.Store
-import ru.shafran.network.employees.data.CreateEmployeeRequest
 import ru.shafran.network.employees.data.Employee
-import ru.shafran.network.employees.data.GetEmployeeByIdRequest
-import ru.shafran.network.employees.data.LayoffEmployeeRequest
+import ru.shafran.network.employees.data.GetEmployeeWithIdRequest
 
 interface SingleEmployeeStore :
     Store<SingleEmployeeStore.Intent, SingleEmployeeStore.State, SingleEmployeeStore.Label> {
 
     sealed class Intent {
-        data class LoadEmployee(val id: GetEmployeeByIdRequest) : Intent()
-        data class CreateEmployee(val data: CreateEmployeeRequest): Intent()
-        data class EditEmployee(val data: Int = TODO()): Intent()
-        data class LayoffEmployee(val layoff: LayoffEmployeeRequest): Intent()
+        data class LoadEmployee(val employee: Employee) : Intent()
+        data class LoadEmployeeWithId(val request: GetEmployeeWithIdRequest) : Intent()
     }
 
     sealed class State {
-        data class EmployeeLoaded(val employee: Employee) : State()
-        data class Loading(
-            val loadedEmployees: List<Employee>,
-        ): State()
+        object Empty : State()
 
-        object Hidden: State()
+        data class EmployeeLoaded(val employee: Employee) : State()
+
+        class Loading : State()
 
         sealed class Error : State() {
-            data class EmployeeDoesNotExist(val name: String): Error()
+            data class EmployeeDoesNotExist(val name: String) : Error()
             object ConnectionLost : Error()
             object Internal : Error()
             object Unknown : Error()

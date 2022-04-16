@@ -7,6 +7,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -23,7 +24,6 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupPositionProvider
-import ru.shafran.ui.theme.shapes
 import kotlin.math.max
 import kotlin.math.min
 
@@ -91,7 +91,7 @@ internal fun StaticDropdownMenuContent(
         },
         tonalElevation = 3.dp,
         shadowElevation = 3.dp,
-        shape = shapes.medium
+        shape = MaterialTheme.shapes.medium
     ) {
         Column(
             modifier = modifier,

@@ -4,10 +4,13 @@ import com.arkivanov.decompose.router.RouterState
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
+import ru.shafran.common.employees.details.host.EmployeeDetailsHost
 import ru.shafran.common.utils.Updatable
 import ru.shafran.network.employees.data.Employee
 
 interface EmployeesListHost : Updatable {
+
+    val employeeDetails: EmployeeDetailsHost
 
     override val onUpdate: (() -> Unit)
 

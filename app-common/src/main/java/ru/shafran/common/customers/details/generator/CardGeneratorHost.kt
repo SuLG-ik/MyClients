@@ -4,7 +4,9 @@ import com.arkivanov.decompose.router.RouterState
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
+import ru.shafran.network.customers.data.CreateCustomerRequest
 import ru.shafran.network.customers.data.Customer
+import ru.shafran.network.customers.data.EditableCustomerData
 
 interface CardGeneratorHost {
 
@@ -13,7 +15,9 @@ interface CardGeneratorHost {
     sealed class Configuration : Parcelable {
 
         @Parcelize
-        object CardGenerator : Configuration()
+        class CardGenerator(
+            val data: EditableCustomerData?,
+        ) : Configuration()
 
         @Parcelize
         object Loading : Configuration()
@@ -24,6 +28,11 @@ interface CardGeneratorHost {
             val customer: Customer.ActivatedCustomer,
         ) : Configuration()
 
+        @Parcelize
+        class UnknownError(
+            val data: CreateCustomerRequest,
+        ) : Configuration()
+
     }
 
     sealed class Child {
@@ -32,7 +41,10 @@ interface CardGeneratorHost {
         class CardGenerator(val component: ru.shafran.common.customers.details.generator.CardGenerator) :
             Child()
 
-        class CardSender(val component: ru.shafran.common.customers.details.generator.CardSender) : Child()
+        class CardSender(val component: ru.shafran.common.customers.details.generator.CardSender) :
+            Child()
+
+        class Error(val component: ru.shafran.common.error.Error) : Child()
 
     }
 

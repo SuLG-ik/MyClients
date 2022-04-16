@@ -1,4 +1,5 @@
 @file:UseSerializers(ZonedDateTimeSerializer::class)
+
 package ru.shafran.network.assets.data
 
 import com.arkivanov.essenty.parcelable.Parcelable
@@ -15,4 +16,4 @@ data class AssetData(
     val hash: String,
     val type: AssetType,
     val date: ZonedDateTime,
-):Parcelable
+) : Parcelable

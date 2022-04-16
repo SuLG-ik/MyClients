@@ -41,7 +41,7 @@ interface SessionActivationHost {
         ) : Child()
 
         class Loaded(
-            val component: SessionActivation,
+            val component: SessionActivating,
         ) : Child()
 
     }

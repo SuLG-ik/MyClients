@@ -3,7 +3,7 @@ package ru.shafran.common.customers.details.sessions.use
 import ru.shafran.common.employees.picker.EmployeePicker
 import ru.shafran.network.session.data.Session
 
-interface SessionUse {
+interface SessionUsing {
 
     val employeePicker: EmployeePicker
 

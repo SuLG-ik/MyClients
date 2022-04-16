@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetpack.Children
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
-import io.github.aakira.napier.Napier
 import ru.shafran.common.customers.details.host.CustomerDetailsHost
 import ru.shafran.ui.customers.details.edit.CustomerEditingHostUI
 import ru.shafran.ui.customers.details.generator.CardGeneratorHostUI
@@ -22,7 +21,9 @@ import ru.shafran.ui.customers.details.generator.CustomerSenderUI
 import ru.shafran.ui.customers.details.info.CustomerInfoHostUI
 import ru.shafran.ui.customers.details.search.CustomerSearchHostUI
 import ru.shafran.ui.customers.details.session.activation.SessionActivationHostUI
+import ru.shafran.ui.customers.details.session.deactivation.SessionDeactivationHostUI
 import ru.shafran.ui.customers.details.session.use.SessionUseHostUI
+import ru.shafran.ui.sessions.stats.AllSessionStatsHostUI
 import ru.shafran.ui.view.ExtendedModalBottomSheet
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -47,7 +48,7 @@ internal fun CustomerDetailsHostUI(
                 state.animateTo(ModalBottomSheetValue.Expanded)
             }
         } catch (e: Exception) {
-            Napier.e({ "SheetStateError" }, e)
+
         }
     }
     )
@@ -96,6 +97,10 @@ private fun CustomerDetailsNavHost(
             CustomerSenderUI(component = child.component, modifier = modifier)
         is CustomerDetailsHost.Child.CustomerSearch ->
             CustomerSearchHostUI(component = child.component, modifier = modifier)
+        is CustomerDetailsHost.Child.SessionDeactivate ->
+            SessionDeactivationHostUI(component = child.component, modifier = modifier)
+        is CustomerDetailsHost.Child.SessionsStats ->
+            AllSessionStatsHostUI(component = child.component, modifier = modifier)
     }
 }
 

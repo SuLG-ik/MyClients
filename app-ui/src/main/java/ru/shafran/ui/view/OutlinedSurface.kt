@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import ru.shafran.ui.theme.shapes
 
 @Composable
 internal fun OutlinedSurface(
@@ -20,9 +19,9 @@ internal fun OutlinedSurface(
 ) {
     Surface(
         modifier = Modifier
-            .clip(shapes.medium)
+            .clip(MaterialTheme.shapes.medium)
             .then(modifier),
-        shape = shapes.medium,
+        shape = MaterialTheme.shapes.medium,
         border = BorderStroke(1.dp, borderColor),
         content = content
     )
