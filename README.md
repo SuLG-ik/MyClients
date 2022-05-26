@@ -1,4 +1,4 @@
-# 🚀 MyClients-network
+# 🚀 MyClients
 
 👷 This project is in active development.
 
@@ -22,8 +22,6 @@
 | 🏗 Architecture   | [MVI](https://github.com/arkivanov/MVIKotlin)                                     |
 
 ## 🥼 Primary pages
-
-#### Each entrypoint has prefix `/v1` as api version
 
 - Cards - scan and open customer profile
 - Services - add, view and edit services
