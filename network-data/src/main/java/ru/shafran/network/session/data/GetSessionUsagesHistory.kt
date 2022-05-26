@@ -3,6 +3,7 @@ package ru.shafran.network.session.data
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import kotlinx.serialization.Serializable
+import ru.shafran.network.companies.data.CompanyId
 import ru.shafran.network.customers.data.Customer
 import ru.shafran.network.services.data.ConfiguredService
 
@@ -12,6 +13,7 @@ import ru.shafran.network.services.data.ConfiguredService
 data class GetSessionUsagesHistoryRequest(
     val offset: Int = 30,
     val page: Int = 0,
+    val companyId: CompanyId,
 ) : Parcelable
 
 

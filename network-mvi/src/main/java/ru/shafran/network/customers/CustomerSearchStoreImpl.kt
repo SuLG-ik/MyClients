@@ -6,6 +6,7 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineDispatcher
 import ru.shafran.network.customers.data.FoundCustomerItem
+import ru.shafran.network.customers.data.SearchCustomerByPhoneRequest
 import ru.shafran.network.utils.SafeCancelableSyncCoroutineExecutor
 
 internal class CustomerSearchStoreImpl(
@@ -65,7 +66,11 @@ internal class CustomerSearchStoreImpl(
 
         private suspend fun CustomerSearchStore.Intent.SearchCustomerByPhone.execute() {
             syncDispatch(Message.Loading())
-            val customer = customersRepository.searchCustomerByPhone(request)
+            val customer = customersRepository.searchCustomerByPhone(
+                SearchCustomerByPhoneRequest(
+                    phoneNumber = number,
+                    companyId = companyId)
+            )
             syncDispatch(Message.SearchCompleted(customer.searchResult))
         }
 

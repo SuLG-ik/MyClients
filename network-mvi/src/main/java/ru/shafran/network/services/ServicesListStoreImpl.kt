@@ -74,7 +74,8 @@ internal class ServicesListStoreImpl(
 
         private suspend fun ServicesListStore.Intent.LoadServices.execute() {
             syncDispatch(Message.Loading())
-            val services = servicesRepository.getAllServices(GetAllServicesRequest())
+            val services =
+                servicesRepository.getAllServices(GetAllServicesRequest(companyId = companyId))
             syncDispatch(
                 Message.ServicesLoaded(
                     services = services.services,

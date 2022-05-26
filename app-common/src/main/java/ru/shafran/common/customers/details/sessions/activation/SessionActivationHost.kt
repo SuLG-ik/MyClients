@@ -5,8 +5,6 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import ru.shafran.network.customers.data.Customer
-import ru.shafran.network.employees.data.Employee
-import ru.shafran.network.services.data.Service
 
 interface SessionActivationHost {
 
@@ -23,12 +21,9 @@ interface SessionActivationHost {
         @Parcelize
         object ActivationLoading : Configuration()
 
-
         @Parcelize
         data class Loaded(
             val customer: Customer.ActivatedCustomer,
-            val employees: List<Employee>,
-            val services: List<Service>,
         ) : Configuration()
 
     }

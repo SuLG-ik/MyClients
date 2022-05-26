@@ -9,8 +9,8 @@ import ru.shafran.common.error.ErrorComponent
 import ru.shafran.common.loading.LoadingComponent
 import ru.shafran.common.utils.getStore
 import ru.shafran.common.utils.replaceAll
+import ru.shafran.network.companies.data.Company
 import ru.shafran.network.employees.CreateEmployeeStore
-import ru.shafran.network.employees.data.CreateEmployeeRequest
 import ru.shafran.network.employees.data.CreateEmployeeRequestData
 import ru.shafran.network.employees.data.Employee
 import ru.shafran.network.utils.reduceLabels
@@ -19,6 +19,7 @@ import ru.shafran.network.utils.reduceStates
 class EmployeeCreatingHostComponent(
     componentContext: ComponentContext,
     private val onEmployeeCreated: (Employee) -> Unit,
+    private val company: Company,
 ) : EmployeeCreatingHost, ComponentContext by componentContext {
 
     private val store = getStore<CreateEmployeeStore>()
@@ -54,8 +55,8 @@ class EmployeeCreatingHostComponent(
         childFactory = this::createChild
     )
 
-    private val onCreateEmployee: (CreateEmployeeRequest) -> Unit = {
-        store.accept(CreateEmployeeStore.Intent.CreateEmployee(it))
+    private val onCreateEmployee: (CreateEmployeeRequestData) -> Unit = {
+        store.accept(CreateEmployeeStore.Intent.CreateEmployee(data = it, companyId = company.id))
     }
 
     private fun createChild(

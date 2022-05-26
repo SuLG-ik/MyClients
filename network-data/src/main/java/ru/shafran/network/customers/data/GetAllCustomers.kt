@@ -2,12 +2,13 @@ package ru.shafran.network.customers.data
 
 import kotlinx.serialization.Serializable
 
+
 @Serializable
 data class GetAllCustomersRequest(
     val offset: Int = 30,
     val page: Int = 0,
+    val companyId: String,
 )
-
 @Serializable
 data class GetAllCustomersResponse(
     val customers: List<Customer>,
@@ -22,7 +23,7 @@ data class GetCustomerByTokenRequest(
 
 @Serializable
 data class GetCustomerByIdRequest(
-    val id: String,
+    val customerId: String,
 )
 
 @Serializable

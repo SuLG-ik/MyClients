@@ -10,14 +10,15 @@ import ru.shafran.common.loading.LoadingComponent
 import ru.shafran.common.utils.Share
 import ru.shafran.common.utils.getStore
 import ru.shafran.common.utils.replaceAll
+import ru.shafran.network.companies.data.Company
 import ru.shafran.network.customers.GenerateCustomerStore
-import ru.shafran.network.customers.data.CreateCustomerRequest
 import ru.shafran.network.customers.data.Customer
 import ru.shafran.network.customers.data.EditableCustomerData
 import ru.shafran.network.utils.reduceStates
 
 class CardGeneratorHostComponent(
     componentContext: ComponentContext,
+    private val company: Company,
     private val onProfile: (Customer.ActivatedCustomer) -> Unit,
     private val share: Share,
 ) : CardGeneratorHost,
@@ -26,7 +27,7 @@ class CardGeneratorHostComponent(
     private val store = getStore<GenerateCustomerStore>().reduceStates(this, this::reduceState)
 
     private fun onUpdateWithData(data: EditableCustomerData? = null) {
-        store.accept(GenerateCustomerStore.Intent.LoadDetails(data))
+        store.accept(GenerateCustomerStore.Intent.LoadDetails(data, company.id))
     }
 
     private fun createChild(
@@ -65,8 +66,8 @@ class CardGeneratorHostComponent(
         onProfile.invoke(customer)
     }
 
-    private fun onGenerate(request: CreateCustomerRequest) {
-        store.accept(GenerateCustomerStore.Intent.GenerateCustomer(request))
+    private fun onGenerate(request: EditableCustomerData) {
+        store.accept(GenerateCustomerStore.Intent.GenerateCustomer(request, company.id))
     }
 
     override val routerState: Value<RouterState<CardGeneratorHost.Configuration, CardGeneratorHost.Child>>

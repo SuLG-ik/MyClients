@@ -1,16 +1,19 @@
 package ru.shafran.network.session
 
 import com.arkivanov.mvikotlin.core.store.Store
-import ru.shafran.network.session.data.GetSessionsStatsRequest
+import ru.shafran.network.companies.data.CompanyId
 import ru.shafran.network.session.data.SessionStats
 import ru.shafran.network.utils.DatePeriod
+import java.time.LocalDate
 
 interface SessionsStatsStore :
     Store<SessionsStatsStore.Intent, SessionsStatsStore.State, SessionsStatsStore.Label> {
 
     sealed class Intent {
         data class LoadStats(
-            val request: GetSessionsStatsRequest,
+            val companyId: CompanyId,
+            val period: DatePeriod = DatePeriod(from = LocalDate.now().minusMonths(1),
+                to = LocalDate.now()),
         ) : Intent()
     }
 

@@ -9,14 +9,15 @@ import ru.shafran.common.error.ErrorComponent
 import ru.shafran.common.loading.LoadingComponent
 import ru.shafran.common.utils.getStore
 import ru.shafran.common.utils.replaceAll
+import ru.shafran.network.companies.data.Company
 import ru.shafran.network.session.SessionsStatsStore
-import ru.shafran.network.session.data.GetSessionsStatsRequest
 import ru.shafran.network.utils.DatePeriod
 import ru.shafran.network.utils.reduceStates
 import java.time.LocalDate
 
 class AllSessionsStatsHostComponent(
     componentContext: ComponentContext,
+    private val company: Company,
 ) : AllSessionsStatsHost, ComponentContext by componentContext {
 
     val store = getStore<SessionsStatsStore>()
@@ -41,11 +42,11 @@ class AllSessionsStatsHostComponent(
     private val onUpdate: (DatePeriod?) -> Unit = { period ->
         store.accept(
             SessionsStatsStore.Intent.LoadStats(
-                GetSessionsStatsRequest(
-                    period ?: DatePeriod(
-                        from = LocalDate.now().minusMonths(1),
-                        to = LocalDate.now()
-                    ))
+                companyId = company.id,
+                period = period ?: DatePeriod(
+                    from = LocalDate.now().minusMonths(1),
+                    to = LocalDate.now()
+                )
             )
         )
     }

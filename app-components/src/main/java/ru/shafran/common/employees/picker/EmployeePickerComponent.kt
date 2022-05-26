@@ -8,10 +8,14 @@ import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import kotlinx.coroutines.flow.MutableStateFlow
 import ru.shafran.common.employees.picker.employee.EmployeeSelectorComponent
+import ru.shafran.network.companies.data.Company
 import ru.shafran.network.employees.data.Employee
 
 
-class EmployeePickerComponent(componentContext: ComponentContext) :
+class EmployeePickerComponent(
+    componentContext: ComponentContext,
+    private val company: Company,
+) :
     EmployeePicker, ComponentContext by componentContext {
 
     private val instance = instanceKeeper.getOrCreate { Instance() }
@@ -50,6 +54,7 @@ class EmployeePickerComponent(componentContext: ComponentContext) :
             EmployeeSelectorComponent(
                 componentContext = componentContext,
                 onSelect = this@EmployeePickerComponent::onSelect,
+                company = company
             )
         )
     }

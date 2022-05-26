@@ -1,7 +1,7 @@
 package ru.shafran.network.customers
 
-import ru.shafran.network.customers.data.CreateCustomerRequest
 import ru.shafran.network.customers.data.CreateCustomerResponse
+import ru.shafran.network.customers.data.CreateCustomersRequest
 import ru.shafran.network.customers.data.CreateEmptyCustomersRequest
 import ru.shafran.network.customers.data.CreateEmptyCustomersResponse
 import ru.shafran.network.customers.data.EditCustomerDataResponse
@@ -21,6 +21,6 @@ interface CustomersRepository {
     suspend fun getAllCustomers(data: GetAllCustomersRequest): GetAllCustomersResponse
     suspend fun createEmptyCustomers(data: CreateEmptyCustomersRequest): CreateEmptyCustomersResponse
     suspend fun editCustomerData(data: EditCustomerRequest): EditCustomerDataResponse
-    suspend fun createCustomer(data: CreateCustomerRequest): CreateCustomerResponse
+    suspend fun createCustomer(data: CreateCustomersRequest): CreateCustomerResponse
     suspend fun searchCustomerByPhone(data: SearchCustomerByPhoneRequest): SearchCustomerByPhoneResponse
 }

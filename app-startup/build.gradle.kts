@@ -31,6 +31,11 @@ android {
                 "NETWORK_KEY_CODE",
                 "\"${System.getenv("SHAFRAN_KEY_CODE_RELEASE")}\""
             )
+            buildConfigField(
+                "String",
+                "NETWORK_API_REALM",
+                "\"WWW-JWT-Realm\""
+            )
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -41,7 +46,8 @@ android {
             buildConfigField(
                 "String",
                 "NETWORK_API_URL",
-                "\"${System.getenv("SHAFRAN_API_HOST_DEBUG")}\"",
+                "\"http://192.168.0.105:8080/v1/\"",
+//                "\"${System.getenv("SHAFRAN_API_HOST_DEBUG")}\"",
             )
             buildConfigField(
                 "String",
@@ -52,6 +58,11 @@ android {
                 "String",
                 "NETWORK_KEY_CODE",
                 "\"${System.getenv("SHAFRAN_KEY_CODE_DEBUG")}\""
+            )
+            buildConfigField(
+                "String",
+                "NETWORK_API_REALM",
+                "\"WWW-JWT-Realm\""
             )
         }
     }
@@ -83,6 +94,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = Dependencies.Compose.compilerVersion
     }
+
 }
 
 dependencies {
@@ -99,6 +111,7 @@ dependencies {
     implementation(Dependencies.Ktor.cio)
     implementation(Dependencies.Activity.compose)
     implementation(Dependencies.Android.startup)
+    implementation(Dependencies.Android.splash)
     implementation(Dependencies.Compose.ui)
 
     implementation(platform(Dependencies.Firebase.BoM))
@@ -110,4 +123,5 @@ dependencies {
     implementation(projects.appUi)
     implementation(projects.networkData)
     implementation(projects.networkMvi)
+    implementation(projects.appStorage)
 }

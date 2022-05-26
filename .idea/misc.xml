@@ -6,6 +6,7 @@
         <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-common/src/main/res/drawable/logo_cards.xml" value="0.1" />
         <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-common/src/main/res/drawable/logo_services.xml" value="0.1" />
         <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-components/src/main/res/drawable/icon.xml" value="0.101" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-ui/src/main/res/drawable-v24/app_icon.xml" value="0.2705" />
         <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-ui/src/main/res/drawable/cancel_button.xml" value="0.29" />
         <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-ui/src/main/res/drawable/edit_button.xml" value="0.249" />
         <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-ui/src/main/res/drawable/logo_cards.xml" value="0.1635" />
@@ -13,6 +14,8 @@
         <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-ui/src/main/res/drawable/logo_gender.xml" value="0.1635" />
         <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-ui/src/main/res/drawable/logo_phone.xml" value="0.1635" />
         <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-ui/src/main/res/drawable/logo_services.xml" value="0.1635" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-ui/src/main/res/drawable/password_hidden.xml" value="0.271" />
+        <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-ui/src/main/res/drawable/password_shown.xml" value="0.271" />
         <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-ui/src/main/res/drawable/phone_logo.xml" value="0.2495" />
         <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app-ui/src/main/res/drawable/turn_on_slider.xml" value="0.29" />
         <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
@@ -39,6 +42,11 @@
         <entry key="..\:/Users/vollllodya/StudioProjects/ShafranCards/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
       </map>
     </option>
+  </component>
+  <component name="EntryPointsManager">
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="kotlinx.serialization.Serializable" />
+    </list>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="11" project-jdk-type="JavaSDK" />

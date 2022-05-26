@@ -2,14 +2,14 @@ package ru.shafran.common.services.details.create
 
 import ru.shafran.common.services.details.edit.ServiceEditor
 import ru.shafran.common.services.details.edit.ServiceEditorComponent
-import ru.shafran.network.services.data.CreateServiceRequest
+import ru.shafran.network.services.data.EditableServiceData
 
 class ServiceCreatingComponent(
-    request: CreateServiceRequest?,
-    private val onCreate: (request: CreateServiceRequest) -> Unit,
+    data: EditableServiceData?,
+    private val onCreate: (request: EditableServiceData) -> Unit,
 ) : ServiceCreating {
     override val editor: ServiceEditor = ServiceEditorComponent(
-        data = request?.data,
-        onEdit = { onCreate(CreateServiceRequest(it)) }
+        data = data,
+        onEdit = { onCreate(it) }
     )
 }

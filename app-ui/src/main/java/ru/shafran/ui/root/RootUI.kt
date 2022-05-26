@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetpack.Children
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import com.arkivanov.decompose.router.RouterState
-import ru.shafran.common.root.Root
+import ru.shafran.common.root.CompanyTargetApplication
 import ru.shafran.common.utils.NavigationItem
 import ru.shafran.ui.R
 import ru.shafran.ui.customers.CustomersUI
@@ -27,21 +27,21 @@ import ru.shafran.ui.scanner.CustomerScannerUI
 import ru.shafran.ui.services.ServicesUI
 import ru.shafran.ui.view.FloatingBottomNavigation
 
-private val children: Map<Root.Configuration, NavigationItem> by lazy {
+private val CHILDREN: Map<CompanyTargetApplication.Configuration, NavigationItem> by lazy {
     mapOf(
-        Root.Configuration.CustomerScanner to NavigationItem(
+        CompanyTargetApplication.Configuration.CustomerScanner to NavigationItem(
             R.string.navigation_scanner_title,
             R.drawable.logo_cards,
         ),
-        Root.Configuration.Services to NavigationItem(
+        CompanyTargetApplication.Configuration.Services to NavigationItem(
             R.string.navigation_services_title,
             R.drawable.logo_services,
         ),
-        Root.Configuration.Customers to NavigationItem(
+        CompanyTargetApplication.Configuration.Customers to NavigationItem(
             R.string.navigation_customers_title,
             R.drawable.logo_customers,
         ),
-        Root.Configuration.Employees to NavigationItem(
+        CompanyTargetApplication.Configuration.Employees to NavigationItem(
             R.string.navigation_employees_title,
             R.drawable.logo_employees,
         )
@@ -50,14 +50,14 @@ private val children: Map<Root.Configuration, NavigationItem> by lazy {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun RootUI(component: Root, modifier: Modifier = Modifier) {
+internal fun RootUI(component: CompanyTargetApplication, modifier: Modifier = Modifier) {
     val currentChild = component.routerState.subscribeAsState()
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = stringResource(id = R.string.navigation_topbar_title),
+                        text = component.company.data.title,
                     )
                 }
             )
@@ -68,7 +68,7 @@ internal fun RootUI(component: Root, modifier: Modifier = Modifier) {
                     .fillMaxWidth()
                     .padding(10.dp),
             ) {
-                children.forEach {
+                CHILDREN.forEach {
                     RootNavigationItem(
                         currentConfiguration = currentChild.value.activeChild.configuration,
                         service = it.key,
@@ -91,18 +91,18 @@ internal fun RootUI(component: Root, modifier: Modifier = Modifier) {
 
 @Composable
 private fun RootNavHost(
-    value: RouterState<Root.Configuration, Root.Child<Any?>>,
+    value: RouterState<CompanyTargetApplication.Configuration, CompanyTargetApplication.Child<Any?>>,
     modifier: Modifier,
 ) {
     Children(routerState = value) {
         when (val instance = it.instance) {
-            is Root.Child.CustomerScanner ->
+            is CompanyTargetApplication.Child.CustomerScanner ->
                 CustomerScannerUI(component = instance.component, modifier = modifier)
-            is Root.Child.Services ->
+            is CompanyTargetApplication.Child.Services ->
                 ServicesUI(component = instance.component, modifier = modifier)
-            is Root.Child.Customers ->
+            is CompanyTargetApplication.Child.Customers ->
                 CustomersUI(customers = instance.component, modifier = modifier)
-            is Root.Child.Employees ->
+            is CompanyTargetApplication.Child.Employees ->
                 EmployeesUI(component = instance.component, modifier = modifier)
         }
     }
@@ -111,8 +111,8 @@ private fun RootNavHost(
 
 @Composable
 private fun RowScope.RootNavigationItem(
-    currentConfiguration: Root.Configuration,
-    service: Root.Configuration,
+    currentConfiguration: CompanyTargetApplication.Configuration,
+    service: CompanyTargetApplication.Configuration,
     item: NavigationItem,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,

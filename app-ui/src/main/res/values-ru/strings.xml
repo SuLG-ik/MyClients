@@ -56,4 +56,6 @@
     <string name="employee_create_apply">Нанять работника</string>
     <string name="employee_create_title">Новый работник</string>
     <string name="sessions_stats_title">Статистика</string>
+    <string name="auth_login_username">Имя пользователя</string>
+    <string name="auth_login_password">Пароль</string>
 </resources>

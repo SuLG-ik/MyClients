@@ -7,6 +7,8 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -41,7 +43,7 @@ fun <Configuration : Any, Child : Any> BottomSheetComponentUI(
                 if (isHidden(it.activeChild.instance)) {
                     state.animateTo(ModalBottomSheetValue.Hidden, tween(50))
                 } else {
-                    state.animateTo(ModalBottomSheetValue.Expanded)
+                    state.animateTo(ModalBottomSheetValue.Expanded,  tween(50))
                 }
             } catch (e: Exception) {
 

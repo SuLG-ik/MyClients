@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.shape.ZeroCornerSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
@@ -51,8 +52,7 @@ fun ExtendedModalBottomSheet(
             }
         },
         modifier = modifier,
-        sheetShape = MaterialTheme.shapes.large
-            .calculateTopShape(sheetState.offset.value)
+        sheetShape = calculateTopShape(offset = sheetState.offset.value)
             .copy(bottomStart = ZeroCornerSize, bottomEnd = ZeroCornerSize),
         sheetElevation = sheetElevation,
         sheetBackgroundColor = sheetBackgroundColor,
@@ -63,8 +63,8 @@ fun ExtendedModalBottomSheet(
 }
 
 @Composable
-private fun CornerBasedShape.calculateTopShape(offset: Float): CornerBasedShape {
-    return copy(calculateShape(min = 0.dp, max = 40.dp, offset = offset * 2.5f))
+private fun calculateTopShape(offset: Float): CornerBasedShape {
+    return RoundedCornerShape(calculateShape(min = 0.dp, max = 40.dp, offset = offset * 2.5f))
 }
 
 @Composable

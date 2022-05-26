@@ -8,15 +8,21 @@ import ru.shafran.common.camera.CameraComponent
 import ru.shafran.common.customers.details.host.CustomerDetailsHost
 import ru.shafran.common.customers.details.host.CustomerDetailsHostComponent
 import ru.shafran.common.utils.Share
+import ru.shafran.network.companies.data.Company
 
 internal class CustomerScannerComponent(
     componentContext: ComponentContext,
     onOpenSettings: () -> Unit,
     share: Share,
+    company: Company,
 ) : CustomerScanner, ComponentContext by componentContext {
 
     override val customerDetails: CustomerDetailsHost =
-        CustomerDetailsHostComponent(childContext("customer_details"), share = share)
+        CustomerDetailsHostComponent(
+            childContext("customer_details"),
+            share = share,
+            company = company
+        )
 
     init {
         customerDetails.isShown.observe(lifecycle) { isShown ->

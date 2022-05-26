@@ -1,10 +1,8 @@
-package ru.shafran.network.customers
+package ru.shafran.network.session
 
 import com.arkivanov.mvikotlin.core.store.Store
 import ru.shafran.network.customers.data.Customer
-import ru.shafran.network.employees.data.Employee
 import ru.shafran.network.services.data.ConfiguredService
-import ru.shafran.network.services.data.Service
 import ru.shafran.network.session.data.CreateSessionForCustomerRequest
 
 interface SessionActivationStore :
@@ -42,8 +40,6 @@ interface SessionActivationStore :
 
         data class DetailsLoaded(
             val customer: Customer.ActivatedCustomer,
-            val services: List<Service>,
-            val employees: List<Employee>,
         ) : State()
     }
 

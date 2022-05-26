@@ -1,9 +1,9 @@
 package ru.shafran.network.customers
 
 import com.arkivanov.mvikotlin.core.store.Store
-import ru.shafran.network.customers.data.CreateCustomerRequest
+import ru.shafran.network.companies.data.CompanyId
+import ru.shafran.network.customers.data.CreateCustomersRequest
 import ru.shafran.network.customers.data.Customer
-import ru.shafran.network.customers.data.CustomerData
 import ru.shafran.network.customers.data.EditableCustomerData
 
 interface GenerateCustomerStore :
@@ -13,10 +13,12 @@ interface GenerateCustomerStore :
 
         class LoadDetails(
             val request: EditableCustomerData? = null,
+            val companyId: CompanyId,
         ) : Intent()
 
         data class GenerateCustomer(
-            val request: CreateCustomerRequest,
+            val request: EditableCustomerData,
+            val companyId: CompanyId,
         ) : Intent()
 
     }
@@ -33,9 +35,9 @@ interface GenerateCustomerStore :
         ) : State()
 
         sealed class Error : State() {
-            abstract val request: CreateCustomerRequest
+            abstract val request: CreateCustomersRequest
 
-            class Unknown(override val request: CreateCustomerRequest) : Error()
+            class Unknown(override val request: CreateCustomersRequest) : Error()
         }
 
     }

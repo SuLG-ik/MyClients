@@ -11,6 +11,7 @@ import java.time.LocalDate
 @Serializable
 @Parcelize
 data class GetSessionsStatsRequest(
+    val companyId: String,
     val period: DatePeriod = DatePeriod(from = LocalDate.now().minusMonths(1), to = LocalDate.now()),
 ): Parcelable
 

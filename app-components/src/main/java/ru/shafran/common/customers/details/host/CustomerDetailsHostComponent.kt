@@ -11,12 +11,14 @@ import com.arkivanov.decompose.value.operator.map
 import ru.shafran.common.utils.Share
 import ru.shafran.common.utils.Updatable
 import ru.shafran.common.utils.replaceAll
+import ru.shafran.network.companies.data.Company
 import ru.shafran.network.customers.data.Customer
 import ru.shafran.network.session.data.Session
 
 internal class CustomerDetailsHostComponent(
     componentContext: ComponentContext,
     share: Share,
+    company: Company,
 ) : CustomerDetailsHost, ComponentContext by componentContext {
 
 
@@ -81,6 +83,7 @@ internal class CustomerDetailsHostComponent(
     }
     private val childFactory: (CustomerDetailsHost.Configuration, ComponentContext) -> CustomerDetailsHost.Child<Any?> =
         CustomerDetailsChildFactory(
+            company = company,
             onBack = onBack,
             onEdit = onEdit,
             onUseSession = onUseSession,

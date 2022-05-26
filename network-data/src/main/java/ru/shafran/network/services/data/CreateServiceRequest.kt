@@ -15,6 +15,7 @@ data class EditableServiceData(
 @Serializable
 data class CreateServiceRequest(
     val data: EditableServiceData,
+    val companyId: String,
 ) : Parcelable
 
 @Parcelize

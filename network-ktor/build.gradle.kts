@@ -17,7 +17,8 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro")
         }
     }
 
@@ -25,7 +26,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlin{
+    kotlin {
         explicitApi()
     }
     kotlinOptions {
@@ -38,11 +39,14 @@ android {
 }
 
 
-dependencies{
+dependencies {
     implementation(Dependencies.Ktor.core)
+    implementation(Dependencies.Ktor.auth)
     implementation(Dependencies.Ktor.serialization)
     implementation(Dependencies.Ktor.contentNegotiation)
     implementation(Dependencies.Ktor.logging)
+    implementation(Dependencies.Serialization.core)
+    implementation(Dependencies.Datastore.core)
     implementation(Dependencies.Serialization.core)
     implementation(Dependencies.Koin.core)
     implementation(Dependencies.Napier.core)

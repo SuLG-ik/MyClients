@@ -12,16 +12,20 @@ import ru.shafran.common.error.ErrorComponent
 import ru.shafran.common.loading.LoadingComponent
 import ru.shafran.common.utils.getStore
 import ru.shafran.common.utils.replaceAll
+import ru.shafran.network.companies.data.Company
 import ru.shafran.network.employees.EmployeesListStore
 import ru.shafran.network.utils.reduceStates
 
-class EmployeesListHostComponent(componentContext: ComponentContext) : EmployeesListHost,
+class EmployeesListHostComponent(
+    componentContext: ComponentContext,
+    private val company: Company,
+) : EmployeesListHost,
     ComponentContext by componentContext {
 
     private val store = getStore<EmployeesListStore>().reduceStates(this, this::reduceState)
 
     override val onUpdate: () -> Unit = {
-        store.accept(EmployeesListStore.Intent.LoadEmployees())
+        store.accept(EmployeesListStore.Intent.LoadEmployees(company.id))
     }
 
     private fun reduceState(state: EmployeesListStore.State) {
@@ -40,6 +44,7 @@ class EmployeesListHostComponent(componentContext: ComponentContext) : Employees
         EmployeeDetailsHostComponent(
             componentContext = childContext("employee_details"),
             onUpdateEmployeesList = onUpdate,
+            company = company
         )
 
     private val router =

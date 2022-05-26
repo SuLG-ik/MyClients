@@ -9,14 +9,17 @@ import ru.shafran.common.error.ErrorComponent
 import ru.shafran.common.loading.LoadingComponent
 import ru.shafran.common.utils.getStore
 import ru.shafran.common.utils.replaceAll
+import ru.shafran.network.companies.data.Company
 import ru.shafran.network.services.CreateServiceStore
 import ru.shafran.network.services.data.CreateServiceRequest
+import ru.shafran.network.services.data.EditableServiceData
 import ru.shafran.network.services.data.Service
 import ru.shafran.network.utils.reduceLabels
 import ru.shafran.network.utils.reduceStates
 
 class ServiceCreatingHostComponent(
     componentContext: ComponentContext,
+    private val company: Company,
     onCreated: (Service) -> Unit,
     private val onUpdateList: () -> Unit = {},
 ) : ServiceCreatingHost, ComponentContext by componentContext {
@@ -31,9 +34,9 @@ class ServiceCreatingHostComponent(
         store.accept(CreateServiceStore.Intent.LoadDetails())
     }
 
-    private val onCreate: (CreateServiceRequest) -> Unit =
+    private val onCreate: (EditableServiceData) -> Unit =
         {
-            store.accept(CreateServiceStore.Intent.CreateService(it))
+            store.accept(CreateServiceStore.Intent.CreateService(data = it, companyId = company.id))
         }
 
     private fun createChild(
@@ -50,7 +53,7 @@ class ServiceCreatingHostComponent(
             is ServiceCreatingHost.Configuration.CreateService ->
                 ServiceCreatingHost.Child.CreateService(
                     ServiceCreatingComponent(
-                        request = configuration.request,
+                        data = configuration.request?.data,
                         onCreate = onCreate,
                     )
                 )

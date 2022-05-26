@@ -8,14 +8,16 @@ import com.arkivanov.decompose.value.Value
 import ru.shafran.common.components.R
 import ru.shafran.common.loading.LoadingComponent
 import ru.shafran.common.utils.stores
-import ru.shafran.network.customers.SessionActivationStore
+import ru.shafran.network.companies.data.Company
 import ru.shafran.network.customers.data.Customer
+import ru.shafran.network.session.SessionActivationStore
 import ru.shafran.network.session.data.CreateSessionForCustomerRequest
 import ru.shafran.network.utils.reduceLabels
 import ru.shafran.network.utils.reduceStates
 
 class SessionActivationHostComponent(
     componentContext: ComponentContext,
+    private val company: Company,
     private val customer: Customer.ActivatedCustomer,
     private val onBack: () -> Unit,
     private val onBackAndUpdate: () -> Unit,
@@ -73,8 +75,6 @@ class SessionActivationHostComponent(
         router.bringToFront(
             SessionActivationHost.Configuration.Loaded(
                 customer = customer,
-                employees = employees,
-                services = services,
             )
         )
     }
@@ -91,6 +91,7 @@ class SessionActivationHostComponent(
                     customer = configuration.customer,
                     onBack = onBack,
                     onActivate = this::onActivate,
+                    company = company,
                 )
             )
             is SessionActivationHost.Configuration.DetailsLoading -> SessionActivationHost.Child.Loading(

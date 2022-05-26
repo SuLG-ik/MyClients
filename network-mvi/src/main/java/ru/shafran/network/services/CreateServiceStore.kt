@@ -1,7 +1,9 @@
 package ru.shafran.network.services
 
 import com.arkivanov.mvikotlin.core.store.Store
+import ru.shafran.network.companies.data.CompanyId
 import ru.shafran.network.services.data.CreateServiceRequest
+import ru.shafran.network.services.data.EditableServiceData
 import ru.shafran.network.services.data.Service
 
 interface CreateServiceStore :
@@ -12,7 +14,8 @@ interface CreateServiceStore :
         data class LoadDetails(val request: CreateServiceRequest? = null) : Intent()
 
         data class CreateService(
-            val request: CreateServiceRequest,
+            val data: EditableServiceData,
+            val companyId: CompanyId,
         ) : Intent()
 
     }

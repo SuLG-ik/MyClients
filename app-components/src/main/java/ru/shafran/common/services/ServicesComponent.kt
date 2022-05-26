@@ -5,8 +5,12 @@ import com.arkivanov.decompose.router.RouterState
 import com.arkivanov.decompose.router.router
 import com.arkivanov.decompose.value.Value
 import ru.shafran.common.services.list.ServicesListHostComponent
+import ru.shafran.network.companies.data.Company
 
-internal class ServicesComponent(componentContext: ComponentContext) : Services,
+internal class ServicesComponent(
+    componentContext: ComponentContext,
+    private val company: Company,
+) : Services,
     ComponentContext by componentContext {
 
     private val router = router(
@@ -33,6 +37,7 @@ internal class ServicesComponent(componentContext: ComponentContext) : Services,
         return Services.Child.ServicesList(
             ServicesListHostComponent(
                 componentContext = componentContext,
+                company = company
             )
         )
     }

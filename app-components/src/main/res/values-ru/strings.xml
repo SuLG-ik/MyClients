@@ -4,6 +4,7 @@
     <string name="customers_loading">Загрузка клиентов…</string>
     <string name="services_loading">Загрузка услуг…</string>
     <string name="customers_session_activation_details_loading_message">Загрузка</string>
+    <string name="accounts_auth_login_loading">Происходит вход…</string>
     <string name="customers_session_activation_loading_message">Активация</string>
     <string name="customers_info_loading_message">Закгрузка клиентов</string>
     <string name="customers_editing_loading_message">Загрзка данных</string>
@@ -23,4 +24,6 @@
     <string name="sessions_deactivationg_loading">Отмена услуги…</string>
     <string name="employee_creating">Нанимаем…</string>
     <string name="sessions_stats_loading">Загрзука статистики</string>
+    <string name="companies_list_loading">Загрузка списка компаний…</string>
+    <string name="accounts_auth_login_illegal_credentials">Неверные данные</string>
 </resources>

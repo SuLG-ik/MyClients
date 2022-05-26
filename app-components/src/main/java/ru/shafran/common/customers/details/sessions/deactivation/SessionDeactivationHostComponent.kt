@@ -10,6 +10,7 @@ import ru.shafran.common.loading.LoadingComponent
 import ru.shafran.common.utils.Updatable
 import ru.shafran.common.utils.getStore
 import ru.shafran.common.utils.replaceAll
+import ru.shafran.network.companies.data.Company
 import ru.shafran.network.session.DeactivateSessionStore
 import ru.shafran.network.session.data.DeactivateSessionRequest
 import ru.shafran.network.session.data.DeactivateSessionRequestData
@@ -22,6 +23,7 @@ class SessionDeactivationHostComponent(
     private val session: Session,
     private val onBack: () -> Unit,
     private val onBackAndUpdate: () -> Unit,
+    private val company: Company,
 ) : SessionDeactivationHost, Updatable, ComponentContext by componentContext {
 
     private val store = getStore<DeactivateSessionStore>().reduceStates(this, this::reduceState)
@@ -68,6 +70,7 @@ class SessionDeactivationHostComponent(
                         data = configuration.data,
                         onApply = { onApply(DeactivateSessionRequest(session.id, it)) },
                         onBack = onBack,
+                        company = company,
                     )
                 )
             is SessionDeactivationHost.Configuration.DeactivateSessionLoading ->

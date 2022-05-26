@@ -15,7 +15,7 @@ interface Dependencies {
     }
 
     object Kotlin : Dependencies {
-        const val version = "1.6.10"
+        const val version = "1.6.21"
     }
 
     object Napier : Dependencies {
@@ -24,7 +24,7 @@ interface Dependencies {
     }
 
     object Coroutines : Dependencies {
-        const val version = "1.6.0"
+        const val version = "1.6.1"
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
         const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
         const val guava = "org.jetbrains.kotlinx:kotlinx-coroutines-guava:$version"
@@ -38,7 +38,7 @@ interface Dependencies {
     }
 
     object MVI : Dependencies {
-        const val version = "3.0.0-beta01"
+        const val version = "3.0.0-beta02"
         const val core = "com.arkivanov.mvikotlin:mvikotlin:$version"
         const val main = "com.arkivanov.mvikotlin:mvikotlin-main:$version"
         const val logging = "com.arkivanov.mvikotlin:mvikotlin-logging:$version"
@@ -46,7 +46,7 @@ interface Dependencies {
     }
 
     object Essenty : Dependencies {
-        const val version = "0.2.2"
+        const val version = "0.3.1"
         const val lifecycle = "com.arkivanov.essenty:lifecycle:$version"
         const val parcelable = "com.arkivanov.essenty:parcelable:$version"
     }
@@ -58,7 +58,7 @@ interface Dependencies {
     }
 
     object Activity : Dependencies {
-        const val version = "1.5.0-alpha04"
+        const val version = "1.5.0-rc01"
         const val core = "androidx.activity:activity-ktx:$version"
         const val compose = "androidx.activity:activity-compose:$version"
     }
@@ -69,8 +69,8 @@ interface Dependencies {
     }
 
     object Android : Dependencies {
-        const val agpVersion = "7.1.2"
-        const val version = "1.8.0-alpha06"
+        const val agpVersion = "7.2.0"
+        const val version = "1.8.0-rc01"
         const val core = "androidx.core:core-ktx:$version"
         const val splash = "androidx.core:core-splashscreen:1.0.0-beta02"
         const val startup = "androidx.startup:startup-runtime:1.1.1"
@@ -82,6 +82,12 @@ interface Dependencies {
         const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel:$version"
     }
 
+    object Datastore {
+        const val version = "1.0.0"
+        const val core = "androidx.datastore:datastore-core:$version"
+        const val preferences = "androidx.datastore:datastore-preferences:$version"
+    }
+
 
     object Work {
         const val version = "2.7.1"
@@ -89,32 +95,33 @@ interface Dependencies {
     }
 
     object Compose : Dependencies {
-        const val compilerVersion = "1.1.1"
-        const val version = "1.1.1"
+        const val compilerVersion = "1.2.0-beta01"
+        const val version = "1.2.0-beta01"
         const val ui = "androidx.compose.ui:ui:$version"
         const val material = "androidx.compose.material:material:$version"
-        const val material3 = "androidx.compose.material3:material3:1.0.0-alpha09"
+        const val material3 = "androidx.compose.material3:material3:1.0.0-alpha10"
         const val animation = "androidx.compose.animation:animation:$version"
         const val foundation = "androidx.compose.foundation:foundation:$version"
         const val tooling = "androidx.compose.ui:ui-tooling:$version"
     }
 
     object Koin : Dependencies {
-        const val version = "3.2.0-beta-1"
+        const val version = "3.2.0"
         const val android = "io.insert-koin:koin-android:$version"
         const val core = "io.insert-koin:koin-core:$version"
     }
 
     object Accompanist : Dependencies {
-        const val version = "0.23.1"
+        const val version = "0.24.8-beta"
         const val swiperefresh = "com.google.accompanist:accompanist-swiperefresh:$version"
         const val permissions = "com.google.accompanist:accompanist-permissions:$version"
         const val placeholder = "com.google.accompanist:accompanist-placeholder-material:$version"
     }
 
     object Ktor : Dependencies {
-        const val version = "2.0.0"
+        const val version = "2.0.1"
         const val core = "io.ktor:ktor-client-core:$version"
+        const val auth = "io.ktor:ktor-client-auth:$version"
         const val android = "io.ktor:ktor-client-android:$version"
         const val cio = "io.ktor:ktor-client-cio:$version"
         const val contentNegotiation = "io.ktor:ktor-client-content-negotiation:$version"
@@ -124,7 +131,7 @@ interface Dependencies {
 
 
     object Camera : Dependencies {
-        const val version = "1.1.0-beta02"
+        const val version = "1.1.0-rc01"
         const val core = "androidx.camera:camera-core:$version"
         const val camera = "androidx.camera:camera-camera2:$version"
         const val lifecycle = "androidx.camera:camera-lifecycle:$version"
@@ -154,7 +161,7 @@ interface Dependencies {
     }
 
     object Coil : Dependencies {
-        const val version = "2.0.0-rc02"
+        const val version = "2.0.0"
         const val core = "io.coil-kt:coil:$version"
         const val compose = "io.coil-kt:coil-compose:$version"
     }

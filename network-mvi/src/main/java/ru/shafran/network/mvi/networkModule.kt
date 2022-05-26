@@ -5,6 +5,12 @@ import kotlinx.coroutines.Dispatchers
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
+import ru.shafran.network.auth.ApplicationAuthStore
+import ru.shafran.network.auth.ApplicationAuthStoreImpl
+import ru.shafran.network.auth.AuthLoginStore
+import ru.shafran.network.auth.AuthLoginStoreImpl
+import ru.shafran.network.companies.CompaniesListStore
+import ru.shafran.network.companies.CompaniesListStoreImpl
 import ru.shafran.network.customers.CustomerEditingStore
 import ru.shafran.network.customers.CustomerEditingStoreImpl
 import ru.shafran.network.customers.CustomerInfoStore
@@ -13,8 +19,6 @@ import ru.shafran.network.customers.CustomerSearchStore
 import ru.shafran.network.customers.CustomerSearchStoreImpl
 import ru.shafran.network.customers.GenerateCustomerStore
 import ru.shafran.network.customers.GenerateCustomerStoreImpl
-import ru.shafran.network.customers.SessionActivationStore
-import ru.shafran.network.customers.SessionActivationStoreImpl
 import ru.shafran.network.employees.CreateEmployeeStore
 import ru.shafran.network.employees.CreateEmployeeStoreImpl
 import ru.shafran.network.employees.EmployeesListStore
@@ -34,6 +38,8 @@ import ru.shafran.network.services.ServicesListStore
 import ru.shafran.network.services.ServicesListStoreImpl
 import ru.shafran.network.session.DeactivateSessionStore
 import ru.shafran.network.session.DeactivateSessionStoreImpl
+import ru.shafran.network.session.SessionActivationStore
+import ru.shafran.network.session.SessionActivationStoreImpl
 import ru.shafran.network.session.SessionUseStore
 import ru.shafran.network.session.SessionUseStoreImpl
 import ru.shafran.network.session.SessionsStatsStore
@@ -60,6 +66,9 @@ private val mviNetworkModule = module {
     factoryOf(::DeactivateSessionStoreImpl) bind DeactivateSessionStore::class
     factoryOf(::CreateEmployeeStoreImpl) bind CreateEmployeeStore::class
     factoryOf(::SessionsStatsStoreImpl) bind SessionsStatsStore::class
+    factoryOf(::CompaniesListStoreImpl) bind CompaniesListStore::class
+    factoryOf(::ApplicationAuthStoreImpl) bind ApplicationAuthStore::class
+    factoryOf(::AuthLoginStoreImpl) bind AuthLoginStore::class
 }
 
-val networkModules = arrayOf(mviNetworkModule, networkModule)
+val networkModules = module { includes(mviNetworkModule, networkModule) }

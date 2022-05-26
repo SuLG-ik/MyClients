@@ -10,6 +10,7 @@ import ru.shafran.common.loading.LoadingComponent
 import ru.shafran.common.utils.Updatable
 import ru.shafran.common.utils.replaceAll
 import ru.shafran.common.utils.stores
+import ru.shafran.network.companies.data.Company
 import ru.shafran.network.employees.EmployeesListStore
 import ru.shafran.network.employees.data.Employee
 import ru.shafran.network.utils.reduceStates
@@ -17,6 +18,7 @@ import ru.shafran.network.utils.reduceStates
 class EmployeeSelectorComponent(
     componentContext: ComponentContext,
     private val onSelect: (Employee) -> Unit,
+    private val company: Company,
 ) : EmployeeSelector, Updatable, ComponentContext by componentContext {
 
     private val store by stores<EmployeesListStore>()
@@ -84,7 +86,7 @@ class EmployeeSelectorComponent(
     }
 
     override val onUpdate: (() -> Unit) = {
-        store.accept(EmployeesListStore.Intent.LoadEmployees())
+        store.accept(EmployeesListStore.Intent.LoadEmployees(companyId = company.id))
     }
 
 }

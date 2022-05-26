@@ -6,9 +6,11 @@ import com.arkivanov.decompose.router.router
 import com.arkivanov.decompose.value.Value
 import ru.shafran.common.sessions.history.SessionsHistoryListHostComponent
 import ru.shafran.common.utils.Share
+import ru.shafran.network.companies.data.Company
 
 class CustomersComponent(
     componentContext: ComponentContext,
+    private val company: Company,
     private val share: Share,
 ) : Customers,
     ComponentContext by componentContext {
@@ -29,6 +31,7 @@ class CustomersComponent(
                     SessionsHistoryListHostComponent(
                         componentContext = componentContext,
                         share = share,
+                        company = company,
                     )
 
                 )

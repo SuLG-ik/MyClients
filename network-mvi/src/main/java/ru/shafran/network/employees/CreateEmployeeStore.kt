@@ -1,6 +1,7 @@
 package ru.shafran.network.employees
 
 import com.arkivanov.mvikotlin.core.store.Store
+import ru.shafran.network.companies.data.CompanyId
 import ru.shafran.network.employees.data.CreateEmployeeRequest
 import ru.shafran.network.employees.data.CreateEmployeeRequestData
 import ru.shafran.network.employees.data.Employee
@@ -13,14 +14,15 @@ interface CreateEmployeeStore :
         data class LoadDetails(val request: CreateEmployeeRequestData? = null) : Intent()
 
         data class CreateEmployee(
-            val request: CreateEmployeeRequest,
+            val data: CreateEmployeeRequestData,
+            val companyId: CompanyId,
         ) : Intent()
 
     }
 
     sealed class State {
 
-        object Empty: State()
+        object Empty : State()
 
         data class CreateEmployee(
             val request: CreateEmployeeRequestData? = null,

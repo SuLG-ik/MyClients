@@ -27,7 +27,8 @@ internal class SessionsUsageHistoryStoreImpl(
             return when (msg) {
                 is Message.Error -> SessionsUsageHistoryStore.State.Error.Unknown
                 is Message.HistoryLoaded -> SessionsUsageHistoryStore.State.HistoryLoaded(
-                    msg.offset, msg.page, msg.history
+                    request = msg.request,
+                    history = msg.history
                 )
                 is Message.Loading -> SessionsUsageHistoryStore.State.Loading
             }
@@ -55,14 +56,14 @@ internal class SessionsUsageHistoryStoreImpl(
 
         private suspend fun SessionsUsageHistoryStore.Intent.LoadHistory.execute() {
             syncDispatch(Message.Loading)
-            val response =
-                sessionsRepository.getSessionUsagesHistory(GetSessionUsagesHistoryRequest(
-                    offset = offset,
-                    page = page
-                ))
+            val request = GetSessionUsagesHistoryRequest(
+                offset = offset,
+                page = page,
+                companyId = companyId,
+            )
+            val response = sessionsRepository.getSessionUsagesHistory(request)
             syncDispatch(Message.HistoryLoaded(
-                offset = response.offset,
-                page = response.page,
+                request = request,
                 history = response.usages
             ))
         }
@@ -71,8 +72,7 @@ internal class SessionsUsageHistoryStoreImpl(
 
     private sealed class Message {
         data class HistoryLoaded(
-            val offset: Int,
-            val page: Int,
+            val request: GetSessionUsagesHistoryRequest,
             val history: List<SessionUsageHistoryItem>,
         ) : Message()
 

@@ -9,4 +9,5 @@ data class NetworkConfig(
     val url: String,
     val apiVersion: String,
     val apiKey: String,
-): Parcelable
+    val authRealm: String,
+) : Parcelable

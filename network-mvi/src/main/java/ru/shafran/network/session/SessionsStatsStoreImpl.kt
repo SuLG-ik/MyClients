@@ -4,6 +4,7 @@ import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import kotlinx.coroutines.CoroutineDispatcher
+import ru.shafran.network.session.data.GetSessionsStatsRequest
 import ru.shafran.network.session.data.SessionStats
 import ru.shafran.network.utils.DatePeriod
 import ru.shafran.network.utils.SafeCancelableSyncCoroutineExecutor
@@ -43,6 +44,8 @@ class SessionsStatsStoreImpl(
         }
 
         private suspend fun SessionsStatsStore.Intent.LoadStats.execute() {
+
+            val request = GetSessionsStatsRequest(period = period, companyId = companyId.id)
             syncDispatch(Message.Loading())
             val response =
                 sessionsRepository.getSessionsStats(request = request)

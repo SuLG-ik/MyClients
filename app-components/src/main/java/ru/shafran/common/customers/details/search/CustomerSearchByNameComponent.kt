@@ -10,13 +10,14 @@ import ru.shafran.common.loading.LoadingComponent
 import ru.shafran.common.utils.getStore
 import ru.shafran.common.utils.replaceAll
 import ru.shafran.network.PhoneNumber
+import ru.shafran.network.companies.data.Company
 import ru.shafran.network.customers.CustomerSearchStore
 import ru.shafran.network.customers.data.Customer
-import ru.shafran.network.customers.data.SearchCustomerByPhoneRequest
 import ru.shafran.network.utils.reduceStates
 
 class CustomerSearchByPhoneComponent(
     componentContext: ComponentContext,
+    private val company: Company,
     private val onFind: (Customer.ActivatedCustomer) -> Unit,
 ) : CustomerSearchByPhone, ComponentContext by componentContext {
 
@@ -56,8 +57,7 @@ class CustomerSearchByPhoneComponent(
         get() = router.state
 
     override val onSearch: (PhoneNumber) -> Unit = { phoneNumber ->
-        store.accept(CustomerSearchStore.Intent.SearchCustomerByPhone(
-            SearchCustomerByPhoneRequest(phoneNumber))
+        store.accept(CustomerSearchStore.Intent.SearchCustomerByPhone(phoneNumber, company.id)
         )
     }
 

@@ -11,10 +11,12 @@ import ru.shafran.common.customers.details.sessions.deactivation.SessionDeactiva
 import ru.shafran.common.customers.details.sessions.use.SessionUsageHostComponent
 import ru.shafran.common.sessions.stats.AllSessionsStatsHostComponent
 import ru.shafran.common.utils.Share
+import ru.shafran.network.companies.data.Company
 import ru.shafran.network.customers.data.Customer
 import ru.shafran.network.session.data.Session
 
 internal class CustomerDetailsChildFactory(
+    private val company: Company,
     private val onBack: () -> Unit,
     private val onBackAndUpdate: () -> Unit,
     private val onEdit: (Customer) -> Unit,
@@ -57,7 +59,8 @@ internal class CustomerDetailsChildFactory(
     private fun CustomerDetailsHost.Configuration.SessionStats.create(componentContext: ComponentContext): CustomerDetailsHost.Child<Any?> {
         return CustomerDetailsHost.Child.SessionsStats(
             AllSessionsStatsHostComponent(
-                componentContext=componentContext
+                componentContext = componentContext,
+                company = company,
             )
         )
     }
@@ -69,6 +72,7 @@ internal class CustomerDetailsChildFactory(
                 session = session,
                 onBack = onBack,
                 onBackAndUpdate = onBackAndUpdate,
+                company = company,
             )
         )
     }
@@ -77,6 +81,7 @@ internal class CustomerDetailsChildFactory(
         return CustomerDetailsHost.Child.CustomerSearch(CustomerSearchHostComponent(
             componentContext = componentContext,
             onFind = onProfile,
+            company = company
         ))
     }
 
@@ -86,6 +91,7 @@ internal class CustomerDetailsChildFactory(
             componentContext = componentContext,
             onProfile = onProfile,
             share = share,
+            company = company,
         ))
     }
 
@@ -100,6 +106,7 @@ internal class CustomerDetailsChildFactory(
                 session = session,
                 onBack = onBack,
                 onBackAndUpdate = onBackAndUpdate,
+                company = company,
             )
         )
     }
@@ -108,6 +115,7 @@ internal class CustomerDetailsChildFactory(
         return CustomerDetailsHost.Child.SessionActivation(
             SessionActivationHostComponent(
                 componentContext = componentContext,
+                company = company,
                 customer = customer,
                 onBack = onBack,
                 onBackAndUpdate = onBackAndUpdate,

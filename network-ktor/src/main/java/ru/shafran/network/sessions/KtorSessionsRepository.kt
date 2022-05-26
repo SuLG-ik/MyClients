@@ -1,7 +1,6 @@
 package ru.shafran.network.sessions
 
 import io.ktor.client.*
-import io.ktor.client.call.*
 import io.ktor.client.request.*
 import ru.shafran.network.session.SessionsRepository
 import ru.shafran.network.session.data.CreateSessionForCustomerRequest
@@ -27,7 +26,7 @@ internal class KtorSessionsRepository(
         return tryRequest {
             httpClient.get("sessions/getSessionsStats") {
                 setBody(request)
-            }.body()
+            }
         }
     }
 
@@ -35,7 +34,7 @@ internal class KtorSessionsRepository(
         return tryRequest {
             httpClient.get("sessions/getSessionUsagesHistory") {
                 setBody(request)
-            }.body()
+            }
         }
     }
 
@@ -43,7 +42,7 @@ internal class KtorSessionsRepository(
         return tryRequest {
             httpClient.get("sessions/getServiceSessionsIgnoreDeactivatedForCustomer") {
                 setBody(request)
-            }.body()
+            }
         }
     }
 
@@ -51,7 +50,7 @@ internal class KtorSessionsRepository(
         return tryRequest {
             httpClient.delete("sessions/deactivateServiceSession") {
                 setBody(request)
-            }.body()
+            }
         }
     }
 
@@ -59,7 +58,7 @@ internal class KtorSessionsRepository(
         return tryRequest {
             httpClient.get("sessions/getAllServiceSessionsForCustomer") {
                 setBody(request)
-            }.body()
+            }
         }
     }
 
@@ -67,7 +66,7 @@ internal class KtorSessionsRepository(
         return tryRequest {
             httpClient.post("sessions/createServiceSessionsForCustomer") {
                 setBody(request)
-            }.body()
+            }
         }
     }
 
@@ -75,7 +74,7 @@ internal class KtorSessionsRepository(
         return tryRequest {
             httpClient.put("sessions/useServiceSession") {
                 setBody(request)
-            }.body()
+            }
         }
     }
 

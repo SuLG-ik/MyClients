@@ -13,7 +13,6 @@ data class CreateSessionForCustomerRequest(
     val data: CreateServiceSessionForCustomerRequestData,
 ):Parcelable
 
-
 @Serializable
 @Parcelize
 data class ServiceConfigurationReference(

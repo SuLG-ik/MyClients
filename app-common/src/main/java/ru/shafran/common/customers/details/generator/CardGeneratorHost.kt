@@ -4,7 +4,7 @@ import com.arkivanov.decompose.router.RouterState
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
-import ru.shafran.network.customers.data.CreateCustomerRequest
+import ru.shafran.network.customers.data.CreateCustomersRequest
 import ru.shafran.network.customers.data.Customer
 import ru.shafran.network.customers.data.EditableCustomerData
 
@@ -30,7 +30,7 @@ interface CardGeneratorHost {
 
         @Parcelize
         class UnknownError(
-            val data: CreateCustomerRequest,
+            val data: CreateCustomersRequest,
         ) : Configuration()
 
     }

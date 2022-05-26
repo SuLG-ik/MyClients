@@ -3,23 +3,27 @@ package ru.shafran.network.customers.data
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import kotlinx.serialization.Serializable
+import ru.shafran.network.companies.data.CompanyId
 
 @Parcelize
 @Serializable
 data class CreateEmptyCustomersRequest(
     val count: Int,
+    val companyId: String,
 ) : Parcelable
 
 @Parcelize
 @Serializable
 data class CreateEmptyCustomersResponse(
-    val customers: List<Customer.InactivatedCustomer>,
+    val cards: Map<String, Customer.InactivatedCustomer>,
 ) : Parcelable
+
 
 @Parcelize
 @Serializable
-data class CreateCustomerRequest(
+data class CreateCustomersRequest(
     val data: EditableCustomerData,
+    val companyId: CompanyId,
 ) : Parcelable
 
 

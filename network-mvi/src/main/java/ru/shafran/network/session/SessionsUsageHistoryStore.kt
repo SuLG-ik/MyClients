@@ -1,6 +1,8 @@
 package ru.shafran.network.session
 
 import com.arkivanov.mvikotlin.core.store.Store
+import ru.shafran.network.companies.data.CompanyId
+import ru.shafran.network.session.data.GetSessionUsagesHistoryRequest
 import ru.shafran.network.session.data.SessionUsageHistoryItem
 
 interface SessionsUsageHistoryStore :
@@ -10,6 +12,7 @@ interface SessionsUsageHistoryStore :
         data class LoadHistory(
             val offset: Int = 30,
             val page: Int = 0,
+            val companyId: CompanyId,
         ) : Intent()
     }
 
@@ -18,8 +21,7 @@ interface SessionsUsageHistoryStore :
         object Empty : State()
 
         data class HistoryLoaded(
-            val offset: Int,
-            val page: Int,
+            val request: GetSessionUsagesHistoryRequest,
             val history: List<SessionUsageHistoryItem>,
         ) : State()
 

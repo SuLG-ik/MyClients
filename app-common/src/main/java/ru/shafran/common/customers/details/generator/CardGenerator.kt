@@ -1,7 +1,6 @@
 package ru.shafran.common.customers.details.generator
 
 import ru.shafran.common.customers.details.edit.CustomerEditor
-import ru.shafran.network.customers.data.CreateCustomerRequest
 import ru.shafran.network.customers.data.EditableCustomerData
 
 interface CardGenerator {
@@ -10,6 +9,6 @@ interface CardGenerator {
 
     val editor: CustomerEditor
 
-    val onGenerate: (CreateCustomerRequest) -> Unit
+    val onGenerate: (EditableCustomerData) -> Unit
 
 }

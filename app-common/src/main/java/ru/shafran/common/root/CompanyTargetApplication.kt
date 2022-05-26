@@ -4,8 +4,11 @@ import com.arkivanov.decompose.router.RouterState
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
+import ru.shafran.network.companies.data.Company
 
-interface Root {
+interface CompanyTargetApplication {
+
+    val company: Company
 
     val routerState: Value<RouterState<Configuration, Child<Any?>>>
 

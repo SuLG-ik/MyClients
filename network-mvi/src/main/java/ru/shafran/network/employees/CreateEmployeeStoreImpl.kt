@@ -46,7 +46,8 @@ class CreateEmployeeStoreImpl(
         }
 
         private suspend fun CreateEmployeeStore.Intent.CreateEmployee.execute() {
-            syncDispatch(Message.CreateConfigurationLoading(request))
+            val request = CreateEmployeeRequest(data = data, companyId = companyId.id)
+            syncDispatch(Message.CreateEmployeeLoading(request))
             try {
                 val response = employeesRepository.createEmployee(request)
                 syncPublish(CreateEmployeeStore.Label.OnEmployeeCreated(response.employee))
@@ -61,11 +62,11 @@ class CreateEmployeeStoreImpl(
             return when (msg) {
                 is Message.CreateEmployee -> msg.reduce()
                 is Message.Error -> msg.reduce()
-                is Message.CreateConfigurationLoading -> msg.reduce()
+                is Message.CreateEmployeeLoading -> msg.reduce()
             }
         }
 
-        private fun Message.CreateConfigurationLoading.reduce(): CreateEmployeeStore.State =
+        private fun Message.CreateEmployeeLoading.reduce(): CreateEmployeeStore.State =
             CreateEmployeeStore.State.CreateEmployeeLoading(request)
 
 
@@ -86,7 +87,7 @@ class CreateEmployeeStoreImpl(
         data class CreateEmployee(val request: CreateEmployeeRequestData? = null) :
             Message()
 
-        data class CreateConfigurationLoading(val request: CreateEmployeeRequest) : Message()
+        data class CreateEmployeeLoading(val request: CreateEmployeeRequest) : Message()
 
 
         data class Error(

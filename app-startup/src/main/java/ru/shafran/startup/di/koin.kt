@@ -6,6 +6,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import ru.shafran.network.mvi.networkModules
+import ru.shafran.network.storageModule
 import ru.shafran.startup.time.timeModule
 
 internal fun Context.startDI(): KoinApplication {
@@ -16,8 +17,9 @@ internal fun Context.startDI(): KoinApplication {
             serializationModule,
             ktorModule,
             mviModule,
-            *networkModules,
+            networkModules,
             timeModule,
+            storageModule,
         )
     }
 }

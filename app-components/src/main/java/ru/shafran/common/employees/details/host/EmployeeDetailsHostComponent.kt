@@ -9,11 +9,13 @@ import com.arkivanov.decompose.value.operator.map
 import ru.shafran.common.employees.details.create.EmployeeCreatingHostComponent
 import ru.shafran.common.employees.details.info.EmployeeInfoHostComponent
 import ru.shafran.common.utils.replaceAll
+import ru.shafran.network.companies.data.Company
 import ru.shafran.network.employees.data.Employee
 
 class EmployeeDetailsHostComponent(
     componentContext: ComponentContext,
     private val onUpdateEmployeesList: () -> Unit,
+    private val company: Company,
 ) : EmployeeDetailsHost, ComponentContext by componentContext {
 
     private val onBack: () -> Unit = {
@@ -62,7 +64,8 @@ class EmployeeDetailsHostComponent(
                         onEmployeeCreated = {
                             onUpdateEmployeesList()
                             onShowEmployee(it)
-                        }
+                        },
+                        company = company
                     )
                 )
         }

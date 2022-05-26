@@ -1,10 +1,9 @@
 package ru.shafran.network.customers
 
 import io.ktor.client.*
-import io.ktor.client.call.*
 import io.ktor.client.request.*
-import ru.shafran.network.customers.data.CreateCustomerRequest
 import ru.shafran.network.customers.data.CreateCustomerResponse
+import ru.shafran.network.customers.data.CreateCustomersRequest
 import ru.shafran.network.customers.data.CreateEmptyCustomersRequest
 import ru.shafran.network.customers.data.CreateEmptyCustomersResponse
 import ru.shafran.network.customers.data.EditCustomerDataResponse
@@ -27,15 +26,15 @@ internal class KtorCustomersRepository(
         return tryRequest {
             httpClient.get("customers/searchCustomerByPhone") {
                 setBody(data)
-            }.body()
+            }
         }
     }
 
-    override suspend fun createCustomer(data: CreateCustomerRequest): CreateCustomerResponse {
+    override suspend fun createCustomer(data: CreateCustomersRequest): CreateCustomerResponse {
         return tryRequest {
             httpClient.post("customers/createCustomer") {
                 setBody(data)
-            }.body()
+            }
         }
     }
 
@@ -43,7 +42,7 @@ internal class KtorCustomersRepository(
         return tryRequest {
             httpClient.get("customers/getCustomerById") {
                 setBody(data)
-            }.body()
+            }
         }
     }
 
@@ -51,7 +50,7 @@ internal class KtorCustomersRepository(
         return tryRequest {
             httpClient.get("customers/getCustomerByToken") {
                 setBody(data)
-            }.body()
+            }
         }
     }
 
@@ -59,7 +58,7 @@ internal class KtorCustomersRepository(
         return tryRequest {
             httpClient.get("customers/getAllCustomers") {
                 setBody(data)
-            }.body()
+            }
         }
     }
 
@@ -67,7 +66,7 @@ internal class KtorCustomersRepository(
         return tryRequest {
             httpClient.post("customers/createEmptyCustomers") {
                 setBody(data)
-            }.body()
+            }
         }
     }
 
@@ -75,7 +74,7 @@ internal class KtorCustomersRepository(
         return tryRequest {
             httpClient.patch("customers/editCustomerData") {
                 setBody(data)
-            }.body()
+            }
         }
     }
 }

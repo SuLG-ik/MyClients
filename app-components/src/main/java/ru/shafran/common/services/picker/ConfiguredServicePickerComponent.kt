@@ -11,10 +11,14 @@ import com.arkivanov.essenty.instancekeeper.getOrCreate
 import kotlinx.coroutines.flow.MutableStateFlow
 import ru.shafran.common.services.picker.configuration.ConfigurationSelectorComponent
 import ru.shafran.common.services.picker.service.ServiceSelectorComponent
+import ru.shafran.network.companies.data.Company
 import ru.shafran.network.services.data.ConfiguredService
 import ru.shafran.network.services.data.Service
 
-class ConfiguredServicePickerComponent(componentContext: ComponentContext) :
+class ConfiguredServicePickerComponent(
+    componentContext: ComponentContext,
+    private val company: Company,
+) :
     ConfiguredServicePicker, ComponentContext by componentContext {
 
     private val instance = instanceKeeper.getOrCreate { Instance() }
@@ -75,6 +79,7 @@ class ConfiguredServicePickerComponent(componentContext: ComponentContext) :
         return ConfiguredServicePicker.Child.ServiceSelector(
             ServiceSelectorComponent(
                 componentContext = componentContext,
+                company = company,
                 selectedConfiguration = selectedConfiguration,
                 onSelect = this@ConfiguredServicePickerComponent::onServiceSelect,
             )

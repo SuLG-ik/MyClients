@@ -1,7 +1,6 @@
 package ru.shafran.network.employees
 
 import io.ktor.client.*
-import io.ktor.client.call.*
 import io.ktor.client.request.*
 import kotlinx.serialization.json.Json
 import ru.shafran.network.employees.data.AddEmployeeImageRequest
@@ -10,8 +9,8 @@ import ru.shafran.network.employees.data.CreateEmployeeRequest
 import ru.shafran.network.employees.data.CreateEmployeeResponse
 import ru.shafran.network.employees.data.GetAllEmployeesRequest
 import ru.shafran.network.employees.data.GetAllEmployeesResponse
-import ru.shafran.network.employees.data.GetEmployeeWithIdRequest
 import ru.shafran.network.employees.data.GetEmployeeByIdResponse
+import ru.shafran.network.employees.data.GetEmployeeWithIdRequest
 import ru.shafran.network.employees.data.LayoffEmployeeRequest
 import ru.shafran.network.employees.data.LayoffEmployeeResponse
 import ru.shafran.network.tryRequest
@@ -25,7 +24,7 @@ internal class KtorEmployeesRepository(
         return tryRequest {
             httpClient.get("employees/getAllEmployees") {
                 setBody(data)
-            }.body()
+            }
         }
     }
 
@@ -33,7 +32,7 @@ internal class KtorEmployeesRepository(
         return tryRequest {
             httpClient.post("employees/createEmployee") {
                 setBody(data)
-            }.body()
+            }
         }
     }
 
@@ -41,14 +40,14 @@ internal class KtorEmployeesRepository(
         return tryRequest {
             httpClient.delete("employees/layoffEmployee") {
                 setBody(data)
-            }.body()
+            }
         }
     }
     override suspend fun getEmployeeById(data: GetEmployeeWithIdRequest): GetEmployeeByIdResponse {
         return tryRequest {
             httpClient.get("employees/getEmployeeById") {
                 setBody(data)
-            }.body()
+            }
         }
     }
     override suspend fun addEmployeeImage(data: AddEmployeeImageRequest): AddEmployeeImageResponse {

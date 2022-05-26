@@ -41,6 +41,7 @@ include(
     ":network-core",
     ":network-ktor",
     "network-mvi",
+    "app-storage",
     "app-common",
     "app-components",
     "app-ui",

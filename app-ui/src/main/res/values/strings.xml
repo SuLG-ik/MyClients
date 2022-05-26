@@ -56,4 +56,6 @@
     <string name="employee_create_apply">Hire the employee</string>
     <string name="employee_create_title">New employee</string>
     <string name="sessions_stats_title">Stats</string>
+    <string name="auth_login_username">Username</string>
+    <string name="auth_login_password">Password</string>
 </resources>

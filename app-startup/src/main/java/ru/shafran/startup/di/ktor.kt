@@ -12,7 +12,8 @@ internal val ktorModule = module {
             apiVersion = BuildConfig.NETWORK_API_VERSION,
             url = BuildConfig.NETWORK_API_URL,
             isDebugMode = BuildConfig.DEBUG,
-            apiKey = BuildConfig.NETWORK_KEY_CODE
+            apiKey = BuildConfig.NETWORK_KEY_CODE,
+            authRealm = BuildConfig.NETWORK_API_REALM
         )
     }
     factory<HttpClientEngineFactory<HttpClientEngineConfig>> { CIO }

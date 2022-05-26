@@ -23,4 +23,7 @@
     <string name="sessions_details_loading_error">Error while sessions loading…</string>
     <string name="employee_creating">Hiring…</string>
     <string name="sessions_stats_loading">Stats loading…</string>
+    <string name="accounts_auth_login_loading">Authenticating</string>
+    <string name="companies_list_loading">Loading companies list…</string>
+    <string name="accounts_auth_login_illegal_credentials">Illegal credentials</string>
 </resources>

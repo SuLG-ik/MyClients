@@ -13,10 +13,12 @@ import ru.shafran.common.services.details.edit.ServiceEditingHostComponent
 import ru.shafran.common.services.details.host.ServicesDetailsHost
 import ru.shafran.common.services.details.info.ServiceInfoHostComponent
 import ru.shafran.common.utils.replaceAll
+import ru.shafran.network.companies.data.Company
 import ru.shafran.network.services.data.Service
 
 class ServicesDetailsHostComponent(
     componentContext: ComponentContext,
+    private val company: Company,
     private val onUpdateList: () -> Unit = {},
 ) : ComponentContext by componentContext, ServicesDetailsHost {
 
@@ -50,6 +52,7 @@ class ServicesDetailsHostComponent(
                         componentContext = componentContext,
                         onCreated = onShowServiceDetails,
                         onUpdateList = onUpdateList,
+                        company = company,
                     )
                 )
             is ServicesDetailsHost.Configuration.EditService -> ServicesDetailsHost.Child.EditService(

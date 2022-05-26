@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/app-common" />
             <option value="$PROJECT_DIR$/app-components" />
             <option value="$PROJECT_DIR$/app-startup" />
+            <option value="$PROJECT_DIR$/app-storage" />
             <option value="$PROJECT_DIR$/app-ui" />
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/network-core" />
@@ -23,7 +24,6 @@
             <option value="$PROJECT_DIR$/network-mvi" />
           </set>
         </option>
-        <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>
   </component>

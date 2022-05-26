@@ -1,6 +1,7 @@
 package ru.shafran.common.sessions.history
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.router.RouterState
 import com.arkivanov.decompose.router.bringToFront
 import com.arkivanov.decompose.router.router
@@ -12,22 +13,26 @@ import ru.shafran.common.error.ErrorComponent
 import ru.shafran.common.loading.LoadingComponent
 import ru.shafran.common.utils.Share
 import ru.shafran.common.utils.getStore
+import ru.shafran.network.companies.data.Company
 import ru.shafran.network.session.SessionsUsageHistoryStore
-import ru.shafran.network.utils.reduceLabels
 import ru.shafran.network.utils.reduceStates
 
 class SessionsHistoryListHostComponent(
     componentContext: ComponentContext,
     share: Share,
+    private val company: Company,
 ) : SessionsHistoryListHost, ComponentContext by componentContext {
 
     override val customerDetails: CustomerDetailsHost =
-        CustomerDetailsHostComponent(componentContext, share)
+        CustomerDetailsHostComponent(
+            childContext("customer_details"),
+            share = share,
+            company = company,
+        )
 
 
     val store = getStore<SessionsUsageHistoryStore>()
         .reduceStates(this, this::reduceState)
-        .reduceLabels(this, this::reduceLabel)
 
     private fun reduceState(state: SessionsUsageHistoryStore.State) {
         when (state) {
@@ -40,10 +45,6 @@ class SessionsHistoryListHostComponent(
             is SessionsUsageHistoryStore.State.Loading ->
                 router.bringToFront(SessionsHistoryListHost.Configuration.Loading)
         }
-    }
-
-    private fun reduceLabel(label: SessionsUsageHistoryStore.Label) {
-
     }
 
     private val router =
@@ -78,7 +79,9 @@ class SessionsHistoryListHostComponent(
     }
 
     private val onUpdate: () -> Unit = {
-        store.accept(SessionsUsageHistoryStore.Intent.LoadHistory())
+        store.accept(SessionsUsageHistoryStore.Intent.LoadHistory(
+            companyId = company.id
+        ))
     }
 
     override val routerState: Value<RouterState<SessionsHistoryListHost.Configuration, SessionsHistoryListHost.Child>>

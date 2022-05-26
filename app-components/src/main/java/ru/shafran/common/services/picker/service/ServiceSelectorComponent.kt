@@ -10,6 +10,7 @@ import ru.shafran.common.loading.LoadingComponent
 import ru.shafran.common.utils.Updatable
 import ru.shafran.common.utils.replaceAll
 import ru.shafran.common.utils.stores
+import ru.shafran.network.companies.data.Company
 import ru.shafran.network.services.ServicesListStore
 import ru.shafran.network.services.data.ConfiguredService
 import ru.shafran.network.services.data.Service
@@ -17,12 +18,13 @@ import ru.shafran.network.utils.reduceStates
 
 class ServiceSelectorComponent(
     componentContext: ComponentContext,
+    val company: Company,
     private val selectedConfiguration: ConfiguredService?,
     private val onSelect: (Service) -> Unit,
 ) : ServiceSelector, Updatable, ComponentContext by componentContext {
 
     override val onUpdate: (() -> Unit) = {
-        store.accept(ServicesListStore.Intent.LoadServices())
+        store.accept(ServicesListStore.Intent.LoadServices(companyId = company.id))
     }
     private val store by stores<ServicesListStore>()
 

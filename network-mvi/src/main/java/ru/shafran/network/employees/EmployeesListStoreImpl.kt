@@ -70,7 +70,8 @@ internal class EmployeesListStoreImpl(
         private suspend fun EmployeesListStore.Intent.LoadEmployees.execute() {
             syncDispatch(Message.Loading())
             try {
-                val employees = employeesRepository.getAllEmployees(GetAllEmployeesRequest())
+                val employees =
+                    employeesRepository.getAllEmployees(GetAllEmployeesRequest(companyId = companyId))
                 syncDispatch(Message.EmployeesLoaded(employees.employees))
             } catch (e: Exception) {
                 syncDispatch(Message.Error(e))

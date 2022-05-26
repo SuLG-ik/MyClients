@@ -45,6 +45,7 @@ class CreateServiceStoreImpl(
         }
 
         private suspend fun CreateServiceStore.Intent.CreateService.execute() {
+            val request = CreateServiceRequest(data = data, companyId = companyId.id)
             syncDispatch(Message.CreateServiceLoading(request))
             try {
                 val response = servicesRepository.createService(request)

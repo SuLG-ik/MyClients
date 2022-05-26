@@ -8,6 +8,7 @@ import ru.shafran.common.components.R
 import ru.shafran.common.loading.LoadingComponent
 import ru.shafran.common.utils.getStore
 import ru.shafran.common.utils.replaceAll
+import ru.shafran.network.companies.data.Company
 import ru.shafran.network.session.SessionUseStore
 import ru.shafran.network.session.data.Session
 import ru.shafran.network.session.data.UseSessionRequest
@@ -19,6 +20,7 @@ class SessionUsageHostComponent(
     private val session: Session,
     private val onBack: () -> Unit,
     private val onBackAndUpdate: () -> Unit,
+    private val company: Company
 ) : SessionUsageHost, ComponentContext by componentContext {
 
     private val store = getStore<SessionUseStore>()
@@ -61,6 +63,7 @@ class SessionUsageHostComponent(
                 session = session,
                 onUse = ::onUse,
                 onBack = ::onBack,
+                company = company,
             )
         )
     }

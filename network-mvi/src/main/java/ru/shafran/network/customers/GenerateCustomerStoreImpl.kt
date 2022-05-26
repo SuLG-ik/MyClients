@@ -5,7 +5,7 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineDispatcher
-import ru.shafran.network.customers.data.CreateCustomerRequest
+import ru.shafran.network.customers.data.CreateCustomersRequest
 import ru.shafran.network.customers.data.Customer
 import ru.shafran.network.customers.data.EditableCustomerData
 import ru.shafran.network.utils.CancelableSyncCoroutineExecutor
@@ -61,16 +61,17 @@ class GenerateCustomerStoreImpl(
 
 
         private fun buildErrorMessage(
-            request: CreateCustomerRequest,
+            request: CreateCustomersRequest,
             exception: Exception,
         ): Message {
             return Message.Error(request, exception)
         }
 
         private suspend fun GenerateCustomerStore.Intent.GenerateCustomer.execute() {
-
             syncDispatch(Message.Loading())
-            val response = customersRepository.createCustomer(request)
+            val response =
+                customersRepository.createCustomer(CreateCustomersRequest(data = request,
+                    companyId = companyId))
             syncDispatch(Message.CustomerGenerated(response.token, response.customer))
         }
 
@@ -83,7 +84,8 @@ class GenerateCustomerStoreImpl(
                     try {
                         intent.execute()
                     } catch (e: Exception) {
-                        syncDispatch(buildErrorMessage(intent.request, e))
+                        syncDispatch(buildErrorMessage(CreateCustomersRequest(intent.request,
+                            companyId = intent.companyId), e))
                     }
                 is GenerateCustomerStore.Intent.LoadDetails ->
                     syncDispatch(Message.Request(intent.request))
@@ -103,7 +105,7 @@ class GenerateCustomerStoreImpl(
             val customer: Customer.ActivatedCustomer,
         ) : Message()
 
-        class Error(val request: CreateCustomerRequest, val exception: Exception) : Message()
+        class Error(val request: CreateCustomersRequest, val exception: Exception) : Message()
 
     }
 

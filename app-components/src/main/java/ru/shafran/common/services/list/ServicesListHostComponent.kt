@@ -13,12 +13,14 @@ import ru.shafran.common.services.details.ServicesDetailsHostComponent
 import ru.shafran.common.services.details.host.ServicesDetailsHost
 import ru.shafran.common.utils.Updatable
 import ru.shafran.common.utils.getStore
+import ru.shafran.network.companies.data.Company
 import ru.shafran.network.services.ServicesListStore
 import ru.shafran.network.services.data.Service
 import ru.shafran.network.utils.reduceStates
 
 internal class ServicesListHostComponent(
     componentContext: ComponentContext,
+    private val company: Company,
 ) : ServicesListHost, Updatable, ComponentContext by componentContext {
 
 
@@ -88,7 +90,7 @@ internal class ServicesListHostComponent(
     }
 
     override val onUpdate: () -> Unit = {
-        store.accept(ServicesListStore.Intent.LoadServices())
+        store.accept(ServicesListStore.Intent.LoadServices(companyId = company.id))
     }
 
     private fun onCreateService() {
@@ -100,7 +102,9 @@ internal class ServicesListHostComponent(
     }
 
     override val serviceDetails: ServicesDetailsHost =
-        ServicesDetailsHostComponent(childContext("service_details"), onUpdateList = onUpdate)
+        ServicesDetailsHostComponent(childContext("service_details"),
+            onUpdateList = onUpdate,
+            company = company)
 
     private val store = getStore<ServicesListStore>()
         .reduceStates(this, this::reduceState)
