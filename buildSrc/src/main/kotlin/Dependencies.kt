@@ -10,7 +10,7 @@ object Config {
 interface Dependencies {
 
     object Material : Dependencies {
-        const val version = "1.4.0"
+        const val version = "1.6.1"
         const val design = "com.google.android.material:material:$version"
     }
 
@@ -24,7 +24,7 @@ interface Dependencies {
     }
 
     object Coroutines : Dependencies {
-        const val version = "1.6.1"
+        const val version = "1.6.2"
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
         const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
         const val guava = "org.jetbrains.kotlinx:kotlinx-coroutines-guava:$version"
@@ -32,7 +32,7 @@ interface Dependencies {
     }
 
     object Serialization : Dependencies {
-        const val version = "1.3.2"
+        const val version = "1.3.3"
         const val core = "org.jetbrains.kotlinx:kotlinx-serialization-core:$version"
         const val json = "org.jetbrains.kotlinx:kotlinx-serialization-json:$version"
     }
@@ -64,15 +64,15 @@ interface Dependencies {
     }
 
     object Appcompat : Dependencies {
-        const val version = "1.4.1"
+        const val version = "1.4.2"
         const val core = "androidx.appcompat:appcompat:$version"
     }
 
     object Android : Dependencies {
         const val agpVersion = "7.2.0"
-        const val version = "1.8.0-rc01"
+        const val version = "1.8.0"
         const val core = "androidx.core:core-ktx:$version"
-        const val splash = "androidx.core:core-splashscreen:1.0.0-beta02"
+        const val splash = "androidx.core:core-splashscreen:1.0.0-rc01"
         const val startup = "androidx.startup:startup-runtime:1.1.1"
     }
 
@@ -95,11 +95,11 @@ interface Dependencies {
     }
 
     object Compose : Dependencies {
-        const val compilerVersion = "1.2.0-beta01"
-        const val version = "1.2.0-beta01"
+        const val compilerVersion = "1.2.0-rc02"
+        const val version = "1.2.0-rc02"
         const val ui = "androidx.compose.ui:ui:$version"
         const val material = "androidx.compose.material:material:$version"
-        const val material3 = "androidx.compose.material3:material3:1.0.0-alpha10"
+        const val material3 = "androidx.compose.material3:material3:1.0.0-alpha13"
         const val animation = "androidx.compose.animation:animation:$version"
         const val foundation = "androidx.compose.foundation:foundation:$version"
         const val tooling = "androidx.compose.ui:ui-tooling:$version"
@@ -112,14 +112,14 @@ interface Dependencies {
     }
 
     object Accompanist : Dependencies {
-        const val version = "0.24.8-beta"
+        const val version = "0.24.11-rc"
         const val swiperefresh = "com.google.accompanist:accompanist-swiperefresh:$version"
         const val permissions = "com.google.accompanist:accompanist-permissions:$version"
         const val placeholder = "com.google.accompanist:accompanist-placeholder-material:$version"
     }
 
     object Ktor : Dependencies {
-        const val version = "2.0.1"
+        const val version = "2.0.2"
         const val core = "io.ktor:ktor-client-core:$version"
         const val auth = "io.ktor:ktor-client-auth:$version"
         const val android = "io.ktor:ktor-client-android:$version"
@@ -131,7 +131,7 @@ interface Dependencies {
 
 
     object Camera : Dependencies {
-        const val version = "1.1.0-rc01"
+        const val version = "1.1.0-rc02"
         const val core = "androidx.camera:camera-core:$version"
         const val camera = "androidx.camera:camera-camera2:$version"
         const val lifecycle = "androidx.camera:camera-lifecycle:$version"
@@ -161,7 +161,7 @@ interface Dependencies {
     }
 
     object Coil : Dependencies {
-        const val version = "2.0.0"
+        const val version = "2.1.0"
         const val core = "io.coil-kt:coil:$version"
         const val compose = "io.coil-kt:coil-compose:$version"
     }
